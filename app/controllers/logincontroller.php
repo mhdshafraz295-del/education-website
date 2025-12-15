@@ -1,0 +1,7 @@
+<?php
+class LoginController {
+    public function showLoginForm() {
+        require_once __DIR__ . '/../views/login.php';
+    }
+}
+?>
