@@ -1,9 +1,21 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../app/controllers/logincontroller.php';
+require_once __DIR__ . '/../app/controllers/RegisterController.php';
 
-$loginController = new LoginController();
-$loginController->showLoginForm();
+$controller = new RegisterController();
 
-  
+if (isset($_GET['page']) && $_GET['page'] === 'register') {
+
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $controller->showRegisterForm();
+    }
+
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller->handleRegistration();
+    }
+}
+    
+
+
 ?>
