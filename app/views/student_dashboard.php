@@ -1,383 +1,938 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) session_start();
-$flash_success = $_SESSION['flash_success'] ?? null;
-$flash_error = $_SESSION['flash_error'] ?? null;
-unset($_SESSION['flash_success'], $_SESSION['flash_error']);
-$courses = $courses ?? [];
-$assignments = $assignments ?? [];
-$transcript = $transcript ?? []; // array of ['term','code','course','credits','grade'] optional
-?>
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Student Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Education Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+        }
+
+    
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 32px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .sidebar.collapsed .logo-text,
+        .sidebar.collapsed .nav-text {
+            display: none;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .nav-link i {
+            font-size: 20px;
+            min-width: 20px;
+        }
+
+        .nav-text {
+            font-size: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .main-content.expanded {
+            margin-left: 80px;
+        }
+
+        
+        .header {
+            background: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 40px 10px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            width: 250px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: #f8f9fa;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: #e9ecef;
+        }
+
+        .notification-btn i {
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .user-info h4 {
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .user-info p {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .stat-content h3 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-content p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .content-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .view-all {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-all:hover {
+            color: #764ba2;
+        }
+
+        
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .course-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .course-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .course-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .course-info {
+            flex: 1;
+        }
+
+        .course-info h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .course-info p {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .course-progress {
+            text-align: right;
+        }
+
+        .progress-percent {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: #e0e6ed;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .event-item {
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            background: #f8f9ff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .event-item:hover {
+            transform: translateX(5px);
+        }
+
+        .event-date {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .event-item h4 {
+            font-size: 15px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .event-item p {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        
+        .assignments-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .assignments-table th {
+            text-align: left;
+            padding: 15px;
+            background: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .assignments-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 14px;
+        }
+
+        .assignments-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.submitted {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-badge.graded {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .action-btn {
+            padding: 6px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #764ba2;
+        }
+
+        
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+        }
+
+    
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card,
+        .content-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
 </head>
 <body>
-  <div class="d-flex" id="wrapper">
-    <nav id="sidebar" class="bg-dark text-white">
-      <div class="sidebar-header py-4 px-3 text-center">
-        <h4 class="mb-0">Student</h4>
-        <small class="text-muted">Dashboard</small>
-      </div>
-      <ul class="nav flex-column px-2">
-        <li class="nav-item mb-1"><a class="nav-link text-white" href="#">Overview</a></li>
-        <li class="nav-item mb-1"><a class="nav-link text-white" href="#courses">My Courses</a></li>
-        <li class="nav-item mb-1"><a class="nav-link text-white" href="#assignments">Assignments</a></li>
-        <li class="nav-item mb-1"><a class="nav-link text-white" href="#fees">Fees</a></li>
-        <li class="nav-item mt-3"><a class="nav-link text-white" href="#support">Support</a></li>
-      </ul>
-    </nav>
-
-    <div id="page-content" class="flex-grow-1">
-      <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container-fluid">
-          <button class="btn btn-outline-secondary" id="sidebarToggle">☰</button>
-          <div class="ms-auto d-flex align-items-center">
-            <span id="headerUserName" class="me-3 d-none d-md-inline">Welcome, <strong><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Student'); ?></strong></span>
-            <a href="/index.php?page=student-profile" class="btn btn-sm btn-outline-primary me-2">Open Profile Page</a>
-            <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</button>
-            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#payFeesModal">Pay Fees</button>
-          </div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span class="logo-text">EduPortal</span>
+            </a>
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-      </nav>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        <span class="nav-text">My Courses</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-tasks"></i>
+                        <span class="nav-text">Assignments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="nav-text">Exams</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-text">Grades</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="nav-text">Schedule</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span class="nav-text">Library</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span class="nav-text">Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span class="nav-text">Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout.php" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
-      <?php if ($flash_success): ?>
-        <div class="container-fluid mt-3"><div class="alert alert-success"><?php echo htmlspecialchars($flash_success); ?></div></div>
-      <?php endif; ?>
-      <?php if ($flash_error): ?>
-        <div class="container-fluid mt-3"><div class="alert alert-danger"><?php echo htmlspecialchars($flash_error); ?></div></div>
-      <?php endif; ?>
-
-      <main class="container-fluid p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <h2 class="mb-0">My Dashboard</h2>
-            <small class="text-muted">Overview of your courses, assignments and balance</small>
-          </div>
-          <div>
-            <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#transcriptModal">View Transcript</button>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payFeesModal">Pay Fees</button>
-          </div>
+    
+    <main class="main-content" id="mainContent">
+        
+        <div class="header">
+            <div class="header-left">
+                <h1>Welcome back, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Student'); ?>! 👋</h1>
+                <p>Here's what's happening with your courses today</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search courses, assignments...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <?php echo strtoupper(substr($_SESSION['username'] ?? 'S', 0, 1)); ?>
+                    </div>
+                    <div class="user-info">
+                        <h4><?php echo htmlspecialchars($_SESSION['username'] ?? 'Student'); ?></h4>
+                        <p>Student ID: <?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="row g-3 mb-4">
-          <div class="col-sm-6 col-lg-3">
-            <div class="card shadow-sm student-card h-100">
-              <div class="card-body">
-                <h6 class="card-title">Credits</h6>
-                <div class="d-flex align-items-end justify-content-between">
-                  <div><h3 class="card-text">120</h3><small class="text-muted">Completed</small></div>
-                  <i class="bi bi-mortarboard fs-2 text-primary"></i>
+    
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fas fa-book"></i>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card shadow-sm student-card h-100">
-              <div class="card-body">
-                <h6 class="card-title">GPA</h6>
-                <div class="d-flex align-items-end justify-content-between">
-                  <div><h3 class="card-text">3.78</h3><small class="text-success">Good standing</small></div>
-                  <i class="bi bi-bar-chart-line fs-2 text-success"></i>
+                <div class="stat-content">
+                    <h3>6</h3>
+                    <p>Active Courses</p>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card shadow-sm student-card h-100">
-              <div class="card-body">
-                <h6 class="card-title">Courses</h6>
-                <div class="d-flex align-items-end justify-content-between">
-                  <div><h3 class="card-text">6</h3><small class="text-muted">Active</small></div>
-                  <i class="bi bi-journal-bookmark fs-2 text-info"></i>
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-tasks"></i>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card shadow-sm student-card h-100">
-              <div class="card-body">
-                <h6 class="card-title">Balance</h6>
-                <div class="d-flex align-items-end justify-content-between">
-                  <div><h3 id="studentBalance" class="card-text text-warning">$420.00</h3><small class="text-muted">Due</small></div>
-                  <i class="bi bi-wallet2 fs-2 text-warning"></i>
+                <div class="stat-content">
+                    <h3>12</h3>
+                    <p>Pending Assignments</p>
                 </div>
-              </div>
             </div>
-          </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>3.8</h3>
+                    <p>Average GPA</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>85%</h3>
+                    <p>Attendance Rate</p>
+                </div>
+            </div>
         </div>
 
-        <div class="row g-4">
-          <div class="col-lg-8">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="mb-0">My Courses</h5>
-                  <div class="d-flex gap-2">
-                    <input id="courseSearch" class="form-control form-control-sm" placeholder="Search courses" aria-label="Search courses">
-                    <select id="courseFilter" class="form-select form-select-sm" aria-label="Filter by status">
-                      <option value="">All</option>
-                      <option value="active">Active</option>
-                      <option value="completed">Completed</option>
-                    </select>
-                  </div>
+        
+        <div class="content-grid">
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>My Courses</h2>
+                    <a href="#" class="view-all">View All →</a>
                 </div>
-                <div class="table-responsive">
-                  <table class="table table-hover" id="coursesTable">
-                    <thead>
-                      <tr><th>Course</th><th>Code</th><th>Instructor</th><th>Status</th><th class="text-end">Actions</th></tr>
-                    </thead>
-                    <tbody>
-                      <?php if (!empty($courses) && is_array($courses)): ?>
-                        <?php foreach ($courses as $c): ?>
-                          <tr data-title="<?php echo htmlspecialchars($c['title'] ?? ''); ?>" data-status="<?php echo htmlspecialchars($c['status'] ?? ''); ?>">
-                            <td><?php echo htmlspecialchars($c['title'] ?? ''); ?></td>
-                            <td><?php echo htmlspecialchars($c['code'] ?? ''); ?></td>
-                            <td><?php echo htmlspecialchars($c['instructor'] ?? ''); ?></td>
-                            <td><span class="badge bg-<?php echo ($c['status'] ?? '') === 'completed' ? 'success' : 'info'; ?>"><?php echo htmlspecialchars(ucfirst($c['status'] ?? 'Active')); ?></span></td>
-                            <td class="text-end"><button class="btn btn-sm btn-outline-secondary me-1 view-course" data-id="<?php echo htmlspecialchars($c['id'] ?? ''); ?>">View</button></td>
-                          </tr>
-                        <?php endforeach; ?>
-                      <?php else: ?>
-                        <tr>
-                          <td>Intro to Programming</td>
-                          <td>CS101</td>
-                          <td>Dr. Smith</td>
-                          <td><span class="badge bg-info">Active</span></td>
-                          <td class="text-end"><button class="btn btn-sm btn-outline-secondary">View</button></td>
-                        </tr>
-                      <?php endif; ?>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="text-muted" id="coursesCount">Showing 0 of 0</div>
-                  <nav aria-label="Courses pagination"><ul class="pagination mb-0" id="coursesPagination"></ul></nav>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4">
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title">Upcoming Assignments</h5>
-                <ul class="list-group list-group-flush" id="assignmentsList">
-                  <?php if (!empty($assignments) && is_array($assignments)): ?>
-                    <?php foreach ($assignments as $a): ?>
-                      <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div>
-                          <div class="fw-bold"><?php echo htmlspecialchars($a['title'] ?? ''); ?></div>
-                          <small class="text-muted"><?php echo htmlspecialchars($a['course'] ?? ''); ?> — Due <?php echo htmlspecialchars($a['due'] ?? ''); ?></small>
+                <div class="course-list">
+                    <div class="course-item">
+                        <div class="course-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-laptop-code"></i>
                         </div>
-                        <span class="badge bg-warning rounded-pill"><?php echo htmlspecialchars($a['status'] ?? 'Pending'); ?></span>
-                      </li>
-                    <?php endforeach; ?>
-                  <?php else: ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                      <div><div class="fw-bold">Final Essay</div><small class="text-muted">English 201 — Due 2025-12-20</small></div>
-                      <span class="badge bg-warning rounded-pill">Pending</span>
-                    </li>
-                  <?php endif; ?>
-                </ul>
-              </div>
+                        <div class="course-info">
+                            <h4>Web Development</h4>
+                            <p>Prof. John Smith • 24 lessons</p>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-percent">75%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-item">
+                        <div class="course-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="course-info">
+                            <h4>Database Management</h4>
+                            <p>Prof. Sarah Johnson • 18 lessons</p>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-percent">60%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-item">
+                        <div class="course-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="course-info">
+                            <h4>Artificial Intelligence</h4>
+                            <p>Prof. Michael Brown • 32 lessons</p>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-percent">45%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-item">
+                        <div class="course-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="course-info">
+                            <h4>Mobile App Development</h4>
+                            <p>Prof. Emily Davis • 28 lessons</p>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-percent">90%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Notifications</h5>
-                <ul class="list-unstyled mb-0">
-                  <li class="mb-2"><i class="bi bi-info-circle text-primary me-2"></i>Library will be closed on Dec 24.</li>
-                  <li class="mb-2"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Fee payment deadline: Jan 10.</li>
-                </ul>
-              </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Upcoming Events</h2>
+                    <a href="#" class="view-all">View All →</a>
+                </div>
+                <div class="event-list">
+                    <div class="event-item">
+                        <span class="event-date">Dec 18, 2025</span>
+                        <h4>Database Exam</h4>
+                        <p>Final examination - Room 304</p>
+                    </div>
+                    <div class="event-item">
+                        <span class="event-date">Dec 20, 2025</span>
+                        <h4>AI Project Submission</h4>
+                        <p>Group project deadline</p>
+                    </div>
+                    <div class="event-item">
+                        <span class="event-date">Dec 22, 2025</span>
+                        <h4>Web Dev Workshop</h4>
+                        <p>React.js Advanced Topics</p>
+                    </div>
+                    <div class="event-item">
+                        <span class="event-date">Dec 25, 2025</span>
+                        <h4>Holiday Break</h4>
+                        <p>Winter vacation begins</p>
+                    </div>
+                    <div class="event-item">
+                        <span class="event-date">Jan 05, 2026</span>
+                        <h4>Classes Resume</h4>
+                        <p>Spring semester starts</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </main>
-    </div>
-  </div>
 
-  <!-- Course Modal -->
-  <div class="modal fade" id="courseModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Course Detail</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="courseModalBody">Loading…</div>
-        <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Transcript Modal -->
-  <div class="modal fade" id="transcriptModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Academic Transcript</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div id="transcriptContent">
-            <div class="transcript-header d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <h5 class="mb-0"><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Student'); ?></h5>
-                <small class="text-muted">Student ID: <?php echo htmlspecialchars($_SESSION['user_id'] ?? 'N/A'); ?></small>
-              </div>
-              <div class="text-end">
-                <div><strong>Total Credits:</strong> <span id="transcriptCredits">0</span></div>
-                <div><strong>GPA:</strong> <span id="transcriptGPA"><?php echo htmlspecialchars($gpa ?? '3.78'); ?></span></div>
-              </div>
+        
+        <div class="content-card">
+            <div class="card-header">
+                <h2>Recent Assignments</h2>
+                <a href="#" class="view-all">View All →</a>
             </div>
-
-            <div class="table-responsive">
-              <table id="transcriptTable" class="table table-sm table-striped align-middle">
+            <table class="assignments-table">
                 <thead>
-                  <tr><th>Term</th><th>Code</th><th>Course</th><th class="text-end">Credits</th><th class="text-end">Grade</th></tr>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Course</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Grade</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php if (!empty($transcript) && is_array($transcript)): ?>
-                  <?php $tc=0; foreach ($transcript as $row): $tc += floatval($row['credits'] ?? 0); ?>
                     <tr>
-                      <td><?php echo htmlspecialchars($row['term'] ?? ''); ?></td>
-                      <td><?php echo htmlspecialchars($row['code'] ?? ''); ?></td>
-                      <td><?php echo htmlspecialchars($row['course'] ?? ''); ?></td>
-                      <td class="text-end"><?php echo htmlspecialchars($row['credits'] ?? '0'); ?></td>
-                      <td class="text-end"><?php echo htmlspecialchars($row['grade'] ?? ''); ?></td>
+                        <td>React Components Assignment</td>
+                        <td>Web Development</td>
+                        <td>Dec 19, 2025</td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                        <td>-</td>
+                        <td><button class="action-btn">Submit</button></td>
                     </tr>
-                  <?php endforeach; ?>
-                  <script>document.addEventListener('DOMContentLoaded', function(){ document.getElementById('transcriptCredits').textContent = '<?php echo $tc; ?>'; });</script>
-                <?php else: ?>
-                  <tr><td>2025 Fall</td><td>CS101</td><td>Intro to Programming</td><td class="text-end">3</td><td class="text-end">A</td></tr>
-                  <tr><td>2025 Fall</td><td>MATH201</td><td>Calculus II</td><td class="text-end">4</td><td class="text-end">B+</td></tr>
-                  <tr><td>2024 Spring</td><td>HIST100</td><td>World History</td><td class="text-end">3</td><td class="text-end">A-</td></tr>
-                  <script>document.addEventListener('DOMContentLoaded', function(){ document.getElementById('transcriptCredits').textContent = '10'; });</script>
-                <?php endif; ?>
+                    <tr>
+                        <td>SQL Queries Practice</td>
+                        <td>Database Management</td>
+                        <td>Dec 17, 2025</td>
+                        <td><span class="status-badge submitted">Submitted</span></td>
+                        <td>-</td>
+                        <td><button class="action-btn">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Machine Learning Model</td>
+                        <td>Artificial Intelligence</td>
+                        <td>Dec 15, 2025</td>
+                        <td><span class="status-badge graded">Graded</span></td>
+                        <td>92/100</td>
+                        <td><button class="action-btn">View</button></td>
+                    </tr>
+                    <tr>
+                        <td>Mobile UI Design</td>
+                        <td>Mobile App Development</td>
+                        <td>Dec 21, 2025</td>
+                        <td><span class="status-badge pending">Pending</span></td>
+                        <td>-</td>
+                        <td><button class="action-btn">Submit</button></td>
+                    </tr>
+                    <tr>
+                        <td>REST API Implementation</td>
+                        <td>Web Development</td>
+                        <td>Dec 10, 2025</td>
+                        <td><span class="status-badge graded">Graded</span></td>
+                        <td>88/100</td>
+                        <td><button class="action-btn">View</button></td>
+                    </tr>
                 </tbody>
-              </table>
-            </div>
-
-            <div class="d-flex justify-content-between mt-3">
-              <div class="text-muted small">This transcript is an unofficial copy for student reference.</div>
-              <div class="btn-group">
-                <button id="printTranscript" class="btn btn-sm btn-outline-secondary">Print</button>
-                <button id="downloadTranscriptPdf" class="btn btn-sm btn-outline-primary">Download PDF</button>
-                <button id="exportTranscriptCSV" class="btn btn-sm btn-outline-secondary">Export CSV</button>
-              </div>
-            </div>
-          </div>
+            </table>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    </main>
 
-  <!-- Profile Modal -->
-  <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="profileForm" method="post" action="/index.php?page=student_profile_update">
-          <div class="modal-header">
-            <h5 class="modal-title">Profile</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="d-flex align-items-center mb-3">
-              <div><span id="profileAvatar" class="profile-avatar me-3" aria-hidden="true"></span></div>
-              <div>
-                <div class="fw-bold" id="profileNameView"><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Student'); ?></div>
-                <div class="text-muted small" id="profileIdView">ID: <?php echo htmlspecialchars($_SESSION['user_id'] ?? 'N/A'); ?></div>
-              </div>
-            </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
 
-            <div class="mb-3">
-              <label class="form-label">Full name</label>
-              <input name="name" id="profileName" class="form-control" value="<?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?>" required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" id="profileEmail" class="form-control" value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>" required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Phone</label>
-              <input name="phone" id="profilePhone" class="form-control" value="<?php echo htmlspecialchars($_SESSION['user_phone'] ?? ''); ?>">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Address</label>
-              <textarea name="address" id="profileAddress" class="form-control"><?php echo htmlspecialchars($_SESSION['user_address'] ?? ''); ?></textarea>
-            </div>
-
-            <div class="form-text">This demo saves profile fields to session only. For production, persist to the database.</div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" id="profileSaveBtn">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Pay Fees Modal -->
-  <div class="modal fade" id="payFeesModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="payFeesForm">
-          <div class="modal-header">
-            <h5 class="modal-title">Pay Fees</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Amount (USD)</label>
-              <input type="number" name="amount" id="feeAmount" min="0.01" step="0.01" class="form-control" required value="420.00">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Method</label>
-              <select name="method" id="feeMethod" class="form-select" required>
-                <option value="card">Debit/Credit Card</option>
-                <option value="bank">Bank Transfer</option>
-              </select>
-            </div>
-            <div id="cardFields">
-              <div class="mb-3">
-                <label class="form-label">Cardholder Name</label>
-                <input name="card_name" class="form-control" placeholder="Name on card">
-              </div>
-              <div class="row g-2">
-                <div class="col-8"><label class="form-label">Card Number</label><input name="card_number" class="form-control" inputmode="numeric" pattern="[0-9\s]{13,19}" placeholder="1234 5678 9012 3456"></div>
-                <div class="col-4"><label class="form-label">Expiry</label><input name="card_expiry" class="form-control" placeholder="MM/YY"></div>
-              </div>
-              <div class="mb-3 mt-2"><label class="form-label">CVC</label><input name="card_cvc" class="form-control" inputmode="numeric" maxlength="4" style="max-width:120px" placeholder="123"></div>
-            </div>
-            <div id="bankInfo" class="d-none">
-              <p class="small text-muted">Send payment to account: ACME Bank — Acc: 123456789 — Use your student ID as reference.</p>
-            </div>
-            <div class="form-text mt-2">This is a demo payment form. For production, integrate a PCI-compliant payment gateway.</div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" id="paySubmit"><span class="spinner-border spinner-border-sm d-none" id="paySpinner" role="status" aria-hidden="true"></span> Pay</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
- 
+    
+        if (window.innerWidth <= 768) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('collapsed');
+        }
+    </script>
 </body>
 </html>

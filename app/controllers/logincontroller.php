@@ -1,70 +1,115 @@
 <?php
-class LoginController {
+session_start();
+require_once __DIR__ . '/../../config/database.php';
 
-    public function showLoginForm() {
-        
-        if (isset($_GET['logout']) && $_GET['logout'] == '1') {
-            if (session_status() === PHP_SESSION_NONE) session_start();
-            session_unset();
-            session_destroy();
-            header("Location: index.php?page=login");
-            exit;
-        }
+class LoginController {
+    private $connection;
+    
+    public function __construct($connection) {
+        $this->connection = $connection;
+    }
+    
+    
+    public function index() {
         require_once __DIR__ . '/../views/login.php';
     }
+    
 
-    public function handleLogin() {
+    public function authenticate() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?page=login");
-            exit;
+            header('Location: /education_site/public/index.php?controller=login&action=index');
+            exit();
         }
-
-        require_once __DIR__ . '/../../config/database.php';
-
-        $email = trim($_POST['email'] ?? '');
-        $password = trim($_POST['password'] ?? '');
-
-        if ($email === '' || $password === '') {
-            header("Location: index.php?page=login&error=empty");
-            exit;
-        }
-
         
-        $stmt = $connection->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
-        if (!$stmt) {
-            die("Database query error");
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        
+        
+        if (empty($email) || empty($password)) {
+            $_SESSION['error'] = "Email and password are required";
+            header('Location: /education_site/public/index.php?controller=login&action=index');
+            exit();
         }
-
+        
+        
+        $stmt = $this->connection->prepare("SELECT id, name, email, password, role FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-
-        if ($result && $result->num_rows === 1) {
+        
+        if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-
+            
+            
             if (password_verify($password, $user['password'])) {
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
-                session_regenerate_id(true);
-
+    
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['role'] = $user['role'];
-                $_SESSION['name'] = $user['name'];
-
-                if ($user['role'] === 'Student') {
-                    header("Location: index.php?page=student-dashboard");
-                } elseif ($user['role'] === 'Lecturer') {
-                    header("Location: index.php?page=lecturer-dashboard");
-                } else {
-                    header("Location: index.php?page=dashboard");
+                $_SESSION['user_name'] = $user['name'];
+                $_SESSION['user_email'] = $user['email'];
+                $_SESSION['user_role'] = $user['role'];
+                $_SESSION['logged_in'] = true;
+                
+                $stmt->close();
+                
+                
+                switch ($user['role']) {
+                    case 'student':
+                        header('Location: /education_site/app/views/student_dashboard.php');
+                        break;
+                    case 'financial_officer':
+                        header('Location: /education_site/app/views/financeofficer_dashboard.php');
+                        break;
+                    case 'lecturer':
+                        header('Location: /education_site/app/views/lecture_dashboard.php');
+                        break;
+                    case 'exam_officer':
+                        header('Location: /education_site/app/views/examination_officer.php');
+                        break;
+                    case 'library_officer':
+                        header('Location: /education_site/app/views/libraryofficer_dashboard.php');
+                        break;
+                    default:
+                        header('Location: /education_site/app/views/student_dashboard.php');
+                        break;
                 }
-                exit;
+                exit();
+            } else {
+                $_SESSION['error'] = "Invalid email or password";
             }
+        } else {
+            $_SESSION['error'] = "Invalid email or password";
         }
-
+        
         $stmt->close();
-        header("Location: index.php?page=login&error=invalid");
-        exit;
+        header('Location: /education_site/public/index.php?controller=login&action=index');
+        exit();
+    }
+    
+    
+    public function logout() {
+        session_destroy();
+        header('Location: /education_site/public/index.php?controller=login&action=index');
+        exit();
+    }
+    
+    
+    public function forgotPassword() {
+        echo "Forgot password functionality - Coming soon";
     }
 }
+
+
+if (isset($_GET['action'])) {
+    $controller = new LoginController($connection);
+    $action = $_GET['action'];
+    
+    if (method_exists($controller, $action)) {
+        $controller->$action();
+    } else {
+        $controller->index();
+    }
+} else {
+    $controller = new LoginController($connection);
+    $controller->index();
+}
+?>

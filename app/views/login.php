@@ -3,61 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDUCATION SITE</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-
+    <title>Login - Education Site</title>
+    <link rel="stylesheet" href="/education_site/public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="container-fluid bg-secondary text-white vh-100 md-5 lg-6 sm-12">
-        <div class="row">
-            <div class="col">
-                <div class="card mt-5 mx-auto" style="max-width: 400px;">
-
-              <?php
-                if (isset($_GET['success'])) {
-                echo "<div class='alert alert-success'>
-                        Registration successful. Please login.
-                    </div>";}
-                    ?>
-
-                <div class="card-header text-center ">
-                   <h1>LOGIN PAGE</h1> 
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="icon-wrapper">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
-                <div class="card-body p-4 ">
-                    <form action="index.php?page=login" method="POST">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" required>
-                        </div>
-                        <label>Role</label><br>
-                        <select name="role" required class="container w-100 p-2 mb-3">
-                            <option value="" class="text-center p-3"> Select Role </option>
-                            <option value="Lecturer">Lecturer</option>
-                            <option value="Student">Student</option>
-                            <option value="Examination Officer">Examination Officer</option>
-                            <option value="Library Officer">Library Officer</option>
-                            <option value="Finance Officer">Finance Officer</option>
-                        </select><br><br>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
-                             <p class="sign-up-label text-center mt-2">
-                    New user? Rgister here<span><a href="index.php?page=register" class="m-1">Register</a></span>
-                </p>
-                   
+                <h1>Welcome Back</h1>
+                <p>Sign in to continue to your account</p>
+            </div>
+            
+            <form action="/education_site/public/index.php?controller=login&action=authenticate" method="POST" class="login-form">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" id="email" placeholder="Email Address" required>
+                    </div>
                 </div>
+                
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+                    </div>
                 </div>
-               
+                
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="/education_site/public/index.php?controller=login&action=forgotPassword" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Don't have an account? <a href="register.php" class="register-link">Register here</a></p>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
+
+    <script>
+        
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        
+        const inputs = document.querySelectorAll('.input-wrapper input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
