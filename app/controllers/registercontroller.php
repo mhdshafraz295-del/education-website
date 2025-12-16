@@ -19,6 +19,7 @@ class RegisterController {
 
         $stmt = $connection->prepare(
             "INSERT INTO users (name, email, password, mobilenumber, address, role)
+
              VALUES (?, ?, ?, ?, ?, ?)"
         );
 

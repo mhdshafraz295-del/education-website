@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid bg-light vh-100 md-5 lg-6 sm-12">
+    <div class="container-fluid bg-secondary text-white vh-100 md-5 lg-6 sm-12">
         <div class="row">
             <div class="col">
                 <div class="card mt-2 mx-auto" style="max-width: 450px;">

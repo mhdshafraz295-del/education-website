@@ -1,0 +1,211 @@
+:root {
+  --sidebar-width: 220px;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue",
+    Arial;
+  background: #f6f8fa;
+  color: #222;
+}
+
+#sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+}
+#sidebar.collapsed {
+  width: 72px;
+}
+#sidebar .sidebar-header {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.45));
+}
+#sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.9);
+}
+#sidebar .nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+#page-content {
+  transition: margin 0.2s ease;
+}
+
+.card {
+  border: none;
+}
+.card .card-body h3 {
+  font-weight: 700;
+}
+
+.table thead th {
+  background: transparent;
+  border-bottom: 2px solid #e9eef2;
+}
+
+.text-end a {
+  margin-left: 6px;
+}
+
+@media (max-width: 767px) {
+  #sidebar {
+    position: fixed;
+    left: -100%;
+    z-index: 1040;
+  }
+  #sidebar.show {
+    left: 0;
+  }
+}
+
+.modal .form-label {
+  font-weight: 500;
+}
+
+.badge {
+  font-size: 0.85rem;
+}
+
+.muted {
+  color: #6c757d;
+}
+
+#sidebar.bg-primary {
+  background: linear-gradient(180deg, #0d6efd 0%, #0b5ed7 100%);
+}
+#sidebar .sidebar-header h5 {
+  font-weight: 700;
+}
+.card.h-100 {
+  display: flex;
+  align-items: stretch;
+}
+.card.h-100 .card-body {
+  flex: 1;
+}
+.table td,
+.table th {
+  vertical-align: middle;
+}
+.table .btn {
+  min-width: 68px;
+}
+@media (max-width: 576px) {
+  .card .card-body h3 {
+    font-size: 1.25rem;
+  }
+}
+
+.table-hover tbody tr:hover {
+  background: #fbfdff;
+}
+#bookSearch[aria-label],
+#filterCategory,
+#filterAvail {
+  min-height: 44px;
+}
+.btn:focus {
+  outline: 3px solid rgba(13, 110, 253, 0.18);
+  outline-offset: 2px;
+}
+#booksPagination .page-item .page-link {
+  min-width: 40px;
+  text-align: center;
+}
+#booksCount {
+  font-size: 0.95rem;
+}
+
+.card .card-title {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+.card .card-text {
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+#txTable tbody tr td:last-child {
+  min-width: 120px;
+}
+@media (max-width: 768px) {
+  .card .card-text {
+    font-size: 1.1rem;
+  }
+  #sidebar {
+    display: none;
+  }
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+  outline: none;
+}
+/* Student dashboard tweaks */
+.student-card .card-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+#coursesTable tbody tr td:last-child {
+  min-width: 120px;
+}
+#assignmentsList .list-group-item {
+  cursor: default;
+}
+@media (max-width: 768px) {
+  .student-card .card-text {
+    font-size: 1.05rem;
+  }
+}
+
+/* Pay Fees form small tweaks */
+#payFeesModal .form-text {
+  font-size: 0.85rem;
+}
+#payFeesModal input::placeholder {
+  opacity: 0.6;
+}
+
+/* Profile styles */
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #e9eef2;
+}
+#profileModal .form-text {
+  font-size: 0.9rem;
+}
+
+/* Account dropdown tweaks */
+#accountDropdown img {
+  width: 32px;
+  height: 32px;
+}
+@media (max-width: 576px) {
+  #accountDropdown strong {
+    display: none;
+  }
+}
+
+/* Transcript styles */
+#transcriptContent {
+  font-size: 0.95rem;
+}
+#transcriptContent .transcript-header h5 {
+  margin: 0;
+}
+#transcriptTable th {
+  white-space: nowrap;
+}
+@media (max-width: 576px) {
+  #transcriptContent {
+    padding: 0.5rem;
+  }
+  #transcriptTable {
+    font-size: 0.9rem;
+  }
+}
