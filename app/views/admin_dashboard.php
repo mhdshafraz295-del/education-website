@@ -125,6 +125,210 @@
             white-space: nowrap;
         }
 
+        /* Sidebar Notifications Widget */
+        .sidebar-notifications {
+            margin: 20px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar.collapsed .sidebar-notifications {
+            display: none;
+        }
+
+        .sidebar-notifications-header {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-notifications-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-notifications-title i {
+            font-size: 14px;
+        }
+
+        .sidebar-notifications-count {
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .sidebar-notifications-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .sidebar-notifications-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-notifications-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-notifications-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+
+        .sidebar-notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar-notification-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-notification-item.unread {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: #ffd700;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .sidebar-notification-header {
+            display: flex;
+            align-items: start;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-notification-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .sidebar-notification-icon.success {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        .sidebar-notification-icon.warning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .sidebar-notification-icon.info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+        }
+
+        .sidebar-notification-icon.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .sidebar-notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sidebar-notification-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sidebar-notification-text {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .sidebar-notification-time {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sidebar-notification-time i {
+            font-size: 9px;
+        }
+
+        .sidebar-notifications-footer {
+            padding: 10px 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-notifications-footer a {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-notifications-footer a:hover {
+            color: white;
+        }
+
+        .sidebar-notification-empty {
+            padding: 30px 15px;
+            text-align: center;
+        }
+
+        .sidebar-notification-empty i {
+            font-size: 36px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .sidebar-notification-empty p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
         
         .main-content {
             margin-left: 280px;
@@ -207,6 +411,14 @@
             background: #e9ecef;
         }
 
+        .notification-btn.active {
+            background: #1e3c72;
+        }
+
+        .notification-btn.active i {
+            color: white !important;
+        }
+
         .notification-btn i {
             font-size: 18px;
             color: #2c3e50;
@@ -222,6 +434,695 @@
             padding: 2px 5px;
             border-radius: 10px;
             font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        
+        .notification-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 420px;
+            max-height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .notification-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .notification-header {
+            padding: 20px 25px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-tabs {
+            display: flex;
+            gap: 5px;
+            padding: 15px 15px 0 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .notification-tab {
+            flex: 1;
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .notification-tab:hover {
+            color: #1e3c72;
+        }
+
+        .notification-tab.active {
+            color: #1e3c72;
+            border-bottom-color: #1e3c72;
+        }
+
+        .notification-tab .tab-badge {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .notification-content {
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .notification-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-content::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        .notification-content::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 3px;
+        }
+
+        .notification-content::-webkit-scrollbar-thumb:hover {
+            background: #95a5a6;
+        }
+
+        .notification-item {
+            padding: 18px 25px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            gap: 15px;
+            align-items: start;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: #f8f9fa;
+        }
+
+        .notification-item.unread {
+            background: #f0f8ff;
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: #1e3c72;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .notification-icon-wrapper {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+            color: white;
+        }
+
+        .notification-icon-wrapper.info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .notification-icon-wrapper.success {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .notification-icon-wrapper.warning {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .notification-icon-wrapper.error {
+            background: linear-gradient(135deg, #fc6076 0%, #ff9a44 100%);
+        }
+
+        .notification-details {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .notification-message {
+            font-size: 13px;
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #95a5a6;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .notification-action-btn {
+            padding: 5px 12px;
+            border: 1px solid #e0e6ed;
+            background: white;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-action-btn.primary {
+            background: #1e3c72;
+            color: white;
+            border-color: #1e3c72;
+        }
+
+        .notification-action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-footer {
+            padding: 15px 25px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-footer-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: white;
+            color: #1e3c72;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e6ed;
+        }
+
+        .notification-footer-btn:hover {
+            background: #1e3c72;
+            color: white;
+            border-color: #1e3c72;
+        }
+
+        .notification-empty {
+            padding: 60px 25px;
+            text-align: center;
+        }
+
+        .notification-empty i {
+            font-size: 60px;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .notification-empty h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .notification-empty p {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        /* Settings Icon */
+        .settings-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+        }
+
+        
+        .settings-btn {
+            position: relative;
+            background: #f8f9fa;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-btn:hover {
+            background: #e9ecef;
+            transform: rotate(45deg);
+        }
+
+        .settings-btn.active {
+            background: #1e3c72;
+            transform: rotate(45deg);
+        }
+
+        .settings-btn.active i {
+            color: white !important;
+        }
+
+        .settings-btn i {
+            font-size: 18px;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .settings-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-container {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            display: flex;
+        }
+
+        .settings-modal.show .settings-container {
+            transform: scale(1);
+        }
+
+        .settings-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            padding: 30px 0;
+            overflow-y: auto;
+        }
+
+        .settings-sidebar-header {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .settings-sidebar-header h2 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .settings-nav {
+            list-style: none;
+        }
+
+        .settings-nav-item {
+            margin-bottom: 5px;
+            padding: 0 15px;
+        }
+
+        .settings-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .settings-nav-link:hover,
+        .settings-nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .settings-nav-link i {
+            font-size: 18px;
+            min-width: 18px;
+        }
+
+        .settings-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .settings-header h3 {
+            font-size: 26px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: none;
+            background: #f8f9fa;
+            color: #2c3e50;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-close-btn:hover {
+            background: #e74c3c;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .settings-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-group {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .settings-group-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-group-title i {
+            color: #1e3c72;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .settings-item-info {
+            flex: 1;
+        }
+
+        .settings-item-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 3px;
+        }
+
+        .settings-item-desc {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #bdc3c7;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #43e97b;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active::before {
+            left: 27px;
+        }
+
+        /* Input Field */
+        .settings-input {
+            padding: 10px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+    
+        .settings-select {
+            padding: 10px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 250px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .settings-select:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        
+        .settings-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #e0e6ed;
+        }
+
+        .settings-btn-primary {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .settings-btn-secondary {
+            padding: 12px 25px;
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn-secondary:hover {
+            background: #f8f9fa;
+            border-color: #bdc3c7;
+        }
+
+        .settings-btn-danger {
+            padding: 12px 25px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Color Picker */
+        .color-picker-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .color-picker {
+            width: 50px;
+            height: 40px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .color-preview {
+            font-size: 12px;
+            color: #7f8c8d;
         }
 
         .user-profile {
@@ -232,9 +1133,14 @@
             padding: 8px 15px;
             border-radius: 10px;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .user-profile:hover {
+            background: #f8f9fa;
+        }
+
+        .user-profile.active {
             background: #f8f9fa;
         }
 
@@ -249,6 +1155,19 @@
             color: white;
             font-weight: 700;
             font-size: 18px;
+            position: relative;
+        }
+
+        .user-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: #43e97b;
+            border: 2px solid white;
+            border-radius: 50%;
         }
 
         .user-info h4 {
@@ -260,6 +1179,223 @@
         .user-info p {
             font-size: 12px;
             color: #7f8c8d;
+        }
+
+        .user-dropdown-icon {
+            font-size: 12px;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile.active .user-dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        
+        .admin-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 0;
+            width: 320px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .admin-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .admin-dropdown-header {
+            padding: 25px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .admin-dropdown-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 32px;
+            font-weight: 700;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .admin-dropdown-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: #43e97b;
+            border: 3px solid white;
+            border-radius: 50%;
+        }
+
+        .admin-dropdown-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .admin-dropdown-role {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .admin-dropdown-stats {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .admin-stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 3px;
+        }
+
+        .admin-stat-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        .admin-dropdown-menu {
+            padding: 10px;
+        }
+
+        .admin-menu-section {
+            margin-bottom: 5px;
+        }
+
+        .admin-menu-section-title {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 10px 15px 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .admin-menu-item:hover {
+            background: #f8f9fa;
+            transform: translateX(3px);
+        }
+
+        .admin-menu-item i {
+            width: 20px;
+            font-size: 16px;
+            color: #1e3c72;
+        }
+
+        .admin-menu-item-text {
+            flex: 1;
+        }
+
+        .admin-menu-item-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .admin-menu-item-desc {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .admin-menu-item-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .admin-menu-item-arrow {
+            font-size: 12px;
+            color: #bdc3c7;
+        }
+
+        .admin-menu-divider {
+            height: 1px;
+            background: #e0e6ed;
+            margin: 10px 15px;
+        }
+
+        .admin-menu-item.logout {
+            color: #e74c3c;
+        }
+
+        .admin-menu-item.logout i {
+            color: #e74c3c;
+        }
+
+        .admin-menu-item.logout:hover {
+            background: #fee;
+        }
+
+        .admin-dropdown-footer {
+            padding: 15px;
+            background: #f8f9fa;
+            text-align: center;
+            border-top: 1px solid #e0e6ed;
+        }
+
+        .admin-footer-text {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .admin-footer-version {
+            font-weight: 600;
+            color: #1e3c72;
         }
 
         
@@ -692,18 +1828,29 @@
         }
 
         .modal.show {
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
         }
 
-        /* Higher z-index for modals that open on top of other modals */
+        
         #scheduleExamModal {
             z-index: 2100;
         }
 
         #scheduleExamModal.show {
             background-color: rgba(0, 0, 0, 0.7);
+        }
+
+    
+        #viewUserModal,
+        #editUserModal {
+            z-index: 9999;
+        }
+
+        #viewUserModal.show,
+        #editUserModal.show {
+            background-color: rgba(0, 0, 0, 0.75);
         }
 
         .modal-content {
@@ -715,6 +1862,8 @@
             overflow-y: auto;
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes slideUp {
@@ -2362,6 +3511,100 @@
             gap: 12px;
         }
 
+        /* User Profile View Styles */
+        .user-profile-view {
+            padding: 10px 0;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h3 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .profile-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .profile-details {
+            padding: 0 10px;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .detail-item label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-item label i {
+            color: #4facfe;
+        }
+
+        .detail-item p {
+            font-size: 15px;
+            color: #2c3e50;
+            font-weight: 500;
+            margin: 0;
+        }
+
         .user-avatar-small {
             width: 45px;
             height: 45px;
@@ -2506,60 +3749,189 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #e1e8ed;
+            padding: 25px 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-top: 2px solid #e1e8ed;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
         }
 
         .pagination-info {
-            color: #6c757d;
+            color: #495057;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-info strong {
+            color: #2c3e50;
+            font-weight: 700;
+            padding: 2px 8px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 6px;
             font-size: 14px;
+        }
+
+        .pagination-info i {
+            color: #4facfe;
+            font-size: 16px;
         }
 
         .pagination-controls {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
 
         .pagination-btn {
-            min-width: 35px;
-            height: 35px;
+            min-width: 40px;
+            height: 40px;
             padding: 0 12px;
-            border: 1px solid #ddd;
+            border: 2px solid #e1e8ed;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #495057;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pagination-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(79, 172, 254, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .pagination-btn:hover:not(:disabled)::before {
+            left: 100%;
         }
 
         .pagination-btn:hover:not(:disabled) {
             background: #f8f9fa;
             border-color: #4facfe;
             color: #4facfe;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.2);
         }
 
         .pagination-btn.active {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
             border-color: #4facfe;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            transform: scale(1.1);
         }
 
         .pagination-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
+            background: #f1f3f5;
+        }
+
+        .pagination-btn i {
+            font-size: 12px;
+        }
+
+        .pagination-ellipsis {
+            color: #adb5bd;
+            font-weight: 700;
+            padding: 0 8px;
+            font-size: 18px;
         }
 
         .pagination-size {
             display: flex;
             align-items: center;
+            gap: 10px;
+        }
+
+        .pagination-size label {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .pagination-size select {
+            padding: 8px 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #495057;
+        }
+
+        .pagination-size select:hover {
+            border-color: #4facfe;
+        }
+
+        .pagination-size select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .pagination-jump {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pagination-jump label {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .pagination-jump input {
+            width: 60px;
+            padding: 8px 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+            transition: all 0.3s;
+        }
+
+        .pagination-jump input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .pagination-jump button {
+            padding: 8px 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination-jump button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .bulk-actions-bar {
@@ -2946,40 +4318,161 @@
         .contact-info {
             display: flex;
             gap: 10px;
+            justify-content: center;
         }
 
         .contact-info a {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
             color: #667eea;
             text-decoration: none;
-            transition: all 0.3s;
-            font-size: 14px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: width 0.4s, height 0.4s, top 0.4s, left 0.4s;
+        }
+
+        .contact-info a:hover::before {
+            width: 100px;
+            height: 100px;
+            top: -10px;
+            left: -10px;
         }
 
         .contact-info a:hover {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: scale(1.1);
+            transform: translateY(-3px) scale(1.15);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            border-color: #667eea;
+        }
+
+        .contact-info a i {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Action Button Styles for Student Section */
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: width 0.4s, height 0.4s, top 0.4s, left 0.4s;
+            transform: translate(-50%, -50%);
+        }
+
+        .action-btn:hover::after {
+            width: 120px;
+            height: 120px;
+        }
+
+        .action-btn i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-btn.view {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.15) 0%, rgba(0, 242, 254, 0.15) 100%);
+            color: #4facfe;
+            border-color: rgba(79, 172, 254, 0.3);
+        }
+
+        .action-btn.view:hover {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+            border-color: #4facfe;
+        }
+
+        .action-btn.edit {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: #667eea;
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn.edit:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            border-color: #667eea;
         }
 
         .action-btn.transcript {
-            background: rgba(102, 126, 234, 0.15);
-            color: #667eea;
+            background: linear-gradient(135deg, rgba(250, 112, 154, 0.15) 0%, rgba(254, 225, 64, 0.15) 100%);
+            color: #fa709a;
+            border-color: rgba(250, 112, 154, 0.3);
         }
 
         .action-btn.transcript:hover {
-            background: #667eea;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
             color: white;
-            transform: scale(1.1);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(250, 112, 154, 0.4);
+            border-color: #fa709a;
         }
 
-        /* Lecturers Management Styles */
+        .action-btn.delete {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(255, 59, 48, 0.15) 100%);
+            color: #ff6b6b;
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .action-btn.delete:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff3b30 100%);
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+            border-color: #ff6b6b;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        
         .lecturers-toolbar {
             display: flex;
             justify-content: space-between;
@@ -7741,6 +9234,1134 @@
                 align-items: flex-start;
             }
         }
+
+        /* Student Profile Tabs Styles */
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-content {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Transcript Modal Styles */
+        .transcript-view {
+            padding: 20px;
+        }
+
+        .transcript-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .university-logo {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .university-info h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .university-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .student-info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .student-info-box .info-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .student-info-box .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .student-info-box .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-info-box strong {
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .student-info-box span {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .transcript-courses h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .transcript-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        .transcript-table thead th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .transcript-table tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #e1e8ed;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .transcript-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .grade-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .grade-badge.grade-a {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+        }
+
+        .grade-badge.grade-b {
+            background: rgba(79, 172, 254, 0.15);
+            color: #4facfe;
+        }
+
+        .grade-badge.grade-c {
+            background: rgba(254, 225, 64, 0.15);
+            color: #d4a800;
+        }
+
+        .transcript-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            border-radius: 10px;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .summary-item label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .summary-item span {
+            font-size: 24px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .transcript-footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-top: 2px solid #667eea;
+        }
+
+        .transcript-footer p {
+            margin: 5px 0;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .course-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .course-item h4 {
+            font-size: 15px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .course-item p {
+            font-size: 13px;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .attendance-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .student-profile-view {
+            padding: 10px 0;
+        }
+
+        .academic-info {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        /* Enhanced Academic Records Tab Styles */
+        .academic-records-container {
+            padding: 5px 0;
+        }
+
+        .gpa-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .gpa-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .gpa-card.main-gpa {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gpa-card .gpa-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .gpa-card .gpa-icon.secondary {
+            background: rgba(250, 112, 154, 0.2);
+        }
+
+        .gpa-card .gpa-info {
+            flex: 1;
+        }
+
+        .gpa-card .gpa-info label {
+            font-size: 14px;
+            opacity: 0.9;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gpa-card .gpa-value {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .gpa-card .gpa-value.secondary {
+            font-size: 36px;
+        }
+
+        .gpa-bar {
+            margin-top: 12px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gpa-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .academic-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon.credits {
+            background: rgba(79, 172, 254, 0.15);
+            color: #4facfe;
+        }
+
+        .stat-icon.standing {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+        }
+
+        .stat-icon.date {
+            background: rgba(250, 112, 154, 0.15);
+            color: #fa709a;
+        }
+
+        .stat-icon.graduation {
+            background: rgba(254, 225, 64, 0.15);
+            color: #ffa500;
+        }
+
+        .stat-info label {
+            font-size: 12px;
+            color: #6c757d;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .stat-info p {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .badge-standing {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-standing.good {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+        }
+
+        .progress-mini {
+            height: 4px;
+            background: #e1e8ed;
+            border-radius: 10px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .semester-performance {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+        }
+
+        .semester-performance h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .semester-item {
+            display: grid;
+            grid-template-columns: 100px 1fr 60px;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .semester-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .performance-bar {
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            transition: width 1s ease;
+        }
+
+        .bar-fill.active {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .semester-gpa {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: right;
+        }
+
+        /* Enhanced Enrolled Courses Tab Styles */
+        .enrolled-courses-container {
+            padding: 5px 0;
+        }
+
+        .course-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: rgba(79, 172, 254, 0.15);
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .summary-icon.active {
+            background: rgba(254, 225, 64, 0.15);
+            color: #ffa500;
+        }
+
+        .summary-icon.completed {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+        }
+
+        .summary-data h4 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 5px 0;
+        }
+
+        .summary-data p {
+            font-size: 13px;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .courses-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card-detailed {
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .course-card-detailed:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-code {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .course-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .course-status.in-progress {
+            background: rgba(254, 225, 64, 0.2);
+            color: #ffe140;
+        }
+
+        .course-body {
+            padding: 20px;
+        }
+
+        .course-body h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .course-meta span {
+            font-size: 13px;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .course-progress {
+            margin-bottom: 15px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-course {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .course-grade {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-grade span:first-child {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .grade-value {
+            font-size: 20px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 8px;
+        }
+
+        .grade-value.grade-a {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+        }
+
+        .grade-value.grade-b {
+            background: rgba(79, 172, 254, 0.15);
+            color: #4facfe;
+        }
+
+        .completed-courses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .completed-course-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 2px solid #e1e8ed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .completed-course-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .course-info-compact {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .course-code-small {
+            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+            padding: 6px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 6px;
+        }
+
+        .course-name-small {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .course-details-compact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .semester-tag, .credits-tag {
+            font-size: 12px;
+            color: #6c757d;
+            padding: 4px 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .grade-badge-sm {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+
+        /* Enhanced Attendance Tab Styles */
+        .attendance-container {
+            padding: 5px 0;
+        }
+
+        .attendance-overview {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .attendance-card.main-attendance {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .attendance-circle {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .circle-chart {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .circle-background {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 10;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke: #43e97b;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .circle-text .percentage {
+            display: block;
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .circle-text .label {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+        }
+
+        .attendance-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .attendance-stat-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .attendance-stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendance-stat-item.present {
+            border-color: rgba(67, 233, 123, 0.3);
+        }
+
+        .attendance-stat-item.absent {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .attendance-stat-item.late {
+            border-color: rgba(254, 225, 64, 0.3);
+        }
+
+        .stat-icon-att {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .attendance-stat-item.present .stat-icon-att {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+        }
+
+        .attendance-stat-item.absent .stat-icon-att {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+        }
+
+        .attendance-stat-item.late .stat-icon-att {
+            background: rgba(254, 225, 64, 0.15);
+            color: #ffa500;
+        }
+
+        .stat-data h4 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 3px 0;
+        }
+
+        .stat-data p {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .attendance-calendar-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+            margin-bottom: 25px;
+        }
+
+        .attendance-calendar-section h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .attendance-calendar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .calendar-header span {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #495057;
+            text-transform: uppercase;
+        }
+
+        .calendar-body {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            border: 2px solid #e1e8ed;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+        }
+
+        .calendar-day.weekend {
+            background: #f1f3f5;
+            color: #adb5bd;
+        }
+
+        .calendar-day.present {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+            border-color: #43e97b;
+        }
+
+        .calendar-day.absent {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .calendar-day.late {
+            background: rgba(254, 225, 64, 0.15);
+            color: #ffa500;
+            border-color: #ffa500;
+        }
+
+        .calendar-day.current {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .calendar-day:hover:not(.empty):not(.weekend) {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #e1e8ed;
+        }
+
+        .calendar-legend span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #495057;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        .legend-dot.present {
+            background: #43e97b;
+        }
+
+        .legend-dot.absent {
+            background: #ff6b6b;
+        }
+
+        .legend-dot.late {
+            background: #ffa500;
+        }
+
+        .legend-dot.weekend {
+            background: #adb5bd;
+        }
+
+        .recent-attendance {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+        }
+
+        .recent-attendance h4 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .attendance-records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .attendance-record-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .attendance-record-item.present-record {
+            background: rgba(67, 233, 123, 0.05);
+            border-left: 4px solid #43e97b;
+        }
+
+        .attendance-record-item.absent-record {
+            background: rgba(255, 107, 107, 0.05);
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .record-date {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .record-date .date {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .record-date .day {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .record-status {
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .present-record .record-status {
+            color: #43e97b;
+        }
+
+        .absent-record .record-status {
+            color: #ff6b6b;
+        }
+
+        .record-time {
+            font-size: 14px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        @media (max-width: 768px) {
+            .gpa-dashboard,
+            .academic-stats-grid,
+            .course-summary,
+            .attendance-overview,
+            .attendance-stats {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -7811,18 +10432,8 @@
                         <span class="nav-text">Reports</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-bell"></i>
-                        <span class="nav-text">Notifications</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span class="nav-text">Settings</span>
-                    </a>
-                </li>
+               
+               
                 <li class="nav-item">
                     <a href="/logout.php" class="nav-link">
                         <i class="fas fa-sign-out-alt"></i>
@@ -7831,6 +10442,118 @@
                 </li>
             </ul>
         </nav>
+
+        <!-- Sidebar Notifications Widget -->
+        <div class="sidebar-notifications">
+            <div class="sidebar-notifications-header">
+                <div class="sidebar-notifications-title">
+                    <i class="fas fa-bell"></i>
+                    Recent
+                </div>
+                <span class="sidebar-notifications-count">4</span>
+            </div>
+            <div class="sidebar-notifications-list">
+                <!-- Notification Item 1 -->
+                <div class="sidebar-notification-item unread" onclick="viewSidebarNotification(1)">
+                    <div class="sidebar-notification-header">
+                        <div class="sidebar-notification-icon success">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="sidebar-notification-content">
+                            <div class="sidebar-notification-title">New Registration</div>
+                            <div class="sidebar-notification-text">
+                                Sarah Johnson registered for Computer Science program
+                            </div>
+                            <div class="sidebar-notification-time">
+                                <i class="fas fa-clock"></i>
+                                2 min ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Item 2 -->
+                <div class="sidebar-notification-item unread" onclick="viewSidebarNotification(2)">
+                    <div class="sidebar-notification-header">
+                        <div class="sidebar-notification-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="sidebar-notification-content">
+                            <div class="sidebar-notification-title">Payment Pending</div>
+                            <div class="sidebar-notification-text">
+                                5 payments require verification
+                            </div>
+                            <div class="sidebar-notification-time">
+                                <i class="fas fa-clock"></i>
+                                15 min ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Item 3 -->
+                <div class="sidebar-notification-item unread" onclick="viewSidebarNotification(3)">
+                    <div class="sidebar-notification-header">
+                        <div class="sidebar-notification-icon info">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="sidebar-notification-content">
+                            <div class="sidebar-notification-title">Exam Scheduled</div>
+                            <div class="sidebar-notification-text">
+                                Mathematics final exam on Dec 20
+                            </div>
+                            <div class="sidebar-notification-time">
+                                <i class="fas fa-clock"></i>
+                                1 hour ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Item 4 -->
+                <div class="sidebar-notification-item" onclick="viewSidebarNotification(4)">
+                    <div class="sidebar-notification-header">
+                        <div class="sidebar-notification-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="sidebar-notification-content">
+                            <div class="sidebar-notification-title">Backup Complete</div>
+                            <div class="sidebar-notification-text">
+                                Database backup successful (2.4 GB)
+                            </div>
+                            <div class="sidebar-notification-time">
+                                <i class="fas fa-clock"></i>
+                                2 hours ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Item 5 -->
+                <div class="sidebar-notification-item" onclick="viewSidebarNotification(5)">
+                    <div class="sidebar-notification-header">
+                        <div class="sidebar-notification-icon error">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="sidebar-notification-content">
+                            <div class="sidebar-notification-title">Failed Login</div>
+                            <div class="sidebar-notification-text">
+                                Multiple failed attempts from IP 192.168.1.50
+                            </div>
+                            <div class="sidebar-notification-time">
+                                <i class="fas fa-clock"></i>
+                                3 hours ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-notifications-footer">
+                <a href="#" onclick="viewAllSidebarNotifications(); return false;">
+                    View All Notifications →
+                </a>
+            </div>
+        </div>
     </aside>
 
     
@@ -7851,17 +10574,896 @@
                     <input type="text" placeholder="Search users, courses...">
                     <i class="fas fa-search"></i>
                 </div>
-                <button class="notification-btn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">5</span>
-                </button>
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        <?php echo strtoupper(substr($_SESSION['username'] ?? 'A', 0, 1)); ?>
+                <div style="position: relative;">
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationCount">5</span>
+                    </button>
+                    
+                    <!-- Notification Dropdown -->
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>
+                                <i class="fas fa-bell"></i>
+                                Notifications
+                            </h3>
+                            <div class="settings-icon" title="Notification Settings">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                        </div>
+
+                        <div class="notification-tabs">
+                            <button class="notification-tab active" data-tab="all">
+                                All
+                                <span class="tab-badge">5</span>
+                            </button>
+                            <button class="notification-tab" data-tab="unread">
+                                Unread
+                                <span class="tab-badge">3</span>
+                            </button>
+                            <button class="notification-tab" data-tab="important">
+                                Important
+                            </button>
+                        </div>
+
+                        <div class="notification-content" id="notificationContent">
+                            <!-- Sample Notifications -->
+                            <div class="notification-item unread" data-type="all unread">
+                                <div class="notification-icon-wrapper success">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <div class="notification-details">
+                                    <div class="notification-title">New Student Registration</div>
+                                    <div class="notification-message">John Doe has successfully registered for Computer Science program.</div>
+                                    <div class="notification-time">
+                                        <i class="fas fa-clock"></i> 5 minutes ago
+                                    </div>
+                                    <div class="notification-actions">
+                                        <button class="notification-action-btn primary">View Profile</button>
+                                        <button class="notification-action-btn">Dismiss</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-item unread" data-type="all unread important">
+                                <div class="notification-icon-wrapper warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-details">
+                                    <div class="notification-title">Payment Pending Review</div>
+                                    <div class="notification-message">3 student payments are awaiting verification from finance office.</div>
+                                    <div class="notification-time">
+                                        <i class="fas fa-clock"></i> 15 minutes ago
+                                    </div>
+                                    <div class="notification-actions">
+                                        <button class="notification-action-btn primary">Review Now</button>
+                                        <button class="notification-action-btn">Later</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-item" data-type="all">
+                                <div class="notification-icon-wrapper info">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="notification-details">
+                                    <div class="notification-title">System Update Available</div>
+                                    <div class="notification-message">A new system update (v2.3.1) is ready to be installed with security improvements.</div>
+                                    <div class="notification-time">
+                                        <i class="fas fa-clock"></i> 1 hour ago
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-item unread" data-type="all unread important">
+                                <div class="notification-icon-wrapper error">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                                <div class="notification-details">
+                                    <div class="notification-title">Failed Login Attempts</div>
+                                    <div class="notification-message">Multiple failed login attempts detected from IP 192.168.1.50. Account has been temporarily locked.</div>
+                                    <div class="notification-time">
+                                        <i class="fas fa-clock"></i> 2 hours ago
+                                    </div>
+                                    <div class="notification-actions">
+                                        <button class="notification-action-btn primary">View Details</button>
+                                        <button class="notification-action-btn">Block IP</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-item" data-type="all">
+                                <div class="notification-icon-wrapper success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-details">
+                                    <div class="notification-title">Backup Completed Successfully</div>
+                                    <div class="notification-message">Daily database backup has been completed. Total size: 2.4 GB</div>
+                                    <div class="notification-time">
+                                        <i class="fas fa-clock"></i> 3 hours ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="notification-footer">
+                            <button class="notification-footer-btn" onclick="markAllAsRead()">
+                                <i class="fas fa-check-double"></i> Mark All Read
+                            </button>
+                            <button class="notification-footer-btn" onclick="viewAllNotifications()">
+                                <i class="fas fa-list"></i> View All
+                            </button>
+                        </div>
                     </div>
-                    <div class="user-info">
-                        <h4><?php echo htmlspecialchars($_SESSION['username'] ?? 'Administrator'); ?></h4>
-                        <p>System Administrator</p>
+                </div>
+
+                <button class="settings-btn" id="settingsBtn" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+                
+                <div style="position: relative;">
+                    <div class="user-profile" id="adminProfileBtn">
+                        <div class="user-avatar">
+                            <?php echo strtoupper(substr($_SESSION['username'] ?? 'A', 0, 1)); ?>
+                        </div>
+                        <div class="user-info">
+                            <h4><?php echo htmlspecialchars($_SESSION['username'] ?? 'Administrator'); ?></h4>
+                            <p>System Administrator</p>
+                        </div>
+                        <i class="fas fa-chevron-down user-dropdown-icon"></i>
+                    </div>
+
+                    <!-- Administrator Dropdown Menu -->
+                    <div class="admin-dropdown" id="adminDropdown">
+                        <!-- Header with Avatar -->
+                        <div class="admin-dropdown-header">
+                            <div class="admin-dropdown-avatar">
+                                <?php echo strtoupper(substr($_SESSION['username'] ?? 'A', 0, 1)); ?>
+                            </div>
+                            <div class="admin-dropdown-name"><?php echo htmlspecialchars($_SESSION['username'] ?? 'Administrator'); ?></div>
+                            <div class="admin-dropdown-role">System Administrator</div>
+                        </div>
+
+                        <!-- Stats Section -->
+                        <div class="admin-dropdown-stats">
+                            <div class="admin-stat-item">
+                                <div class="admin-stat-value">48</div>
+                                <div class="admin-stat-label">Tasks</div>
+                            </div>
+                            <div class="admin-stat-item">
+                                <div class="admin-stat-value">12</div>
+                                <div class="admin-stat-label">Messages</div>
+                            </div>
+                            <div class="admin-stat-item">
+                                <div class="admin-stat-value">5</div>
+                                <div class="admin-stat-label">Alerts</div>
+                            </div>
+                        </div>
+
+                        <!-- Menu Items -->
+                        <div class="admin-dropdown-menu">
+                            <div class="admin-menu-section">
+                                <div class="admin-menu-section-title">Account</div>
+                                <a href="#" class="admin-menu-item" onclick="viewProfile(); return false;">
+                                    <i class="fas fa-user"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">My Profile</div>
+                                        <div class="admin-menu-item-desc">View and edit your profile</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right admin-menu-item-arrow"></i>
+                                </a>
+                                <a href="#" class="admin-menu-item" onclick="editAccount(); return false;">
+                                    <i class="fas fa-user-edit"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Edit Account</div>
+                                        <div class="admin-menu-item-desc">Update account details</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right admin-menu-item-arrow"></i>
+                                </a>
+                                <a href="#" class="admin-menu-item" onclick="changePassword(); return false;">
+                                    <i class="fas fa-lock"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Change Password</div>
+                                        <div class="admin-menu-item-desc">Update your password</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right admin-menu-item-arrow"></i>
+                                </a>
+                            </div>
+
+                            <div class="admin-menu-divider"></div>
+
+                            <div class="admin-menu-section">
+                                <div class="admin-menu-section-title">Preferences</div>
+                                <a href="#" class="admin-menu-item" onclick="openSettings(); return false;">
+                                    <i class="fas fa-cog"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Settings</div>
+                                        <div class="admin-menu-item-desc">System preferences</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right admin-menu-item-arrow"></i>
+                                </a>
+                                <a href="#" class="admin-menu-item" onclick="viewActivity(); return false;">
+                                    <i class="fas fa-history"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Activity Log</div>
+                                        <div class="admin-menu-item-desc">View your recent activity</div>
+                                    </div>
+                                    <span class="admin-menu-item-badge">24</span>
+                                </a>
+                                <a href="#" class="admin-menu-item" onclick="viewNotifications(); return false;">
+                                    <i class="fas fa-bell"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Notifications</div>
+                                        <div class="admin-menu-item-desc">Manage notifications</div>
+                                    </div>
+                                    <span class="admin-menu-item-badge">5</span>
+                                </a>
+                            </div>
+
+                            <div class="admin-menu-divider"></div>
+
+                            <div class="admin-menu-section">
+                                <div class="admin-menu-section-title">Support</div>
+                                <a href="#" class="admin-menu-item" onclick="viewHelp(); return false;">
+                                    <i class="fas fa-question-circle"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Help & Support</div>
+                                        <div class="admin-menu-item-desc">Get assistance</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right admin-menu-item-arrow"></i>
+                                </a>
+                                <a href="#" class="admin-menu-item" onclick="sendFeedback(); return false;">
+                                    <i class="fas fa-comment-dots"></i>
+                                    <div class="admin-menu-item-text">
+                                        <div class="admin-menu-item-label">Send Feedback</div>
+                                        <div class="admin-menu-item-desc">Share your thoughts</div>
+                                    </div>
+                                    <i class="fas fa-chevron-right admin-menu-item-arrow"></i>
+                                </a>
+                            </div>
+
+                            <div class="admin-menu-divider"></div>
+
+                            <a href="?logout=true" class="admin-menu-item logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <div class="admin-menu-item-text">
+                                    <div class="admin-menu-item-label">Logout</div>
+                                    <div class="admin-menu-item-desc">Sign out of your account</div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="admin-dropdown-footer">
+                            <div class="admin-footer-text">
+                                Version <span class="admin-footer-version">2.3.1</span> • © 2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="settings-modal" id="settingsModal">
+            <div class="settings-container">
+                <!-- Settings Sidebar -->
+                <div class="settings-sidebar">
+                    <div class="settings-sidebar-header">
+                        <h2>
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </h2>
+                        <p>Manage your preferences</p>
+                    </div>
+                    <ul class="settings-nav">
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link active" data-section="general">
+                                <i class="fas fa-sliders-h"></i>
+                                <span>General</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="profile">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="security">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Security</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="notifications">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="appearance">
+                                <i class="fas fa-palette"></i>
+                                <span>Appearance</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="system">
+                                <i class="fas fa-server"></i>
+                                <span>System</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="backup">
+                                <i class="fas fa-database"></i>
+                                <span>Backup & Restore</span>
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a class="settings-nav-link" data-section="about">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Settings Main Content -->
+                <div class="settings-main">
+                    <!-- General Settings -->
+                    <div class="settings-section active" data-section="general">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-sliders-h"></i> General Settings</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-globe"></i>
+                                Regional Settings
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Language</div>
+                                    <div class="settings-item-desc">Choose your preferred language</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="en" selected>English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                </select>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Timezone</div>
+                                    <div class="settings-item-desc">Set your local timezone</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="utc">UTC</option>
+                                    <option value="est" selected>EST (America/New_York)</option>
+                                    <option value="pst">PST (America/Los_Angeles)</option>
+                                    <option value="gmt">GMT (Europe/London)</option>
+                                </select>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Date Format</div>
+                                    <div class="settings-item-desc">How dates should be displayed</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="mdy" selected>MM/DD/YYYY</option>
+                                    <option value="dmy">DD/MM/YYYY</option>
+                                    <option value="ymd">YYYY-MM-DD</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-desktop"></i>
+                                Dashboard Preferences
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Auto-refresh Dashboard</div>
+                                    <div class="settings-item-desc">Automatically refresh data every 30 seconds</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Show Animations</div>
+                                    <div class="settings-item-desc">Enable smooth transitions and animations</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Compact Mode</div>
+                                    <div class="settings-item-desc">Reduce spacing for more content</div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Save Changes</button>
+                            <button class="settings-btn-secondary">Reset to Default</button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Settings -->
+                    <div class="settings-section" data-section="profile">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-user-circle"></i> Profile Settings</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-user"></i>
+                                Personal Information
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Full Name</div>
+                                    <div class="settings-item-desc">Your display name</div>
+                                </div>
+                                <input type="text" class="settings-input" value="<?php echo htmlspecialchars($_SESSION['username'] ?? 'Administrator'); ?>" placeholder="Enter full name">
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Email Address</div>
+                                    <div class="settings-item-desc">Your contact email</div>
+                                </div>
+                                <input type="email" class="settings-input" value="admin@education.com" placeholder="Enter email">
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Phone Number</div>
+                                    <div class="settings-item-desc">Your contact number</div>
+                                </div>
+                                <input type="tel" class="settings-input" placeholder="+1 (555) 000-0000">
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-briefcase"></i>
+                                Professional Details
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Role</div>
+                                    <div class="settings-item-desc">Your system role</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="admin" selected>System Administrator</option>
+                                    <option value="manager">Manager</option>
+                                    <option value="moderator">Moderator</option>
+                                </select>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Department</div>
+                                    <div class="settings-item-desc">Your department</div>
+                                </div>
+                                <input type="text" class="settings-input" value="Administration" placeholder="Enter department">
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Update Profile</button>
+                            <button class="settings-btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="settings-section" data-section="security">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-shield-alt"></i> Security Settings</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn3">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-lock"></i>
+                                Password & Authentication
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Change Password</div>
+                                    <div class="settings-item-desc">Update your account password</div>
+                                </div>
+                                <button class="settings-btn-secondary">Change Password</button>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Two-Factor Authentication</div>
+                                    <div class="settings-item-desc">Add an extra layer of security</div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Login Alerts</div>
+                                    <div class="settings-item-desc">Get notified of new login attempts</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-history"></i>
+                                Session Management
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Session Timeout</div>
+                                    <div class="settings-item-desc">Auto logout after inactivity</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="15">15 minutes</option>
+                                    <option value="30" selected>30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="never">Never</option>
+                                </select>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Active Sessions</div>
+                                    <div class="settings-item-desc">View and manage active sessions</div>
+                                </div>
+                                <button class="settings-btn-secondary">View Sessions</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Save Security Settings</button>
+                            <button class="settings-btn-danger">Logout All Devices</button>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Settings -->
+                    <div class="settings-section" data-section="notifications">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-bell"></i> Notification Settings</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn4">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-envelope"></i>
+                                Email Notifications
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">New User Registration</div>
+                                    <div class="settings-item-desc">Notify when new users register</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Payment Notifications</div>
+                                    <div class="settings-item-desc">Notify about payment activities</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">System Updates</div>
+                                    <div class="settings-item-desc">Important system announcements</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-desktop"></i>
+                                In-App Notifications
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Push Notifications</div>
+                                    <div class="settings-item-desc">Show desktop notifications</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Notification Sound</div>
+                                    <div class="settings-item-desc">Play sound for new notifications</div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Badge Count</div>
+                                    <div class="settings-item-desc">Show notification count badge</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Save Preferences</button>
+                            <button class="settings-btn-secondary">Test Notification</button>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Settings -->
+                    <div class="settings-section" data-section="appearance">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-palette"></i> Appearance Settings</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn5">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-moon"></i>
+                                Theme Settings
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Dark Mode</div>
+                                    <div class="settings-item-desc">Switch to dark theme</div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Theme Color</div>
+                                    <div class="settings-item-desc">Choose your primary color</div>
+                                </div>
+                                <div class="color-picker-wrapper">
+                                    <input type="color" class="color-picker" value="#1e3c72">
+                                    <span class="color-preview">#1e3c72</span>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Sidebar Position</div>
+                                    <div class="settings-item-desc">Left or right sidebar</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="left" selected>Left</option>
+                                    <option value="right">Right</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-text-height"></i>
+                                Display Options
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Font Size</div>
+                                    <div class="settings-item-desc">Adjust text size</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">High Contrast</div>
+                                    <div class="settings-item-desc">Improve readability</div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Apply Theme</button>
+                            <button class="settings-btn-secondary">Preview</button>
+                        </div>
+                    </div>
+
+                    <!-- System Settings -->
+                    <div class="settings-section" data-section="system">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-server"></i> System Settings</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn6">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-database"></i>
+                                Database Configuration
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Database Status</div>
+                                    <div class="settings-item-desc">Current: Connected</div>
+                                </div>
+                                <button class="settings-btn-secondary">Test Connection</button>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Auto Backup</div>
+                                    <div class="settings-item-desc">Daily automated backups</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Cache Management</div>
+                                    <div class="settings-item-desc">Clear system cache</div>
+                                </div>
+                                <button class="settings-btn-secondary">Clear Cache</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-chart-line"></i>
+                                Performance
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Enable Logging</div>
+                                    <div class="settings-item-desc">Track system activities</div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Debug Mode</div>
+                                    <div class="settings-item-desc">Show detailed error messages</div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Save Settings</button>
+                            <button class="settings-btn-danger">Restart System</button>
+                        </div>
+                    </div>
+
+                    <!-- Backup & Restore Settings -->
+                    <div class="settings-section" data-section="backup">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-database"></i> Backup & Restore</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn7">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-download"></i>
+                                Backup Options
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Create Backup</div>
+                                    <div class="settings-item-desc">Manual full system backup</div>
+                                </div>
+                                <button class="settings-btn-primary">Backup Now</button>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Last Backup</div>
+                                    <div class="settings-item-desc">December 15, 2025 - 2:30 AM</div>
+                                </div>
+                                <button class="settings-btn-secondary">View Details</button>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Backup Frequency</div>
+                                    <div class="settings-item-desc">How often to create backups</div>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="daily" selected>Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-upload"></i>
+                                Restore Options
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Restore from Backup</div>
+                                    <div class="settings-item-desc">Restore system from a backup file</div>
+                                </div>
+                                <button class="settings-btn-secondary">Choose File</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Download Backup</button>
+                            <button class="settings-btn-danger">Delete Old Backups</button>
+                        </div>
+                    </div>
+
+                    <!-- About Settings -->
+                    <div class="settings-section" data-section="about">
+                        <div class="settings-header">
+                            <h3><i class="fas fa-info-circle"></i> About System</h3>
+                            <button class="settings-close-btn" id="closeSettingsBtn8">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-laptop-code"></i>
+                                System Information
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Version</div>
+                                    <div class="settings-item-desc">Current system version</div>
+                                </div>
+                                <span style="font-weight: 600; color: #1e3c72;">v2.3.1</span>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Build Date</div>
+                                    <div class="settings-item-desc">Latest build information</div>
+                                </div>
+                                <span style="color: #7f8c8d;">December 10, 2025</span>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">License</div>
+                                    <div class="settings-item-desc">MIT License</div>
+                                </div>
+                                <button class="settings-btn-secondary">View License</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">
+                                <i class="fas fa-life-ring"></i>
+                                Support & Help
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Documentation</div>
+                                    <div class="settings-item-desc">View user guide and documentation</div>
+                                </div>
+                                <button class="settings-btn-secondary">Open Docs</button>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <div class="settings-item-label">Contact Support</div>
+                                    <div class="settings-item-desc">Get help from our support team</div>
+                                </div>
+                                <button class="settings-btn-secondary">Contact Us</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-btn-group">
+                            <button class="settings-btn-primary">Check for Updates</button>
+                            <button class="settings-btn-secondary">Report Issue</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -7953,9 +11555,9 @@
                             <td>Dec 16, 2025</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn view" onclick="viewUser(1)" title="View Details"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit" onclick="editUser(1)" title="Edit User"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" onclick="deleteUser(1)" title="Delete User"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -7974,9 +11576,9 @@
                             <td>Dec 15, 2025</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn view" onclick="viewUser(2)" title="View Details"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit" onclick="editUser(2)" title="Edit User"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" onclick="deleteUser(2)" title="Delete User"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -7995,9 +11597,9 @@
                             <td>Dec 15, 2025</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn view" onclick="viewUser(3)" title="View Details"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit" onclick="editUser(3)" title="Edit User"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" onclick="deleteUser(3)" title="Delete User"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -8016,9 +11618,9 @@
                             <td>Dec 14, 2025</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn view" onclick="viewUser(4)" title="View Details"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit" onclick="editUser(4)" title="Edit User"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" onclick="deleteUser(4)" title="Delete User"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -8037,9 +11639,9 @@
                             <td>Dec 14, 2025</td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn view"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                    <button class="action-btn view" onclick="viewUser(5)" title="View Details"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn edit" onclick="editUser(5)" title="Edit User"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete" onclick="deleteUser(5)" title="Delete User"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -9448,6 +13050,172 @@
         </div>
     </div>
 
+    <!-- View User Modal -->
+    <div class="modal" id="viewUserModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h2><i class="fas fa-eye"></i> User Details</h2>
+                <button class="close-btn" onclick="closeModal('viewUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="user-profile-view">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="viewUserAvatar">
+                            JD
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="viewUserName">John Doe</h3>
+                            <p id="viewUserEmail">john.doe@university.edu</p>
+                            <span class="role-badge student" id="viewUserRole">Student</span>
+                        </div>
+                        <div class="profile-status">
+                            <span class="status-badge active" id="viewUserStatus">Active</span>
+                        </div>
+                    </div>
+                    <div class="profile-details">
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <label><i class="fas fa-id-card"></i> User ID</label>
+                                <p id="viewUserId">STU-2024-123</p>
+                            </div>
+                            <div class="detail-item">
+                                <label><i class="fas fa-user"></i> Username</label>
+                                <p id="viewUsername">john.doe</p>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <label><i class="fas fa-calendar-alt"></i> Registration Date</label>
+                                <p id="viewRegDate">Jan 15, 2024</p>
+                            </div>
+                            <div class="detail-item">
+                                <label><i class="fas fa-clock"></i> Last Login</label>
+                                <p id="viewLastLogin">2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <label><i class="fas fa-phone"></i> Phone Number</label>
+                                <p id="viewPhone">+1 234 567 8900</p>
+                            </div>
+                            <div class="detail-item">
+                                <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                                <p id="viewLocation">New York, USA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" onclick="closeModal('viewUserModal')">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-submit" onclick="closeModal('viewUserModal'); editUserFromView();">
+                    <i class="fas fa-edit"></i> Edit User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal" id="editUserModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h2><i class="fas fa-user-edit"></i> Edit User</h2>
+                <button class="close-btn" onclick="closeModal('editUserModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" method="POST" action="">
+                    <input type="hidden" name="user_id" id="editUserId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name <span class="required">*</span></label>
+                            <input type="text" name="first_name" id="editFirstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name <span class="required">*</span></label>
+                            <input type="text" name="last_name" id="editLastName" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" name="email" id="editEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Username <span class="required">*</span></label>
+                        <input type="text" name="username" id="editUsername" class="form-control" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" id="editPhone" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="location" id="editLocation" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Role <span class="required">*</span></label>
+                        <div class="role-selector">
+                            <div class="role-option">
+                                <input type="radio" name="role" value="student" id="edit-role-student" required>
+                                <label for="edit-role-student" class="role-card student">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Student</span>
+                                </label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" name="role" value="lecturer" id="edit-role-lecturer">
+                                <label for="edit-role-lecturer" class="role-card lecturer">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <span>Lecturer</span>
+                                </label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" name="role" value="exam_officer" id="edit-role-exam">
+                                <label for="edit-role-exam" class="role-card exam">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span>Exam Officer</span>
+                                </label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" name="role" value="library_officer" id="edit-role-library">
+                                <label for="edit-role-library" class="role-card library">
+                                    <i class="fas fa-book-reader"></i>
+                                    <span>Library Officer</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" id="editStatus" class="form-control">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="reset_password" id="editResetPassword">
+                            Reset password and send email notification
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" onclick="closeModal('editUserModal')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="submit" form="editUserForm" class="btn btn-submit">
+                    <i class="fas fa-check"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- User Management Modal -->
     <div class="modal" id="userManagementModal">
         <div class="modal-content" style="max-width: 1200px;">
@@ -9724,33 +13492,66 @@
                 </div>
 
                 
-                <div class="user-pagination">
+                <div class="user-pagination" id="userPagination">
                     <div class="pagination-info">
-                        Showing <strong>1-5</strong> of <strong>1,245</strong> users
+                        <i class="fas fa-users"></i>
+                        Showing <strong id="paginationStart">1</strong>-<strong id="paginationEnd">5</strong> of <strong id="paginationTotal">1,245</strong> users
                     </div>
-                    <div class="pagination-controls">
-                        <button class="pagination-btn" disabled>
+                    
+                    <div class="pagination-controls" id="paginationControls">
+                        <!-- First Page Button -->
+                        <button class="pagination-btn" onclick="goToPage(1)" id="firstPageBtn" title="First Page" disabled>
+                            <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        
+                        <!-- Previous Page Button -->
+                        <button class="pagination-btn" onclick="previousPage()" id="prevPageBtn" title="Previous Page" disabled>
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn">4</button>
-                        <button class="pagination-btn">5</button>
-                        <span>...</span>
-                        <button class="pagination-btn">249</button>
-                        <button class="pagination-btn">
+                        
+                        <!-- Page Number Buttons -->
+                        <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+                        <button class="pagination-btn" onclick="goToPage(2)">2</button>
+                        <button class="pagination-btn" onclick="goToPage(3)">3</button>
+                        <button class="pagination-btn" onclick="goToPage(4)">4</button>
+                        <button class="pagination-btn" onclick="goToPage(5)">5</button>
+                        <span class="pagination-ellipsis">...</span>
+                        <button class="pagination-btn" onclick="goToPage(249)">249</button>
+                        
+                        <!-- Next Page Button -->
+                        <button class="pagination-btn" onclick="nextPage()" id="nextPageBtn" title="Next Page">
                             <i class="fas fa-chevron-right"></i>
                         </button>
+                        
+                        <!-- Last Page Button -->
+                        <button class="pagination-btn" onclick="goToLastPage()" id="lastPageBtn" title="Last Page">
+                            <i class="fas fa-angle-double-right"></i>
+                        </button>
                     </div>
-                    <div class="pagination-size">
-                        <select class="filter-select" onchange="changePageSize(this.value)">
-                            <option value="5">5 per page</option>
-                            <option value="10">10 per page</option>
-                            <option value="25">25 per page</option>
-                            <option value="50">50 per page</option>
-                            <option value="100">100 per page</option>
-                        </select>
+                    
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <!-- Page Size Selector -->
+                        <div class="pagination-size">
+                            <label for="pageSizeSelect">
+                                <i class="fas fa-list"></i> Show:
+                            </label>
+                            <select id="pageSizeSelect" onchange="changePageSize(this.value)">
+                                <option value="5" selected>5 per page</option>
+                                <option value="10">10 per page</option>
+                                <option value="25">25 per page</option>
+                                <option value="50">50 per page</option>
+                                <option value="100">100 per page</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Jump to Page -->
+                        <div class="pagination-jump">
+                            <label for="pageJumpInput">Jump:</label>
+                            <input type="number" id="pageJumpInput" min="1" max="249" placeholder="Page" />
+                            <button onclick="jumpToPage()">
+                                <i class="fas fa-arrow-right"></i> Go
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -13240,6 +17041,711 @@
         </div>
     </div>
 
+    <div class="modal" id="viewStudentModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h2><i class="fas fa-user-graduate"></i> Student Profile</h2>
+                <button class="close-btn" onclick="closeModal('viewStudentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="student-profile-view">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="viewStudentAvatar">
+                            SA
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="viewStudentName">Student Name</h3>
+                            <p id="viewStudentEmail">student@university.edu</p>
+                            <span class="dept-badge" id="viewStudentDept">Computer Science</span>
+                        </div>
+                        <div class="profile-status">
+                            <span class="status-badge active" id="viewStudentStatus">Active</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-tabs">
+                        <button class="tab-btn active" onclick="switchStudentTab('personal')">Personal Info</button>
+                        <button class="tab-btn" onclick="switchStudentTab('academic')">Academic Records</button>
+                        <button class="tab-btn" onclick="switchStudentTab('courses')">Enrolled Courses</button>
+                        <button class="tab-btn" onclick="switchStudentTab('attendance')">Attendance</button>
+                    </div>
+
+                    <div class="tab-content" id="tab-personal">
+                        <div class="profile-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <label><i class="fas fa-id-card"></i> Student ID</label>
+                                    <p id="viewStudentId">STU-2024-001</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label><i class="fas fa-calendar-alt"></i> Year Level</label>
+                                    <p id="viewStudentYear">3rd Year</p>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                                    <p id="viewStudentPhone">+1 234 567 8900</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label><i class="fas fa-envelope"></i> Email</label>
+                                    <p id="viewStudentEmailDetail">student@email.com</p>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <label><i class="fas fa-map-marker-alt"></i> Address</label>
+                                    <p id="viewStudentAddress">123 University Ave, City, State</p>
+                                </div>
+                                <div class="detail-item">
+                                    <label><i class="fas fa-calendar"></i> Date of Birth</label>
+                                    <p id="viewStudentDOB">Jan 15, 2002</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-academic" style="display:none;">
+                        <div class="academic-records-container">
+                            <!-- GPA Dashboard -->
+                            <div class="gpa-dashboard">
+                                <div class="gpa-card main-gpa">
+                                    <div class="gpa-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="gpa-info">
+                                        <label>Cumulative GPA</label>
+                                        <div class="gpa-value" id="viewStudentGPA">3.85</div>
+                                        <div class="gpa-bar">
+                                            <div class="gpa-progress" style="width: 96.25%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gpa-card">
+                                    <div class="gpa-icon secondary">
+                                        <i class="fas fa-book-open"></i>
+                                    </div>
+                                    <div class="gpa-info">
+                                        <label>Semester GPA</label>
+                                        <div class="gpa-value secondary">3.75</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Academic Stats Grid -->
+                            <div class="academic-stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon credits">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <label>Total Credits</label>
+                                        <p id="viewStudentCredits">90 / 120</p>
+                                        <div class="progress-mini">
+                                            <div class="progress-bar" style="width: 75%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon standing">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <label>Academic Standing</label>
+                                        <p id="viewStudentStanding"><span class="badge-standing good">Dean's List</span></p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon date">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <label>Enrollment Date</label>
+                                        <p id="viewStudentEnrollDate">Sep 1, 2021</p>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon graduation">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <label>Expected Graduation</label>
+                                        <p id="viewStudentGradDate">May 2025</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Semester Performance -->
+                            <div class="semester-performance">
+                                <h4><i class="fas fa-chart-bar"></i> Semester Performance</h4>
+                                <div class="performance-chart">
+                                    <div class="semester-item">
+                                        <span class="semester-label">Fall 2023</span>
+                                        <div class="performance-bar">
+                                            <div class="bar-fill" style="width: 95%;" data-gpa="3.8"></div>
+                                        </div>
+                                        <span class="semester-gpa">3.8</span>
+                                    </div>
+                                    <div class="semester-item">
+                                        <span class="semester-label">Spring 2024</span>
+                                        <div class="performance-bar">
+                                            <div class="bar-fill" style="width: 92.5%;" data-gpa="3.7"></div>
+                                        </div>
+                                        <span class="semester-gpa">3.7</span>
+                                    </div>
+                                    <div class="semester-item active">
+                                        <span class="semester-label">Fall 2024</span>
+                                        <div class="performance-bar">
+                                            <div class="bar-fill active" style="width: 96.25%;" data-gpa="3.85"></div>
+                                        </div>
+                                        <span class="semester-gpa">3.85</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-courses" style="display:none;">
+                        <div class="enrolled-courses-container">
+                            <!-- Course Summary -->
+                            <div class="course-summary">
+                                <div class="summary-card">
+                                    <div class="summary-icon">
+                                        <i class="fas fa-book-reader"></i>
+                                    </div>
+                                    <div class="summary-data">
+                                        <h4>8</h4>
+                                        <p>Total Courses</p>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-icon active">
+                                        <i class="fas fa-spinner fa-pulse"></i>
+                                    </div>
+                                    <div class="summary-data">
+                                        <h4>5</h4>
+                                        <p>In Progress</p>
+                                    </div>
+                                </div>
+                                <div class="summary-card">
+                                    <div class="summary-icon completed">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="summary-data">
+                                        <h4>3</h4>
+                                        <p>Completed</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Current Semester Courses -->
+                            <div class="courses-section">
+                                <h4 class="section-title"><i class="fas fa-calendar-alt"></i> Current Semester - Fall 2024</h4>
+                                <div class="courses-grid" id="viewStudentCourses">
+                                    <div class="course-card-detailed">
+                                        <div class="course-header">
+                                            <div class="course-code">CS 401</div>
+                                            <span class="course-status in-progress">In Progress</span>
+                                        </div>
+                                        <div class="course-body">
+                                            <h4>Advanced Data Structures</h4>
+                                            <div class="course-meta">
+                                                <span><i class="fas fa-user-tie"></i> Dr. Sarah Smith</span>
+                                                <span><i class="fas fa-certificate"></i> 4 Credits</span>
+                                            </div>
+                                            <div class="course-progress">
+                                                <div class="progress-info">
+                                                    <span>Progress</span>
+                                                    <span>75%</span>
+                                                </div>
+                                                <div class="progress-bar-course">
+                                                    <div class="progress-fill" style="width: 75%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="course-grade">
+                                                <span>Current Grade</span>
+                                                <span class="grade-value grade-a">A</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="course-card-detailed">
+                                        <div class="course-header">
+                                            <div class="course-code">CS 402</div>
+                                            <span class="course-status in-progress">In Progress</span>
+                                        </div>
+                                        <div class="course-body">
+                                            <h4>Machine Learning</h4>
+                                            <div class="course-meta">
+                                                <span><i class="fas fa-user-tie"></i> Dr. Michael Johnson</span>
+                                                <span><i class="fas fa-certificate"></i> 4 Credits</span>
+                                            </div>
+                                            <div class="course-progress">
+                                                <div class="progress-info">
+                                                    <span>Progress</span>
+                                                    <span>65%</span>
+                                                </div>
+                                                <div class="progress-bar-course">
+                                                    <div class="progress-fill" style="width: 65%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="course-grade">
+                                                <span>Current Grade</span>
+                                                <span class="grade-value grade-a">A-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="course-card-detailed">
+                                        <div class="course-header">
+                                            <div class="course-code">CS 410</div>
+                                            <span class="course-status in-progress">In Progress</span>
+                                        </div>
+                                        <div class="course-body">
+                                            <h4>Cloud Computing</h4>
+                                            <div class="course-meta">
+                                                <span><i class="fas fa-user-tie"></i> Dr. Emily Williams</span>
+                                                <span><i class="fas fa-certificate"></i> 3 Credits</span>
+                                            </div>
+                                            <div class="course-progress">
+                                                <div class="progress-info">
+                                                    <span>Progress</span>
+                                                    <span>80%</span>
+                                                </div>
+                                                <div class="progress-bar-course">
+                                                    <div class="progress-fill" style="width: 80%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="course-grade">
+                                                <span>Current Grade</span>
+                                                <span class="grade-value grade-b">B+</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Completed Courses -->
+                            <div class="courses-section">
+                                <h4 class="section-title"><i class="fas fa-check-double"></i> Completed Courses</h4>
+                                <div class="completed-courses-list">
+                                    <div class="completed-course-item">
+                                        <div class="course-info-compact">
+                                            <span class="course-code-small">CS 301</span>
+                                            <span class="course-name-small">Data Structures</span>
+                                        </div>
+                                        <div class="course-details-compact">
+                                            <span class="semester-tag">Spring 2024</span>
+                                            <span class="credits-tag">3 Credits</span>
+                                            <span class="grade-badge-sm grade-a">A</span>
+                                        </div>
+                                    </div>
+                                    <div class="completed-course-item">
+                                        <div class="course-info-compact">
+                                            <span class="course-code-small">CS 302</span>
+                                            <span class="course-name-small">Algorithms</span>
+                                        </div>
+                                        <div class="course-details-compact">
+                                            <span class="semester-tag">Spring 2024</span>
+                                            <span class="credits-tag">3 Credits</span>
+                                            <span class="grade-badge-sm grade-a">A-</span>
+                                        </div>
+                                    </div>
+                                    <div class="completed-course-item">
+                                        <div class="course-info-compact">
+                                            <span class="course-code-small">CS 310</span>
+                                            <span class="course-name-small">Database Systems</span>
+                                        </div>
+                                        <div class="course-details-compact">
+                                            <span class="semester-tag">Fall 2023</span>
+                                            <span class="credits-tag">4 Credits</span>
+                                            <span class="grade-badge-sm grade-b">B+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-attendance" style="display:none;">
+                        <div class="attendance-container">
+                            <!-- Attendance Overview -->
+                            <div class="attendance-overview">
+                                <div class="attendance-card main-attendance">
+                                    <div class="attendance-circle">
+                                        <svg class="circle-chart" viewBox="0 0 120 120">
+                                            <circle class="circle-background" cx="60" cy="60" r="50"></circle>
+                                            <circle class="circle-progress" cx="60" cy="60" r="50" 
+                                                    style="stroke-dasharray: 298; stroke-dashoffset: 15;"></circle>
+                                        </svg>
+                                        <div class="circle-text">
+                                            <span class="percentage" id="viewStudentAttendance">95%</span>
+                                            <span class="label">Attendance</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="attendance-stats">
+                                    <div class="attendance-stat-item present">
+                                        <div class="stat-icon-att">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <div class="stat-data">
+                                            <h4>76</h4>
+                                            <p>Days Present</p>
+                                        </div>
+                                    </div>
+                                    <div class="attendance-stat-item absent">
+                                        <div class="stat-icon-att">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                        <div class="stat-data">
+                                            <h4 id="viewStudentAbsent">3</h4>
+                                            <p>Days Absent</p>
+                                        </div>
+                                    </div>
+                                    <div class="attendance-stat-item late">
+                                        <div class="stat-icon-att">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="stat-data">
+                                            <h4>1</h4>
+                                            <p>Late Arrivals</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monthly Attendance Calendar -->
+                            <div class="attendance-calendar-section">
+                                <h4><i class="fas fa-calendar"></i> December 2024 Attendance</h4>
+                                <div class="attendance-calendar">
+                                    <div class="calendar-header">
+                                        <span>Mon</span>
+                                        <span>Tue</span>
+                                        <span>Wed</span>
+                                        <span>Thu</span>
+                                        <span>Fri</span>
+                                        <span>Sat</span>
+                                        <span>Sun</span>
+                                    </div>
+                                    <div class="calendar-body">
+                                        <div class="calendar-day empty"></div>
+                                        <div class="calendar-day empty"></div>
+                                        <div class="calendar-day empty"></div>
+                                        <div class="calendar-day empty"></div>
+                                        <div class="calendar-day empty"></div>
+                                        <div class="calendar-day empty"></div>
+                                        <div class="calendar-day weekend">1</div>
+                                        <div class="calendar-day present" title="Present">2</div>
+                                        <div class="calendar-day present" title="Present">3</div>
+                                        <div class="calendar-day present" title="Present">4</div>
+                                        <div class="calendar-day present" title="Present">5</div>
+                                        <div class="calendar-day present" title="Present">6</div>
+                                        <div class="calendar-day weekend">7</div>
+                                        <div class="calendar-day weekend">8</div>
+                                        <div class="calendar-day present" title="Present">9</div>
+                                        <div class="calendar-day absent" title="Absent">10</div>
+                                        <div class="calendar-day present" title="Present">11</div>
+                                        <div class="calendar-day present" title="Present">12</div>
+                                        <div class="calendar-day present" title="Present">13</div>
+                                        <div class="calendar-day weekend">14</div>
+                                        <div class="calendar-day weekend">15</div>
+                                        <div class="calendar-day present" title="Present">16</div>
+                                        <div class="calendar-day current" title="Today">17</div>
+                                        <div class="calendar-day">18</div>
+                                        <div class="calendar-day">19</div>
+                                        <div class="calendar-day">20</div>
+                                        <div class="calendar-day weekend">21</div>
+                                        <div class="calendar-day weekend">22</div>
+                                        <div class="calendar-day">23</div>
+                                        <div class="calendar-day">24</div>
+                                        <div class="calendar-day">25</div>
+                                        <div class="calendar-day">26</div>
+                                        <div class="calendar-day">27</div>
+                                        <div class="calendar-day weekend">28</div>
+                                        <div class="calendar-day weekend">29</div>
+                                        <div class="calendar-day">30</div>
+                                        <div class="calendar-day">31</div>
+                                    </div>
+                                    <div class="calendar-legend">
+                                        <span><span class="legend-dot present"></span> Present</span>
+                                        <span><span class="legend-dot absent"></span> Absent</span>
+                                        <span><span class="legend-dot late"></span> Late</span>
+                                        <span><span class="legend-dot weekend"></span> Weekend</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Attendance Records -->
+                            <div class="recent-attendance">
+                                <h4><i class="fas fa-history"></i> Recent Records</h4>
+                                <div class="attendance-records-list">
+                                    <div class="attendance-record-item present-record">
+                                        <div class="record-date">
+                                            <span class="date">Dec 16</span>
+                                            <span class="day">Monday</span>
+                                        </div>
+                                        <div class="record-status">
+                                            <i class="fas fa-check-circle"></i> Present
+                                        </div>
+                                        <div class="record-time">8:45 AM</div>
+                                    </div>
+                                    <div class="attendance-record-item present-record">
+                                        <div class="record-date">
+                                            <span class="date">Dec 13</span>
+                                            <span class="day">Friday</span>
+                                        </div>
+                                        <div class="record-status">
+                                            <i class="fas fa-check-circle"></i> Present
+                                        </div>
+                                        <div class="record-time">8:30 AM</div>
+                                    </div>
+                                    <div class="attendance-record-item absent-record">
+                                        <div class="record-date">
+                                            <span class="date">Dec 10</span>
+                                            <span class="day">Tuesday</span>
+                                        </div>
+                                        <div class="record-status">
+                                            <i class="fas fa-times-circle"></i> Absent
+                                        </div>
+                                        <div class="record-time">-</div>
+                                    </div>
+                                    <div class="attendance-record-item present-record">
+                                        <div class="record-date">
+                                            <span class="date">Dec 9</span>
+                                            <span class="day">Monday</span>
+                                        </div>
+                                        <div class="record-status">
+                                            <i class="fas fa-check-circle"></i> Present
+                                        </div>
+                                        <div class="record-time">8:50 AM</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" onclick="closeModal('viewStudentModal')">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-submit" onclick="editStudentFromView()">
+                    <i class="fas fa-edit"></i> Edit Student
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal" id="editStudentModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h2><i class="fas fa-user-edit"></i> Edit Student Information</h2>
+                <button class="close-btn" onclick="closeModal('editStudentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editStudentForm" method="POST" action="">
+                    <input type="hidden" name="student_id" id="editStudentId">
+                    
+                    <h3 style="color: #667eea; margin-bottom: 15px;"><i class="fas fa-user"></i> Personal Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <input type="text" name="student_name" id="editStudentName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Student ID <span class="required">*</span></label>
+                            <input type="text" name="student_id_number" id="editStudentIdNumber" class="form-control" required readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" name="email" id="editStudentEmailInput" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" id="editStudentPhone" class="form-control">
+                        </div>
+                    </div>
+
+                    <h3 style="color: #667eea; margin: 20px 0 15px;"><i class="fas fa-graduation-cap"></i> Academic Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Department <span class="required">*</span></label>
+                            <select name="department" id="editStudentDepartment" class="form-control" required>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Business">Business Administration</option>
+                                <option value="Medicine">Medicine</option>
+                                <option value="Arts">Arts & Humanities</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Year Level <span class="required">*</span></label>
+                            <select name="year_level" id="editStudentYearLevel" class="form-control" required>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current GPA</label>
+                            <input type="number" name="gpa" id="editStudentGPAInput" class="form-control" step="0.01" min="0" max="4.0">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status" id="editStudentStatusSelect" class="form-control">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="Suspended">Suspended</option>
+                                <option value="Graduated">Graduated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea name="address" id="editStudentAddressInput" class="form-control" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" onclick="closeModal('editStudentModal')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="submit" form="editStudentForm" class="btn btn-submit">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal" id="viewTranscriptModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <h2><i class="fas fa-file-alt"></i> Academic Transcript</h2>
+                <button class="close-btn" onclick="closeModal('viewTranscriptModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="transcript-view">
+                    <div class="transcript-header">
+                        <div class="university-logo">
+                            <i class="fas fa-university" style="font-size: 48px; color: #667eea;"></i>
+                        </div>
+                        <div class="university-info">
+                            <h2>University Education Portal</h2>
+                            <p>Official Academic Transcript</p>
+                        </div>
+                    </div>
+
+                    <div class="student-info-box">
+                        <div class="info-row">
+                            <div class="info-item">
+                                <strong>Student Name:</strong>
+                                <span id="transcriptStudentName">John Doe</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Student ID:</strong>
+                                <span id="transcriptStudentId">STU-2024-001</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item">
+                                <strong>Department:</strong>
+                                <span id="transcriptDepartment">Computer Science</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Cumulative GPA:</strong>
+                                <span id="transcriptGPA" style="color: #667eea; font-weight: bold;">3.85</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="transcript-courses">
+                        <h3>Academic Year 2023-2024</h3>
+                        <table class="transcript-table">
+                            <thead>
+                                <tr>
+                                    <th>Course Code</th>
+                                    <th>Course Name</th>
+                                    <th>Credits</th>
+                                    <th>Grade</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transcriptCoursesBody">
+                                <tr>
+                                    <td>CS 301</td>
+                                    <td>Data Structures and Algorithms</td>
+                                    <td>3</td>
+                                    <td><span class="grade-badge grade-a">A</span></td>
+                                    <td>4.00</td>
+                                </tr>
+                                <tr>
+                                    <td>CS 302</td>
+                                    <td>Database Management Systems</td>
+                                    <td>4</td>
+                                    <td><span class="grade-badge grade-a">A-</span></td>
+                                    <td>3.70</td>
+                                </tr>
+                                <tr>
+                                    <td>CS 310</td>
+                                    <td>Web Development</td>
+                                    <td>3</td>
+                                    <td><span class="grade-badge grade-b">B+</span></td>
+                                    <td>3.30</td>
+                                </tr>
+                                <tr>
+                                    <td>MATH 201</td>
+                                    <td>Discrete Mathematics</td>
+                                    <td>3</td>
+                                    <td><span class="grade-badge grade-a">A</span></td>
+                                    <td>4.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="transcript-summary">
+                        <div class="summary-item">
+                            <label>Total Credits Earned:</label>
+                            <span id="transcriptTotalCredits">90</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Semester GPA:</label>
+                            <span id="transcriptSemesterGPA">3.75</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Cumulative GPA:</label>
+                            <span id="transcriptCumulativeGPA" style="font-weight: bold; color: #667eea;">3.85</span>
+                        </div>
+                    </div>
+
+                    <div class="transcript-footer">
+                        <p><strong>Academic Standing:</strong> Good Standing</p>
+                        <p><strong>Generated On:</strong> <span id="transcriptDate"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" onclick="closeModal('viewTranscriptModal')">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-submit" onclick="downloadTranscript()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         
         function toggleSidebar() {
@@ -13257,10 +17763,22 @@
 
         
         function openModal(modalId) {
+            console.log('openModal called with modalId:', modalId);
             const modal = document.getElementById(modalId);
+            console.log('Modal element:', modal);
             if (modal) {
+                // Force display and z-index
+                modal.style.display = 'flex';
+                modal.style.alignItems = 'center';
+                modal.style.justifyContent = 'center';
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
+                console.log('Modal should now be visible');
+                
+                
+                modal.style.overflow = 'auto';
+            } else {
+                console.error('Modal not found:', modalId);
             }
         }
 
@@ -13268,7 +17786,13 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('show');
-                document.body.style.overflow = 'auto';
+                modal.style.display = 'none';
+                
+               
+                const openModals = document.querySelectorAll('.modal.show');
+                if (openModals.length === 0) {
+                    document.body.style.overflow = 'auto';
+                }
             }
         }
 
@@ -13308,24 +17832,204 @@
             }
         }
 
+       
+        const usersData = {
+            1: {
+                id: 'STU-2024-123',
+                firstName: 'John',
+                lastName: 'Doe',
+                name: 'John Doe',
+                email: 'john.doe@university.edu',
+                username: 'john.doe',
+                role: 'student',
+                status: 'active',
+                regDate: 'Jan 15, 2024',
+                lastLogin: '2 hours ago',
+                phone: '+1 234 567 8900',
+                location: 'New York, USA',
+                avatar: 'JD'
+            },
+            2: {
+                id: 'LEC-2023-045',
+                firstName: 'Sarah',
+                lastName: 'Johnson',
+                name: 'Dr. Sarah Johnson',
+                email: 'sarah.johnson@university.edu',
+                username: 'sarah.johnson',
+                role: 'lecturer',
+                status: 'active',
+                regDate: 'Sep 10, 2023',
+                lastLogin: '1 day ago',
+                phone: '+1 234 567 8901',
+                location: 'Boston, USA',
+                avatar: 'SJ'
+            },
+            3: {
+                id: 'EXM-2023-012',
+                firstName: 'Michael',
+                lastName: 'Chen',
+                name: 'Michael Chen',
+                email: 'michael.chen@university.edu',
+                username: 'michael.chen',
+                role: 'exam_officer',
+                status: 'active',
+                regDate: 'Aug 5, 2023',
+                lastLogin: '3 hours ago',
+                phone: '+1 234 567 8902',
+                location: 'San Francisco, USA',
+                avatar: 'MC'
+            },
+            4: {
+                id: 'LIB-2024-008',
+                firstName: 'Emily',
+                lastName: 'Williams',
+                name: 'Emily Williams',
+                email: 'emily.williams@university.edu',
+                username: 'emily.williams',
+                role: 'library_officer',
+                status: 'active',
+                regDate: 'Feb 20, 2024',
+                lastLogin: '1 week ago',
+                phone: '+1 234 567 8903',
+                location: 'Chicago, USA',
+                avatar: 'EW'
+            },
+            5: {
+                id: 'STU-2024-789',
+                firstName: 'David',
+                lastName: 'Martinez',
+                name: 'David Martinez',
+                email: 'david.martinez@university.edu',
+                username: 'david.martinez',
+                role: 'student',
+                status: 'inactive',
+                regDate: 'Mar 1, 2024',
+                lastLogin: '2 weeks ago',
+                phone: '+1 234 567 8904',
+                location: 'Los Angeles, USA',
+                avatar: 'DM'
+            }
+        };
+
+        console.log('usersData loaded:', usersData);
+
+        let currentEditUserId = null;
+
+        // Click outside modal to close (but not for nested modals)
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                const modalId = event.target.id;
+                // Don't close viewUserModal or editUserModal when clicking their backdrop
+                // as they might be opened from another modal
+                if (modalId !== 'viewUserModal' && modalId !== 'editUserModal') {
+                    closeModal(modalId);
+                }
+            }
+        });
+
         function viewUser(userId) {
-            alert('Viewing user details for User ID: ' + userId + '\n\nThis will open a detailed user profile view.');
+            console.log('viewUser called with userId:', userId);
+            const user = usersData[userId];
+            if (!user) {
+                alert('User not found!');
+                return;
+            }
+
+            
+            document.getElementById('viewUserAvatar').textContent = user.avatar;
+            document.getElementById('viewUserName').textContent = user.name;
+            document.getElementById('viewUserEmail').textContent = user.email;
+            document.getElementById('viewUserId').textContent = user.id;
+            document.getElementById('viewUsername').textContent = user.username;
+            document.getElementById('viewRegDate').textContent = user.regDate;
+            document.getElementById('viewLastLogin').textContent = user.lastLogin;
+            document.getElementById('viewPhone').textContent = user.phone;
+            document.getElementById('viewLocation').textContent = user.location;
+
+        
+            const roleBadge = document.getElementById('viewUserRole');
+            roleBadge.className = 'role-badge ' + user.role;
+            roleBadge.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1).replace('_', ' ');
+
+            
+            const statusBadge = document.getElementById('viewUserStatus');
+            statusBadge.className = 'status-badge ' + user.status;
+            statusBadge.textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
+
+            
+            currentEditUserId = userId;
+
+    
+            console.log('Opening viewUserModal');
+            openModal('viewUserModal');
+        }
+
+        function editUserFromView() {
+            if (currentEditUserId) {
+                editUser(currentEditUserId);
+            }
         }
 
         function editUser(userId) {
-            alert('Editing user: ' + userId + '\n\nThis will open the edit form with user details pre-filled.');
+            console.log('editUser called with userId:', userId);
+            const user = usersData[userId];
+            if (!user) {
+                alert('User not found!');
+                return;
+            }
+
+            
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editFirstName').value = user.firstName;
+            document.getElementById('editLastName').value = user.lastName;
+            document.getElementById('editEmail').value = user.email;
+            document.getElementById('editUsername').value = user.username;
+            document.getElementById('editPhone').value = user.phone;
+            document.getElementById('editLocation').value = user.location;
+            document.getElementById('editStatus').value = user.status;
+
+    
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            roleRadios.forEach(radio => {
+                if (radio.value === user.role && radio.id.startsWith('edit-role')) {
+                    radio.checked = true;
+                }
+            });
+
+            
+            document.getElementById('editResetPassword').checked = false;
+
+    
+            console.log('Opening editUserModal');
+            openModal('editUserModal');
         }
 
         function deleteUser(userId) {
-            if (confirm('Are you sure you want to delete this user?\n\nThis action cannot be undone.')) {
-                alert('User ' + userId + ' has been deleted successfully.');
+            const user = usersData[userId];
+            const userName = user ? user.name : 'User ' + userId;
+            
+            if (confirm('Are you sure you want to delete ' + userName + '?\n\nThis action cannot be undone.')) {
+    
+                alert(userName + ' has been deleted successfully.');
                 
                 const row = event.target.closest('tr');
                 if (row) {
                     row.style.animation = 'fadeOut 0.3s ease-out';
-                    setTimeout(() => row.remove(), 300);
+                    setTimeout(() => {
+                        row.remove();
+                
+                        updateUserCounts();
+                    }, 300);
                 }
+
+                
+                delete usersData[userId];
             }
+        }
+
+        function updateUserCounts() {
+        
+            console.log('User counts updated');
         }
 
         function toggleSelectAll(checkbox) {
@@ -13361,6 +18065,56 @@
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', updateBulkActionsBar);
             });
+
+            
+            const editUserForm = document.getElementById('editUserForm');
+            if (editUserForm) {
+                editUserForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const userId = document.getElementById('editUserId').value;
+                    const firstName = document.getElementById('editFirstName').value;
+                    const lastName = document.getElementById('editLastName').value;
+                    const email = document.getElementById('editEmail').value;
+                    const username = document.getElementById('editUsername').value;
+                    const phone = document.getElementById('editPhone').value;
+                    const location = document.getElementById('editLocation').value;
+                    const status = document.getElementById('editStatus').value;
+                    const role = document.querySelector('input[name="role"]:checked').value;
+                    
+                
+                    if (usersData[userId]) {
+                        usersData[userId].firstName = firstName;
+                        usersData[userId].lastName = lastName;
+                        usersData[userId].name = firstName + ' ' + lastName;
+                        usersData[userId].email = email;
+                        usersData[userId].username = username;
+                        usersData[userId].phone = phone;
+                        usersData[userId].location = location;
+                        usersData[userId].status = status;
+                        usersData[userId].role = role;
+                        
+                        alert('User updated successfully!');
+                        closeModal('editUserModal');
+                        
+                        
+                        
+                    }
+                });
+            }
+
+        
+            const addUserForm = document.getElementById('addUserForm');
+            if (addUserForm) {
+                addUserForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    
+                    alert('New user added successfully! (In production, this would save to database)');
+                    closeModal('addUserModal');
+                    this.reset();
+                });
+            }
         });
 
         function bulkActivate() {
@@ -13381,7 +18135,168 @@
 
         function bulkExport() {
             const checkedBoxes = document.querySelectorAll('.user-checkbox:checked');
-            alert('Exporting ' + checkedBoxes.length + ' selected users to CSV file...');
+            
+            if (checkedBoxes.length === 0) {
+                alert('⚠️ Please select at least one user to export!');
+                return;
+            }
+
+            const table = document.getElementById('userManagementTable');
+            if (!table) {
+                alert('User table not found!');
+                return;
+            }
+
+            
+            const now = new Date();
+            const fullDateTime = now.toLocaleString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+
+            let csvContent = '';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += 'EDUCATION MANAGEMENT SYSTEM - SELECTED USERS EXPORT\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Export Date:,${fullDateTime}\n`;
+            csvContent += `Exported By:,System Administrator\n`;
+            csvContent += `Institution:,University Education Portal\n`;
+            csvContent += `Report Type:,Custom Selected Users Export\n`;
+            csvContent += `Selection Count:,${checkedBoxes.length} users selected\n`;
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += '\n';
+
+            const headers = [
+                'User ID',
+                'Full Name',
+                'Email Address',
+                'User Role',
+                'Account Status',
+                'Registration Date',
+                'Last Login',
+                'Account Age (Days)'
+            ];
+            csvContent += headers.join(',') + '\n';
+            csvContent += '─────────────,─────────────,─────────────────────,─────────────,──────────────,─────────────────,─────────────────,───────────────────\n';
+
+            const rows = table.querySelectorAll('tbody tr');
+            let exportCount = 0;
+            let roleCount = { student: 0, lecturer: 0, exam_officer: 0, library_officer: 0, finance_officer: 0, admin: 0 };
+            let statusCount = { active: 0, inactive: 0, pending: 0, suspended: 0 };
+
+            const calculateDaysSince = (dateStr) => {
+                try {
+                    const regDate = new Date(dateStr);
+                    const today = new Date();
+                    const diffTime = Math.abs(today - regDate);
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                } catch {
+                    return 'N/A';
+                }
+            };
+
+            const escapeCSV = (str) => {
+                if (!str) return '';
+                str = String(str);
+                if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                    return '"' + str.replace(/"/g, '""') + '"';
+                }
+                return str;
+            };
+
+            rows.forEach((row, index) => {
+                const checkbox = row.querySelector('.user-checkbox');
+                if (!checkbox || !checkbox.checked) return;
+
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 7) return;
+
+                const userDetails = cells[1].querySelector('.user-details h4');
+                const userName = userDetails ? userDetails.textContent.trim() : '';
+                
+                const userIdElement = cells[1].querySelector('.user-details p');
+                const userId = userIdElement ? userIdElement.textContent.trim() : '';
+
+                const email = cells[2].textContent.trim();
+                const role = cells[3].textContent.trim().toLowerCase().replace(/\s+/g, '_');
+                const status = cells[4].textContent.trim().toLowerCase();
+                const regDate = cells[5].textContent.trim();
+                const lastLogin = cells[6].textContent.trim();
+                const accountAge = calculateDaysSince(regDate);
+
+                if (roleCount.hasOwnProperty(role)) roleCount[role]++;
+                if (statusCount.hasOwnProperty(status)) statusCount[status]++;
+
+                const formattedRole = role.split('_').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1);
+
+                const rowData = [
+                    escapeCSV(userId),
+                    escapeCSV(userName),
+                    escapeCSV(email),
+                    escapeCSV(formattedRole),
+                    escapeCSV(formattedStatus),
+                    escapeCSV(regDate),
+                    escapeCSV(lastLogin),
+                    escapeCSV(accountAge)
+                ];
+
+                csvContent += rowData.join(',') + '\n';
+                exportCount++;
+            });
+
+            // Add summary statistics
+            csvContent += '\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += 'SELECTION SUMMARY & STATISTICS\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Total Selected Users:,${exportCount}\n`;
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY ROLE:\n';
+            csvContent += `Students:,${roleCount.student}\n`;
+            csvContent += `Lecturers:,${roleCount.lecturer}\n`;
+            csvContent += `Exam Officers:,${roleCount.exam_officer}\n`;
+            csvContent += `Library Officers:,${roleCount.library_officer}\n`;
+            csvContent += `Finance Officers:,${roleCount.finance_officer}\n`;
+            csvContent += `Administrators:,${roleCount.admin}\n`;
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY STATUS:\n';
+            csvContent += `Active Users:,${statusCount.active}\n`;
+            csvContent += `Inactive Users:,${statusCount.inactive}\n`;
+            csvContent += `Pending Users:,${statusCount.pending}\n`;
+            csvContent += `Suspended Users:,${statusCount.suspended}\n`;
+            csvContent += '\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Generated by Education Management System v1.0\n`;
+            csvContent += `© ${new Date().getFullYear()} University Education Portal. All Rights Reserved.\n`;
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            const dateStr = now.getFullYear() + '-' + 
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(now.getDate()).padStart(2, '0');
+            const timeStr = String(now.getHours()).padStart(2, '0') + 
+                           String(now.getMinutes()).padStart(2, '0') + 
+                           String(now.getSeconds()).padStart(2, '0');
+            const filename = `SELECTED_USERS_EXPORT_${dateStr}_${timeStr}.csv`;
+
+            if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            showToast(`✓ Successfully exported ${exportCount} selected users\n📊 Detailed report with statistics\n📁 File: ${filename}`, 'success');
             resetSelection();
         }
 
@@ -13409,13 +18324,357 @@
             updateBulkActionsBar();
         }
 
-        function exportUsers() {
-            alert('Exporting all users to CSV file...\n\nThe file will be downloaded to your computer.');
+        function exportUsers(format = 'csv') {
+            const table = document.getElementById('userManagementTable');
+            if (!table) {
+                alert('User table not found!');
+                return;
+            }
+
+    
+            const now = new Date();
+            const fullDateTime = now.toLocaleString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+
+            // CSV
+            let csvContent = '';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += 'EDUCATION MANAGEMENT SYSTEM - USER EXPORT REPORT\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Export Date:,${fullDateTime}\n`;
+            csvContent += `Exported By:,System Administrator\n`;
+            csvContent += `Institution:,University Education Portal\n`;
+            csvContent += `Report Type:,Complete User Database Export\n`;
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += '\n';
+
+            
+            const headers = [
+                'User ID',
+                'Full Name', 
+                'Email Address',
+                'User Role',
+                'Account Status',
+                'Registration Date',
+                'Last Login',
+                'Account Age (Days)'
+            ];
+            csvContent += headers.join(',') + '\n';
+            csvContent += '─────────────,─────────────,─────────────────────,─────────────,──────────────,─────────────────,─────────────────,───────────────────\n';
+
+            const rows = table.querySelectorAll('tbody tr');
+            let exportCount = 0;
+            let roleCount = { student: 0, lecturer: 0, exam_officer: 0, library_officer: 0, finance_officer: 0, admin: 0 };
+            let statusCount = { active: 0, inactive: 0, pending: 0, suspended: 0 };
+
+            
+            const calculateDaysSince = (dateStr) => {
+                try {
+                    const regDate = new Date(dateStr);
+                    const today = new Date();
+                    const diffTime = Math.abs(today - regDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    return diffDays;
+                } catch {
+                    return 'N/A';
+                }
+            };
+
+        
+            const escapeCSV = (str) => {
+                if (!str) return '';
+                str = String(str);
+                if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                    return '"' + str.replace(/"/g, '""') + '"';
+                }
+                return str;
+            };
+
+            rows.forEach(row => {
+                if (row.style.display === 'none') return;
+
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 7) return;
+
+    
+                const userDetails = cells[1].querySelector('.user-details h4');
+                const userName = userDetails ? userDetails.textContent.trim() : '';
+                
+                const userIdElement = cells[1].querySelector('.user-details p');
+                const userId = userIdElement ? userIdElement.textContent.trim() : '';
+
+                const email = cells[2].textContent.trim();
+                const role = cells[3].textContent.trim().toLowerCase().replace(/\s+/g, '_');
+                const status = cells[4].textContent.trim().toLowerCase();
+                const regDate = cells[5].textContent.trim();
+                const lastLogin = cells[6].textContent.trim();
+                const accountAge = calculateDaysSince(regDate);
+
+                
+                if (roleCount.hasOwnProperty(role)) roleCount[role]++;
+                if (statusCount.hasOwnProperty(status)) statusCount[status]++;
+
+                
+                const formattedRole = role.split('_').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1);
+
+            
+                const rowData = [
+                    escapeCSV(userId),
+                    escapeCSV(userName),
+                    escapeCSV(email),
+                    escapeCSV(formattedRole),
+                    escapeCSV(formattedStatus),
+                    escapeCSV(regDate),
+                    escapeCSV(lastLogin),
+                    escapeCSV(accountAge)
+                ];
+
+                csvContent += rowData.join(',') + '\n';
+                exportCount++;
+            });
+
+            if (exportCount === 0) {
+                alert('No users to export!');
+                return;
+            }
+
+            
+            csvContent += '\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += 'EXPORT SUMMARY & STATISTICS\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Total Users Exported:,${exportCount}\n`;
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY ROLE:\n';
+            csvContent += `Students:,${roleCount.student}\n`;
+            csvContent += `Lecturers:,${roleCount.lecturer}\n`;
+            csvContent += `Exam Officers:,${roleCount.exam_officer}\n`;
+            csvContent += `Library Officers:,${roleCount.library_officer}\n`;
+            csvContent += `Finance Officers:,${roleCount.finance_officer}\n`;
+            csvContent += `Administrators:,${roleCount.admin}\n`;
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY STATUS:\n';
+            csvContent += `Active Users:,${statusCount.active}\n`;
+            csvContent += `Inactive Users:,${statusCount.inactive}\n`;
+            csvContent += `Pending Users:,${statusCount.pending}\n`;
+            csvContent += `Suspended Users:,${statusCount.suspended}\n`;
+            csvContent += '\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Generated by Education Management System v1.0\n`;
+            csvContent += `© ${new Date().getFullYear()} University Education Portal. All Rights Reserved.\n`;
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+
+            // download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+        
+            const dateStr = now.getFullYear() + '-' + 
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(now.getDate()).padStart(2, '0');
+            const timeStr = String(now.getHours()).padStart(2, '0') + 
+                           String(now.getMinutes()).padStart(2, '0') + 
+                           String(now.getSeconds()).padStart(2, '0');
+            const filename = `USER_EXPORT_REPORT_${dateStr}_${timeStr}.csv`;
+
+            
+            if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+    
+            showToast(`✓ Successfully exported ${exportCount} users\n📊 ${roleCount.student} Students, ${roleCount.lecturer} Lecturers\n📁 File: ${filename}`, 'success');
         }
 
+        // Pagination Variables
+        let currentPage = 1;
+        let pageSize = 5;
+        let totalUsers = 1245;
+        let totalPages = Math.ceil(totalUsers / pageSize);
+
         function changePageSize(size) {
-            alert('Changing page size to ' + size + ' users per page...');
+            pageSize = parseInt(size);
+            totalPages = Math.ceil(totalUsers / pageSize);
+            currentPage = 1; // Reset to first page
+            updatePagination();
+            showToast(`Page size changed to ${size} users per page`, 'info');
         }
+
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            updatePagination();
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        }
+
+        function goToLastPage() {
+            currentPage = totalPages;
+            updatePagination();
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('pageJumpInput');
+            const page = parseInt(input.value);
+            
+            if (isNaN(page) || page < 1 || page > totalPages) {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+                input.value = '';
+                return;
+            }
+            
+            goToPage(page);
+            input.value = '';
+        }
+
+        function updatePagination() {
+            // Update info display
+            const start = (currentPage - 1) * pageSize + 1;
+            const end = Math.min(currentPage * pageSize, totalUsers);
+            
+            document.getElementById('paginationStart').textContent = start;
+            document.getElementById('paginationEnd').textContent = end;
+            document.getElementById('paginationTotal').textContent = totalUsers.toLocaleString();
+
+            // Update navigation buttons
+            const firstBtn = document.getElementById('firstPageBtn');
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            const lastBtn = document.getElementById('lastPageBtn');
+
+            firstBtn.disabled = currentPage === 1;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            lastBtn.disabled = currentPage === totalPages;
+
+            // Update page number buttons
+            updatePageNumbers();
+
+            // In a real application, you would fetch data for the current page here
+            console.log(`Loading page ${currentPage} with ${pageSize} users per page`);
+        }
+
+        function updatePageNumbers() {
+            const controls = document.getElementById('paginationControls');
+            
+            // Clear existing page buttons (keep navigation buttons)
+            const navButtons = [
+                controls.querySelector('#firstPageBtn'),
+                controls.querySelector('#prevPageBtn'),
+                controls.querySelector('#nextPageBtn'),
+                controls.querySelector('#lastPageBtn')
+            ];
+
+            controls.innerHTML = '';
+            
+            
+            controls.appendChild(navButtons[0]);
+            controls.appendChild(navButtons[1]);
+
+            
+            let startPage, endPage;
+            if (totalPages <= 7) {
+        
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+            
+                if (currentPage <= 4) {
+                    startPage = 1;
+                    endPage = 5;
+                } else if (currentPage >= totalPages - 3) {
+                    startPage = totalPages - 4;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 2;
+                    endPage = currentPage + 2;
+                }
+            }
+            
+            if (startPage > 1) {
+                const btn = createPageButton(1);
+                controls.appendChild(btn);
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'pagination-ellipsis';
+                    ellipsis.textContent = '...';
+                    controls.appendChild(ellipsis);
+                }
+            }
+
+        
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = createPageButton(i);
+                controls.appendChild(btn);
+            }
+
+        
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'pagination-ellipsis';
+                    ellipsis.textContent = '...';
+                    controls.appendChild(ellipsis);
+                }
+                const btn = createPageButton(totalPages);
+                controls.appendChild(btn);
+            }
+
+            
+            controls.appendChild(navButtons[2]);
+            controls.appendChild(navButtons[3]);
+        }
+
+        function createPageButton(pageNum) {
+            const btn = document.createElement('button');
+            btn.className = 'pagination-btn';
+            if (pageNum === currentPage) {
+                btn.classList.add('active');
+            }
+            btn.textContent = pageNum;
+            btn.onclick = () => goToPage(pageNum);
+            btn.title = `Go to page ${pageNum}`;
+            return btn;
+        }
+
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePagination();
+            
+    
+            const jumpInput = document.getElementById('pageJumpInput');
+            if (jumpInput) {
+                jumpInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        jumpToPage();
+                    }
+                });
+            }
+        });
 
         function openAddUserModal() {
             closeModal('userManagementModal');
@@ -13466,46 +18725,213 @@
         }
 
         function viewStudent(studentId) {
-            alert('Opening student profile for Student ID: ' + studentId + '\n\n' +
-                  'This will display:\n' +
-                  '• Personal Information\n' +
-                  '• Academic Records\n' +
-                  '• Enrolled Courses\n' +
-                  '• Attendance History\n' +
-                  '• Financial Status\n' +
-                  '• Documents');
+        
+            const studentData = {
+                'STU-2024-001': {
+                    name: 'Sarah Anderson',
+                    email: 'sarah.anderson@university.edu',
+                    phone: '+1 234 567 8901',
+                    department: 'Computer Science',
+                    year: '3rd Year',
+                    gpa: '3.85',
+                    status: 'Active',
+                    credits: '90 / 120',
+                    standing: 'Dean\'s List',
+                    enrollDate: 'Sep 1, 2021',
+                    gradDate: 'May 2025',
+                    address: '123 University Ave, New York, NY',
+                    dob: 'Jan 15, 2002',
+                    attendance: '95%',
+                    absent: '3 days'
+                },
+                'STU-2024-002': {
+                    name: 'Michael Chen',
+                    email: 'michael.chen@university.edu',
+                    phone: '+1 234 567 8902',
+                    department: 'Engineering',
+                    year: '2nd Year',
+                    gpa: '3.92',
+                    status: 'Active',
+                    credits: '60 / 120',
+                    standing: 'Good Standing',
+                    enrollDate: 'Sep 1, 2022',
+                    gradDate: 'May 2026',
+                    address: '456 College St, Boston, MA',
+                    dob: 'Mar 22, 2003',
+                    attendance: '98%',
+                    absent: '1 day'
+                }
+            };
+
+            const student = studentData[studentId] || studentData['STU-2024-001'];
+
+    
+            document.getElementById('viewStudentName').textContent = student.name;
+            document.getElementById('viewStudentEmail').textContent = student.email;
+            document.getElementById('viewStudentDept').textContent = student.department;
+            document.getElementById('viewStudentStatus').textContent = student.status;
+            document.getElementById('viewStudentId').textContent = studentId;
+            document.getElementById('viewStudentYear').textContent = student.year;
+            document.getElementById('viewStudentPhone').textContent = student.phone;
+            document.getElementById('viewStudentEmailDetail').textContent = student.email;
+            document.getElementById('viewStudentAddress').textContent = student.address;
+            document.getElementById('viewStudentDOB').textContent = student.dob;
+            document.getElementById('viewStudentGPA').textContent = student.gpa;
+            document.getElementById('viewStudentCredits').textContent = student.credits;
+            document.getElementById('viewStudentStanding').textContent = student.standing;
+            document.getElementById('viewStudentEnrollDate').textContent = student.enrollDate;
+            document.getElementById('viewStudentGradDate').textContent = student.gradDate;
+            document.getElementById('viewStudentAttendance').textContent = student.attendance;
+            document.getElementById('viewStudentAbsent').textContent = student.absent;
+
+        
+            const initials = student.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('viewStudentAvatar').textContent = initials;
+
+            
+            openModal('viewStudentModal');
         }
 
         function editStudent(studentId) {
-            alert('Opening edit form for Student ID: ' + studentId + '\n\n' +
-                  'You can modify:\n' +
-                  '• Personal details\n' +
-                  '• Contact information\n' +
-                  '• Academic status\n' +
-                  '• Emergency contacts');
+    
+            const studentData = {
+                'STU-2024-001': {
+                    name: 'Sarah Anderson',
+                    email: 'sarah.anderson@university.edu',
+                    phone: '+1 234 567 8901',
+                    department: 'Computer Science',
+                    year: '3',
+                    gpa: '3.85',
+                    status: 'Active',
+                    address: '123 University Ave, New York, NY'
+                },
+                'STU-2024-002': {
+                    name: 'Michael Chen',
+                    email: 'michael.chen@university.edu',
+                    phone: '+1 234 567 8902',
+                    department: 'Engineering',
+                    year: '2',
+                    gpa: '3.92',
+                    status: 'Active',
+                    address: '456 College St, Boston, MA'
+                }
+            };
+
+            const student = studentData[studentId] || studentData['STU-2024-001'];
+
+            
+            document.getElementById('editStudentId').value = studentId;
+            document.getElementById('editStudentName').value = student.name;
+            document.getElementById('editStudentIdNumber').value = studentId;
+            document.getElementById('editStudentEmailInput').value = student.email;
+            document.getElementById('editStudentPhone').value = student.phone;
+            document.getElementById('editStudentDepartment').value = student.department;
+            document.getElementById('editStudentYearLevel').value = student.year;
+            document.getElementById('editStudentGPAInput').value = student.gpa;
+            document.getElementById('editStudentStatusSelect').value = student.status;
+            document.getElementById('editStudentAddressInput').value = student.address;
+
+        
+            openModal('editStudentModal');
+        }
+
+        
+        function switchStudentTab(tabName) {
+            
+            document.querySelectorAll('#viewStudentModal .tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+        
+            document.querySelectorAll('#viewStudentModal .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById('tab-' + tabName).style.display = 'block';
+        
+            event.target.classList.add('active');
+        }
+
+        
+        function editStudentFromView() {
+            const studentId = document.getElementById('viewStudentId').textContent;
+            closeModal('viewStudentModal');
+            setTimeout(() => {
+                editStudent(studentId);
+            }, 300);
         }
 
         function viewTranscript(studentId) {
-            alert('Generating transcript for Student ID: ' + studentId + '\n\n' +
-                  'The transcript will include:\n' +
-                  '• All completed courses\n' +
-                  '• Grades and credits\n' +
-                  '• Cumulative GPA\n' +
-                  '• Honors and awards');
+            
+            const transcriptData = {
+                'STU-2024-001': {
+                    name: 'Sarah Anderson',
+                    department: 'Computer Science',
+                    gpa: '3.85',
+                    totalCredits: 90,
+                    semesterGPA: '3.75',
+                    cumulativeGPA: '3.85'
+                },
+                'STU-2024-002': {
+                    name: 'Michael Chen',
+                    department: 'Engineering',
+                    gpa: '3.92',
+                    totalCredits: 60,
+                    semesterGPA: '3.88',
+                    cumulativeGPA: '3.92'
+                }
+            };
+
+            const transcript = transcriptData[studentId] || transcriptData['STU-2024-001'];
+
+            
+            document.getElementById('transcriptStudentName').textContent = transcript.name;
+            document.getElementById('transcriptStudentId').textContent = studentId;
+            document.getElementById('transcriptDepartment').textContent = transcript.department;
+            document.getElementById('transcriptGPA').textContent = transcript.gpa;
+            document.getElementById('transcriptTotalCredits').textContent = transcript.totalCredits;
+            document.getElementById('transcriptSemesterGPA').textContent = transcript.semesterGPA;
+            document.getElementById('transcriptCumulativeGPA').textContent = transcript.cumulativeGPA;
+            
+        
+            const today = new Date();
+            document.getElementById('transcriptDate').textContent = today.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+
+            openModal('viewTranscriptModal');
+        }
+
+        function downloadTranscript() {
+            showToast('📄 Generating transcript PDF...\n⏳ Download will start shortly', 'info');
+            
+            
+            setTimeout(() => {
+                showToast('✓ Transcript downloaded successfully!\n📁 Check your downloads folder', 'success');
+            }, 1500);
         }
 
         function deleteStudent(studentId) {
-            if (confirm('⚠️ WARNING: Delete this student?\n\n' +
+            if (confirm('⚠️ CRITICAL WARNING!\n\n' +
+                       'Delete student ' + studentId + '?\n\n' +
                        'This will permanently remove:\n' +
                        '• Student record\n' +
                        '• Academic history\n' +
-                       '• Enrollment data\n\n' +
-                       'This action cannot be undone!')) {
-                alert('Student ' + studentId + ' has been deleted successfully.');
+                       '• Enrollment data\n' +
+                       '• All associated records\n\n' +
+                       'THIS ACTION CANNOT BE UNDONE!')) {
+                
+                showToast('🗑️ Deleting student ' + studentId + '...', 'info');
+                
                 const row = event.target.closest('tr');
                 if (row) {
                     row.style.animation = 'fadeOut 0.3s ease-out';
-                    setTimeout(() => row.remove(), 300);
+                    setTimeout(() => {
+                        row.remove();
+                        showToast('✓ Student ' + studentId + ' deleted successfully\n📊 Database updated', 'success');
+                    }, 300);
                 }
             }
         }
@@ -13604,22 +19030,227 @@
         }
 
         function exportStudents() {
-            alert('Exporting all student records to Excel file...\n\n' +
-                  'The file will include:\n' +
-                  '• Student information\n' +
-                  '• Academic records\n' +
-                  '• Contact details\n' +
-                  '• Enrollment status\n\n' +
-                  'The download will begin shortly.');
+            const table = document.getElementById('studentManagementTable');
+            if (!table) {
+                alert('Student table not found!');
+                return;
+            }
+
+            const now = new Date();
+            const fullDateTime = now.toLocaleString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+
+            let csvContent = '';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += 'EDUCATION MANAGEMENT SYSTEM - STUDENT RECORDS EXPORT\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Export Date:,${fullDateTime}\n`;
+            csvContent += `Exported By:,System Administrator\n`;
+            csvContent += `Institution:,University Education Portal\n`;
+            csvContent += `Report Type:,Complete Student Database Export\n`;
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += '\n';
+
+            const headers = [
+                'Student ID',
+                'Full Name',
+                'Email Address',
+                'Department',
+                'Year Level',
+                'GPA',
+                'Status',
+                'Phone',
+                'Enrollment Date'
+            ];
+            csvContent += headers.join(',') + '\n';
+            csvContent += '─────────────,─────────────────,─────────────────────,─────────────,───────────,────────,──────────────,─────────────,─────────────────\n';
+
+            const rows = table.querySelectorAll('tbody tr');
+            let exportCount = 0;
+            let deptCount = {};
+            let yearCount = {};
+            let statusCount = {};
+            let gpaSum = 0;
+
+            const escapeCSV = (str) => {
+                if (!str) return '';
+                str = String(str);
+                if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                    return '"' + str.replace(/"/g, '""') + '"';
+                }
+                return str;
+            };
+
+            rows.forEach(row => {
+                if (row.style.display === 'none') return;
+
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 9) return;
+
+                const userDetails = cells[1].querySelector('.user-details h4');
+                const studentName = userDetails ? userDetails.textContent.trim() : '';
+                
+                const emailElement = cells[1].querySelector('.user-details p');
+                const email = emailElement ? emailElement.textContent.trim() : '';
+
+                const studentId = cells[2].textContent.trim();
+                const department = cells[3].textContent.trim();
+                const year = cells[4].textContent.trim();
+                const gpa = cells[5].querySelector('strong') ? cells[5].querySelector('strong').textContent.trim() : '';
+                const status = cells[6].textContent.trim();
+                const phone = cells[7].querySelector('a[href^="tel:"]') ? cells[7].querySelector('a[href^="tel:"]').getAttribute('href').replace('tel:', '') : 'N/A';
+
+                // Update statistics
+                const dept = department.toLowerCase();
+                deptCount[dept] = (deptCount[dept] || 0) + 1;
+                
+                const yearNum = year.replace(/[^0-9]/g, '');
+                yearCount[yearNum] = (yearCount[yearNum] || 0) + 1;
+                
+                const stat = status.toLowerCase();
+                statusCount[stat] = (statusCount[stat] || 0) + 1;
+                
+                if (gpa) gpaSum += parseFloat(gpa);
+
+                const rowData = [
+                    escapeCSV(studentId),
+                    escapeCSV(studentName),
+                    escapeCSV(email),
+                    escapeCSV(department),
+                    escapeCSV(year),
+                    escapeCSV(gpa),
+                    escapeCSV(status),
+                    escapeCSV(phone),
+                    escapeCSV(now.toLocaleDateString())
+                ];
+
+                csvContent += rowData.join(',') + '\n';
+                exportCount++;
+            });
+
+            if (exportCount === 0) {
+                alert('No students to export!');
+                return;
+            }
+
+            const avgGPA = (gpaSum / exportCount).toFixed(2);
+
+            // Add summary
+            csvContent += '\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += 'EXPORT SUMMARY & STATISTICS\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Total Students Exported:,${exportCount}\n`;
+            csvContent += `Average GPA:,${avgGPA}\n`;
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY DEPARTMENT:\n';
+            Object.keys(deptCount).forEach(dept => {
+                csvContent += `${dept.charAt(0).toUpperCase() + dept.slice(1)}:,${deptCount[dept]}\n`;
+            });
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY YEAR:\n';
+            Object.keys(yearCount).sort().forEach(year => {
+                csvContent += `Year ${year}:,${yearCount[year]}\n`;
+            });
+            csvContent += '\n';
+            csvContent += 'BREAKDOWN BY STATUS:\n';
+            Object.keys(statusCount).forEach(status => {
+                csvContent += `${status.charAt(0).toUpperCase() + status.slice(1)}:,${statusCount[status]}\n`;
+            });
+            csvContent += '\n';
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+            csvContent += `Generated by Education Management System v1.0\n`;
+            csvContent += `© ${new Date().getFullYear()} University Education Portal. All Rights Reserved.\n`;
+            csvContent += '═══════════════════════════════════════════════════════════════\n';
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            const dateStr = now.getFullYear() + '-' + 
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(now.getDate()).padStart(2, '0');
+            const timeStr = String(now.getHours()).padStart(2, '0') + 
+                           String(now.getMinutes()).padStart(2, '0') + 
+                           String(now.getSeconds()).padStart(2, '0');
+            const filename = `STUDENT_RECORDS_EXPORT_${dateStr}_${timeStr}.csv`;
+
+            if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            showToast(`✓ Successfully exported ${exportCount} students\n📊 Average GPA: ${avgGPA}\n📁 File: ${filename}`, 'success');
         }
 
         function importStudents() {
-            alert('Import Students from Excel/CSV file\n\n' +
-                  'Requirements:\n' +
-                  '• File format: Excel (.xlsx) or CSV\n' +
-                  '• Required columns: Name, Email, Student ID, Department\n' +
-                  '• Maximum: 1000 students per import\n\n' +
-                  'Please select your file to continue.');
+            // Create file input
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.csv,.xlsx,.xls';
+            fileInput.style.display = 'none';
+            
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const fileName = file.name;
+                const fileSize = (file.size / 1024).toFixed(2);
+                const fileExtension = fileName.split('.').pop().toLowerCase();
+                
+                if (!['csv', 'xlsx', 'xls'].includes(fileExtension)) {
+                    alert('Invalid file format! Please upload CSV or Excel (.xlsx, .xls) file.');
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size too large! Maximum size is 5MB.');
+                    return;
+                }
+                
+                // Show processing message
+                showToast(`📂 Processing file: ${fileName} (${fileSize} KB)\n⏳ Please wait...`, 'info');
+                
+                // Simulate file processing
+                setTimeout(() => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const content = event.target.result;
+                        
+                        // Simple CSV parsing (for demo purposes)
+                        const lines = content.split('\n');
+                        const importCount = lines.length - 1; // Minus header row
+                        
+                        showToast(
+                            `✓ Import Successful!\n` +
+                            `📊 Imported ${importCount} student records\n` +
+                            `📁 File: ${fileName}\n` +
+                            `⚠️ Note: In production, this would validate and save to database`,
+                            'success'
+                        );
+                        
+                       
+                    };
+                    
+                    if (fileExtension === 'csv') {
+                        reader.readAsText(file);
+                    } else {
+                        
+                        alert('Excel import requires additional library. Using CSV format is recommended.');
+                    }
+                }, 500);
+            });
+            
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            document.body.removeChild(fileInput);
         }
 
         function changeStudentPageSize(size) {
@@ -13627,14 +19258,38 @@
         }
 
         function openAddStudentModal() {
-            closeModal('studentsModal');
-            alert('Opening Add New Student form...\n\n' +
-                  'You can enter:\n' +
-                  '• Personal information\n' +
-                  '• Contact details\n' +
-                  '• Academic information\n' +
-                  '• Emergency contacts\n' +
-                  '• Upload documents');
+            const confirmed = confirm(
+                '📝 ADD NEW STUDENT FORM\n\n' +
+                'This will open a comprehensive form with:\n\n' +
+                '1. PERSONAL INFORMATION\n' +
+                '   • Full Name\n' +
+                '   • Date of Birth\n' +
+                '   • Gender\n' +
+                '   • Nationality\n\n' +
+                '2. CONTACT DETAILS\n' +
+                '   • Email Address\n' +
+                '   • Phone Number\n' +
+                '   • Address\n\n' +
+                '3. ACADEMIC INFORMATION\n' +
+                '   • Student ID\n' +
+                '   • Department\n' +
+                '   • Year Level\n' +
+                '   • Entry Date\n\n' +
+                '4. EMERGENCY CONTACTS\n' +
+                '   • Guardian Name\n' +
+                '   • Guardian Phone\n' +
+                '   • Relationship\n\n' +
+                '5. DOCUMENTS\n' +
+                '   • Photo Upload\n' +
+                '   • ID Documents\n' +
+                '   • Academic Certificates\n\n' +
+                'Click OK to proceed or Cancel to return'
+            );
+            
+            if (confirmed) {
+                showToast('🎓 Opening Add Student Form...\nThis would open a detailed modal in production', 'info');
+                
+            }
         }
 
         function openLecturersModal() {
@@ -15475,12 +21130,648 @@
         }
 
         
-        setTimeout(function() {
-            const notificationBadge = document.querySelector('.notification-badge');
-            if (notificationBadge) {
-                notificationBadge.style.opacity = '0.5';
+        
+        (function() {
+            const notificationBtn = document.getElementById('notificationBtn');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationTabs = document.querySelectorAll('.notification-tab');
+            const notificationItems = document.querySelectorAll('.notification-item');
+            const notificationCount = document.getElementById('notificationCount');
+
+            console.log('Notification system initializing...', {
+                notificationBtn: notificationBtn,
+                notificationDropdown: notificationDropdown
+            });
+
+            
+            if (notificationBtn && notificationDropdown) {
+                notificationBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    console.log('Notification button clicked');
+                    notificationDropdown.classList.toggle('show');
+                    notificationBtn.classList.toggle('active');
+                    console.log('Dropdown classes:', notificationDropdown.className);
+                });
+                
+                console.log('Notification click listener attached successfully');
+            } else {
+                console.error('Notification elements not found!', {
+                    btn: notificationBtn,
+                    dropdown: notificationDropdown
+                });
             }
-        }, 5000);
+
+            
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.notification-btn') && !e.target.closest('.notification-dropdown')) {
+                    if (notificationDropdown) notificationDropdown.classList.remove('show');
+                    if (notificationBtn) notificationBtn.classList.remove('active');
+                }
+            });
+
+        
+            notificationTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    
+                    notificationTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                
+                    const tabType = this.getAttribute('data-tab');
+
+                    
+                    notificationItems.forEach(item => {
+                        const itemTypes = item.getAttribute('data-type').split(' ');
+                        
+                        if (tabType === 'all') {
+                            item.style.display = 'flex';
+                        } else if (itemTypes.includes(tabType)) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                
+                    checkEmptyState();
+                });
+            });
+
+            
+            notificationItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    
+                    if (!e.target.classList.contains('notification-action-btn')) {
+                        this.classList.remove('unread');
+                        updateNotificationCount();
+                    }
+                });
+            });
+
+        
+            document.querySelectorAll('.notification-action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const notificationItem = this.closest('.notification-item');
+                    const action = this.textContent.trim();
+                    
+                    console.log('Action clicked:', action);
+                    
+                
+                    notificationItem.classList.remove('unread');
+                    updateNotificationCount();
+                    
+            
+                    if (action === 'Dismiss') {
+                        notificationItem.style.opacity = '0';
+                        setTimeout(() => {
+                            notificationItem.style.display = 'none';
+                            checkEmptyState();
+                        }, 300);
+                    }
+                });
+            });
+
+            
+            function updateNotificationCount() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            const countElement = document.getElementById('notificationCount');
+            if (countElement) {
+                countElement.textContent = unreadCount;
+            
+                if (unreadCount === 0) {
+                    countElement.style.display = 'none';
+                } else {
+                    countElement.style.display = 'block';
+                }
+            }
+            
+    
+            const allTabBadge = document.querySelector('[data-tab="all"] .tab-badge');
+            const unreadTabBadge = document.querySelector('[data-tab="unread"] .tab-badge');
+            
+            if (allTabBadge) {
+                allTabBadge.textContent = document.querySelectorAll('.notification-item').length;
+            }
+            if (unreadTabBadge) {
+                unreadTabBadge.textContent = unreadCount;
+                if (unreadCount === 0) {
+                    unreadTabBadge.style.display = 'none';
+                } else {
+                    unreadTabBadge.style.display = 'block';
+                }
+            }
+            }
+
+            
+            function checkEmptyState() {
+                const items = document.querySelectorAll('.notification-item');
+                const visibleItems = Array.from(items).filter(item => 
+                    item.style.display !== 'none'
+                );
+                
+                const content = document.getElementById('notificationContent');
+                let emptyState = content.querySelector('.notification-empty');
+                
+                if (visibleItems.length === 0) {
+                    if (!emptyState) {
+                        emptyState = document.createElement('div');
+                        emptyState.className = 'notification-empty';
+                        emptyState.innerHTML = `
+                            <i class="fas fa-bell-slash"></i>
+                            <h4>No Notifications</h4>
+                            <p>You're all caught up! No new notifications at the moment.</p>
+                        `;
+                        content.appendChild(emptyState);
+                    }
+                } else {
+                    if (emptyState) {
+                        emptyState.remove();
+                    }
+                }
+            }
+
+            
+            function showToast(message, type = 'info') {
+            
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#43e97b' : type === 'error' ? '#fc6076' : '#4facfe'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                font-size: 14px;
+                font-weight: 500;
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+        
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        
+        function simulateNewNotification() {
+            const types = ['info', 'success', 'warning', 'error'];
+            const icons = ['fa-info-circle', 'fa-check-circle', 'fa-exclamation-triangle', 'fa-times-circle'];
+            const titles = [
+                'New Message Received',
+                'Task Completed',
+                'Action Required',
+                'Error Occurred'
+            ];
+            const messages = [
+                'You have a new message from the system.',
+                'Your requested operation was successful.',
+                'Please review and take necessary action.',
+                'An error was detected in the system.'
+            ];
+
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            const randomIndex = types.indexOf(randomType);
+
+            const newNotification = document.createElement('div');
+            newNotification.className = 'notification-item unread';
+            newNotification.setAttribute('data-type', 'all unread');
+            newNotification.innerHTML = `
+                <div class="notification-icon-wrapper ${randomType}">
+                    <i class="fas ${icons[randomIndex]}"></i>
+                </div>
+                <div class="notification-details">
+                    <div class="notification-title">${titles[randomIndex]}</div>
+                    <div class="notification-message">${messages[randomIndex]}</div>
+                    <div class="notification-time">
+                        <i class="fas fa-clock"></i> Just now
+                    </div>
+                </div>
+            `;
+
+            const content = document.getElementById('notificationContent');
+            content.insertBefore(newNotification, content.firstChild);
+
+        
+            newNotification.addEventListener('click', function() {
+                this.classList.remove('unread');
+                updateNotificationCount();
+            });
+
+            updateNotificationCount();
+            
+    
+            notificationCount.style.animation = 'pulse 0.5s ease';
+            setTimeout(() => {
+                notificationCount.style.animation = 'pulse 2s infinite';
+            }, 500);
+
+        
+            showToast('New notification received!', 'info');
+        }
+
+           
+            updateNotificationCount();
+            
+        })(); 
+        window.markAllAsRead = function() {
+            const items = document.querySelectorAll('.notification-item');
+            items.forEach(item => {
+                item.classList.remove('unread');
+            });
+    
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            const countElement = document.getElementById('notificationCount');
+            if (countElement) {
+                countElement.textContent = unreadCount;
+                countElement.style.display = unreadCount === 0 ? 'none' : 'block';
+            }
+            
+            if (window.showToast) {
+                window.showToast('All notifications marked as read', 'success');
+            }
+        }
+
+        window.viewAllNotifications = function() {
+            console.log('Viewing all notifications page...');
+            
+            if (window.showToast) {
+                window.showToast('Loading all notifications...', 'info');
+            }
+        }
+
+        
+        window.showToast = function(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#43e97b' : type === 'error' ? '#fc6076' : '#4facfe'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+                font-size: 14px;
+                font-weight: 500;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+    
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeButtons = document.querySelectorAll('[id^="closeSettingsBtn"]');
+        const settingsNavLinks = document.querySelectorAll('.settings-nav-link');
+        const settingsSections = document.querySelectorAll('.settings-section');
+        const toggleSwitches = document.querySelectorAll('.toggle-switch');
+
+        console.log('Settings initialization:', {
+            settingsBtn: settingsBtn,
+            settingsModal: settingsModal,
+            closeButtons: closeButtons.length,
+            navLinks: settingsNavLinks.length
+        });
+
+    
+        if (settingsBtn && settingsModal) {
+            settingsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Settings button clicked - opening modal');
+                settingsModal.classList.add('show');
+                settingsBtn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('Modal opened, classes:', settingsModal.className);
+            });
+            console.log('Settings click handler attached successfully');
+        } else {
+            console.error('Settings elements missing!', {btn: settingsBtn, modal: settingsModal});
+        }
+
+        
+        function closeSettings() {
+            if (settingsModal) settingsModal.classList.remove('show');
+            if (settingsBtn) settingsBtn.classList.remove('active');
+            document.body.style.overflow = '';
+            console.log('Settings modal closed');
+        }
+
+        
+        if (closeButtons.length > 0) {
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeSettings();
+                });
+            });
+            console.log('Close buttons attached:', closeButtons.length);
+        }
+
+    
+        if (settingsModal) {
+            settingsModal.addEventListener('click', function(e) {
+                if (e.target === settingsModal) {
+                    closeSettings();
+                }
+            });
+        }
+
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && settingsModal && settingsModal.classList.contains('show')) {
+                closeSettings();
+            }
+        });
+
+        
+        if (settingsNavLinks.length > 0) {
+            settingsNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+
+                
+                    settingsNavLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    
+                    settingsSections.forEach(s => {
+                        if (s.getAttribute('data-section') === section) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        
+        if (toggleSwitches.length > 0) {
+            toggleSwitches.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const isActive = this.classList.contains('active');
+                    console.log('Toggle switched:', isActive ? 'ON' : 'OFF');
+                });
+            });
+        }
+
+        
+        const colorPickers = document.querySelectorAll('.color-picker');
+        if (colorPickers.length > 0) {
+            colorPickers.forEach(picker => {
+                picker.addEventListener('input', function() {
+                    const preview = this.nextElementSibling;
+                    if (preview && preview.classList.contains('color-preview')) {
+                        preview.textContent = this.value;
+                    }
+                });
+            });
+        }
+
+    
+        const saveBtns = document.querySelectorAll('.settings-btn-primary');
+        if (saveBtns.length > 0) {
+            saveBtns.forEach(btn => {
+                if (btn.textContent.includes('Save') || btn.textContent.includes('Apply') || btn.textContent.includes('Update')) {
+                    btn.addEventListener('click', function() {
+                        showToast('Settings saved successfully!', 'success');
+                    });
+                }
+            });
+        }
+
+        
+        const testBtns = document.querySelectorAll('.settings-btn-secondary');
+        if (testBtns.length > 0) {
+            testBtns.forEach(btn => {
+                if (btn.textContent.includes('Test Notification')) {
+                    btn.addEventListener('click', function() {
+                        showToast('This is a test notification!', 'info');
+                    });
+                }
+            });
+        }
+
+        
+        const dangerBtns = document.querySelectorAll('.settings-btn-danger');
+        if (dangerBtns.length > 0) {
+            dangerBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.textContent.trim();
+                    if (confirm(`Are you sure you want to ${action.toLowerCase()}?`)) {
+                        showToast(`${action} completed`, 'info');
+                    }
+                });
+            });
+        }
+
+        console.log('Settings system fully initialized!');
+
+        // Administrator Dropdown System
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminDropdown = document.getElementById('adminDropdown');
+
+        console.log('Admin dropdown elements:', {
+            profileBtn: adminProfileBtn,
+            dropdown: adminDropdown
+        });
+
+    
+        if (adminProfileBtn && adminDropdown) {
+            adminProfileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Admin profile clicked');
+                
+                
+                const notificationDropdown = document.getElementById('notificationDropdown');
+                if (notificationDropdown && notificationDropdown.classList.contains('show')) {
+                    notificationDropdown.classList.remove('show');
+                    const notificationBtn = document.getElementById('notificationBtn');
+                    if (notificationBtn) notificationBtn.classList.remove('active');
+                }
+                
+                adminDropdown.classList.toggle('show');
+                adminProfileBtn.classList.toggle('active');
+                console.log('Admin dropdown toggled:', adminDropdown.classList.contains('show'));
+            });
+            console.log('Admin profile click handler attached');
+        } else {
+            console.error('Admin dropdown elements not found!');
+        }
+
+        
+        document.addEventListener('click', function(e) {
+            if (adminDropdown && adminProfileBtn) {
+                if (!e.target.closest('#adminProfileBtn') && !e.target.closest('#adminDropdown')) {
+                    adminDropdown.classList.remove('show');
+                    adminProfileBtn.classList.remove('active');
+                }
+            }
+        });
+
+        
+        window.viewProfile = function() {
+            console.log('View Profile clicked');
+            showToast('Opening profile...', 'info');
+            
+        }
+
+        window.editAccount = function() {
+            console.log('Edit Account clicked');
+            showToast('Opening account editor...', 'info');
+            
+        }
+
+        window.changePassword = function() {
+            console.log('Change Password clicked');
+            showToast('Opening password change form...', 'info');
+            
+        }
+
+        window.openSettings = function() {
+            
+            if (adminDropdown) adminDropdown.classList.remove('show');
+            if (adminProfileBtn) adminProfileBtn.classList.remove('active');
+            
+            
+            const settingsModal = document.getElementById('settingsModal');
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (settingsModal) {
+                settingsModal.classList.add('show');
+                if (settingsBtn) settingsBtn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        window.viewActivity = function() {
+            console.log('View Activity clicked');
+            showToast('Loading activity log...', 'info');
+            
+        }
+
+        window.viewNotifications = function() {
+            console.log('View Notifications clicked');
+        
+            if (adminDropdown) adminDropdown.classList.remove('show');
+            if (adminProfileBtn) adminProfileBtn.classList.remove('active');
+            
+            
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationBtn = document.getElementById('notificationBtn');
+            if (notificationDropdown) {
+                notificationDropdown.classList.add('show');
+                if (notificationBtn) notificationBtn.classList.add('active');
+            }
+        }
+
+        window.viewHelp = function() {
+            console.log('View Help clicked');
+            showToast('Opening help documentation...', 'info');
+            
+        }
+
+        window.sendFeedback = function() {
+            console.log('Send Feedback clicked');
+            showToast('Opening feedback form...', 'info');
+            
+        }
+
+        console.log('Administrator dropdown system initialized!');
+
+        
+        window.viewSidebarNotification = function(id) {
+            console.log('Viewing sidebar notification:', id);
+            
+            
+            const notificationItems = document.querySelectorAll('.sidebar-notification-item');
+            notificationItems.forEach((item, index) => {
+                if (index + 1 === id) {
+                    item.classList.remove('unread');
+                }
+            });
+            
+            
+            updateSidebarNotificationCount();
+            
+            
+            showToast('Notification opened', 'info');
+        }
+
+        window.viewAllSidebarNotifications = function() {
+            console.log('View all sidebar notifications clicked');
+            
+            
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationBtn = document.getElementById('notificationBtn');
+            
+            if (notificationDropdown && notificationBtn) {
+                notificationDropdown.classList.add('show');
+                notificationBtn.classList.add('active');
+            }
+            
+            showToast('Loading all notifications...', 'info');
+        }
+
+        function updateSidebarNotificationCount() {
+            const unreadCount = document.querySelectorAll('.sidebar-notification-item.unread').length;
+            const countBadge = document.querySelector('.sidebar-notifications-count');
+            
+            if (countBadge) {
+                countBadge.textContent = unreadCount;
+                if (unreadCount === 0) {
+                    countBadge.style.display = 'none';
+                } else {
+                    countBadge.style.display = 'block';
+                }
+            }
+        }
+
+        
+        console.log('Sidebar notifications initialized!');
     </script>
 </body>
 </html>
