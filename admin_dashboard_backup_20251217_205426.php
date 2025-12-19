@@ -13,11 +13,6 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
@@ -356,16 +351,6 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-left > div {
-            flex: 1;
         }
 
         .header-left h1 {
@@ -762,7 +747,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1001;
         }
 
         .settings-btn:hover {
@@ -795,16 +779,15 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             z-index: 9999;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .settings-modal.show {
-            display: flex !important;
             opacity: 1;
             visibility: visible;
         }
@@ -1418,15 +1401,9 @@
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         .stat-card {
@@ -1829,863 +1806,16 @@
             font-weight: 600;
         }
 
-        /* Large Screens (1200px and above) */
+        
         @media (max-width: 1200px) {
             .content-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Tablets (992px and below) */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 260px;
-            }
-
-            .main-content {
-                margin-left: 260px;
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
-            }
-
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-
-            .search-box input {
-                width: 200px;
-            }
-        }
-
-        /* Mobile and Tablets (768px and below) */
-        @media (max-width: 768px) {
-            /* Prevent horizontal scroll */
-            * {
-                max-width: 100% !important;
-            }
-
-            .sidebar,
-            .modal-content,
-            .notification-dropdown {
-                max-width: none !important;
-            }
-
-            /* Responsive Images and Media */
-            img,
-            iframe,
-            video,
-            canvas {
-                max-width: 100% !important;
-                height: auto !important;
-            }
-
-            /* Sidebar - Hidden by default */
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-                z-index: 9999;
-                box-shadow: none;
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-                box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
-            }
-
-            .sidebar.collapsed {
-                width: 280px;
-                transform: translateX(-100%);
-            }
-
-            .sidebar.collapsed .logo-text,
-            .sidebar.collapsed .nav-text {
-                display: block;
-            }
-
-            .sidebar.collapsed.active {
-                transform: translateX(0);
-            }
-
-            /* Main Content */
-            .main-content {
-                margin-left: 0 !important;
-                padding: 15px 12px;
-            }
-
-            .main-content.expanded {
-                margin-left: 0;
-            }
-
-            /* Header */
-            .header {
-                padding: 12px;
-                flex-direction: column;
-                gap: 12px;
-                border-radius: 12px;
-                align-items: stretch;
-            }
-
-            .header-left {
-                width: 100%;
-                gap: 10px;
-                flex-wrap: nowrap;
-            }
-
-            .header-left > div {
-                min-width: 0;
-                flex: 1;
-            }
-
-            .header-left h1 {
-                font-size: 18px;
-                line-height: 1.3;
-                word-break: break-word;
-            }
-
-            .header-left p {
-                font-size: 11px;
-                line-height: 1.4;
-            }
-
-            .header-right {
-                width: 100%;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: flex-end;
-            }
-
-            .notification-btn {
-                width: 44px;
-                height: 44px;
-                min-width: 44px;
-            }
-
-            .search-box {
-                order: -1;
-                width: 100%;
-                flex: none;
-            }
-
-            .search-box input {
-                width: 100%;
-                padding: 12px 40px 12px 15px;
-                font-size: 14px;
-            }
-
-            .mobile-menu-btn {
-                display: flex !important;
-            }
-
-            /* Stats Grid */
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .stat-card {
-                padding: 18px;
-            }
-
-            .stat-icon {
-                width: 55px;
-                height: 55px;
-                font-size: 24px;
-            }
-
-            .stat-content h3 {
-                font-size: 28px;
-            }
-
-            .stat-content p {
-                font-size: 13px;
-            }
-
-            /* User Profile */
-            .user-profile {
-                padding: 6px 10px;
-            }
-
-            .user-avatar {
-                width: 38px;
-                height: 38px;
-                font-size: 15px;
-            }
-
-            .user-info h4 {
-                font-size: 12px;
-            }
-
-            .user-info p {
-                font-size: 10px;
-            }
-
-            /* Quick Actions */
-            .quick-actions-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .quick-action-btn {
-                padding: 15px 12px;
-                border-radius: 12px;
-            }
-
-            .quick-action-btn i {
-                font-size: 22px;
-            }
-
-            .quick-action-btn span {
-                font-size: 12px;
-            }
-
-            /* Content Cards */
-            .content-card {
-                padding: 15px;
-                border-radius: 12px;
-                margin-bottom: 12px;
-                width: 100%;
-                overflow: hidden;
-            }
-
-            .card-header {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                gap: 10px;
-                margin-bottom: 15px;
-                flex-wrap: wrap;
-            }
-
-            .card-header h2 {
-                font-size: 16px;
-                margin: 0;
-            }
-
-            .view-all {
-                font-size: 12px;
-                white-space: nowrap;
-            }
-
-            /* Tables */
-            .data-table,
-            table,
-            .users-table,
-            .user-management-table,
-            .student-management-table,
-            .lecturer-management-table,
-            .course-management-table,
-            .examinations-management-table,
-            .library-management-table,
-            .finance-management-table,
-            .transcript-table {
-                display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                width: 100%;
-            }
-
-            .data-table table,
-            .users-table,
-            .user-management-table,
-            .student-management-table,
-            .lecturer-management-table,
-            .course-management-table,
-            .examinations-management-table,
-            .library-management-table,
-            .finance-management-table,
-            .transcript-table {
-                min-width: 600px;
-            }
-
-            table th,
-            table td {
-                padding: 10px 8px;
-                font-size: 12px;
-                white-space: nowrap;
-            }
-
-            table th {
-                font-size: 11px;
-            }
-
-            /* Modals */
-            .modal-content {
-                width: calc(100% - 20px);
-                max-width: calc(100% - 20px);
-                margin: 10px;
-                max-height: calc(100vh - 20px);
-                border-radius: 15px;
-                overflow: hidden;
-            }
-
-            .modal-header {
-                padding: 15px;
-                border-radius: 15px 15px 0 0;
-            }
-
-            .modal-header h2 {
-                font-size: 17px;
-                word-break: break-word;
-            }
-
-            .modal-body {
-                padding: 15px;
-                overflow-y: auto;
-                max-height: calc(100vh - 180px);
-            }
-
-            .modal-footer {
-                padding: 15px;
-            }
-
-            /* Form Groups */
-            .form-row {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .form-group {
-                width: 100%;
-            }
-
-            .form-control,
-            input[type="text"],
-            input[type="email"],
-            input[type="password"],
-            input[type="number"],
-            input[type="date"],
-            input[type="time"],
-            textarea,
-            select {
-                padding: 12px;
-                font-size: 16px;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-            }
-
-            input[type="text"],
-            input[type="email"],
-            input[type="password"],
-            input[type="number"] {
-                -webkit-appearance: none;
-                appearance: none;
-            }
-
-            /* Charts */
-            .chart-container {
-                height: 260px;
-            }
-
-            /* Activity Feed */
-            .activity-item {
-                padding: 12px;
-                font-size: 13px;
-            }
-
-            /* Notification Dropdown */
-            .notification-dropdown {
-                position: fixed !important;
-                top: 10px !important;
-                bottom: 10px !important;
-                right: 10px !important;
-                left: 10px !important;
-                width: auto !important;
-                max-width: none !important;
-                height: auto !important;
-                max-height: calc(100vh - 20px) !important;
-                border-radius: 15px;
-                overflow-y: auto;
-            }
-
-            .notification-dropdown.show {
-                transform: translateY(0);
-            }
-
-            .notification-content {
-                max-height: calc(100vh - 180px) !important;
-            }
-
-            /* Buttons */
-            .btn,
-            .primary-btn,
-            .secondary-btn {
-                min-height: 44px;
-                padding: 11px 20px;
-                font-size: 14px;
-            }
-
-            /* Sidebar Notifications */
-            .sidebar-notifications {
-                margin: 15px 12px;
-            }
-
-            .sidebar-notification-item {
-                padding: 12px;
-            }
-        }
-
-        /* Small Mobile (576px and below) */
-        @media (max-width: 576px) {
-            /* Header */
-            .header {
-                padding: 12px;
-            }
-
-            .header-left h1 {
-                font-size: 18px;
-            }
-
-            .header-left p {
-                font-size: 11px;
-            }
-
-            /* Stats Cards */
-            .stat-card {
-                padding: 15px;
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .stat-card::before {
-                width: 100%;
-                height: 4px;
-            }
-
-            .stat-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 22px;
-            }
-
-            .stat-content {
-                text-align: center;
-            }
-
-            .stat-content h3 {
-                font-size: 26px;
-            }
-
-            .stat-content p {
-                font-size: 12px;
-            }
-
-            /* Quick Actions */
-            .quick-actions-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .quick-action-btn {
-                padding: 18px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 12px;
-                flex-direction: row;
-            }
-
-            .quick-action-btn i {
-                font-size: 24px;
-            }
-
-            .quick-action-btn span {
-                font-size: 14px;
-            }
-
-            /* Content Cards */
-            .content-card {
-                padding: 15px;
-            }
-
-            .card-header h2 {
-                font-size: 16px;
-            }
-
-            /* Buttons */
-            .btn,
-            .primary-btn,
-            .secondary-btn {
-                width: 100%;
-                padding: 12px 15px;
-                font-size: 13px;
-                min-height: 44px;
-            }
-
-            .action-btns {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .action-btns .btn {
-                width: 100%;
-            }
-
-            /* Modal */
-            .modal-content {
-                width: 100%;
-                height: 100%;
-                max-height: 100vh;
-                margin: 0;
-                border-radius: 0;
-            }
-
-            .modal-header,
-            .modal-body,
-            .modal-footer {
-                padding: 15px;
-            }
-
-            .modal-header h2 {
-                font-size: 17px;
-            }
-
-            /* Tables - Card style */
-            .data-table {
-                display: block;
-            }
-
-            .data-table thead {
-                display: none;
-            }
-
-            .data-table tbody,
-            .data-table tr,
-            .data-table td {
-                display: block;
-                width: 100%;
-            }
-
-            .data-table tr {
-                margin-bottom: 12px;
-                border: 1px solid #e0e6ed;
-                border-radius: 10px;
-                padding: 12px;
-                background: white;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            }
-
-            .data-table td {
-                text-align: left !important;
-                padding: 8px 0 !important;
-                border: none !important;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .data-table td:before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: #7f8c8d;
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            /* Action Buttons */
-            .action-btns {
-                flex-direction: column;
-                width: 100%;
-                gap: 8px;
-            }
-
-            .action-btn {
-                width: 100%;
-                margin: 0;
-            }
-
-            /* Sidebar */
-            .logo-text {
-                font-size: 18px;
-            }
-
-            .nav-link {
-                padding: 11px 12px;
-                font-size: 13px;
-            }
-
-            .nav-link i {
-                font-size: 17px;
-            }
-
-            /* Form Inputs */
-            .form-control {
-                font-size: 14px;
-                padding: 12px;
-            }
-
-            .form-label {
-                font-size: 13px;
-            }
-
-            /* Charts */
-            .chart-container {
-                height: 200px;
-            }
-
-            /* User Info */
-            .user-info p {
-                display: none;
-            }
-
-            .notification-btn {
-                width: 40px;
-                height: 40px;
-            }
-
-            .notification-btn i {
-                font-size: 16px;
-            }
-        }
-
-        /* Extra Small Devices (480px and below) */
-        @media (max-width: 480px) {
-            .main-content {
-                padding: 10px 8px;
-            }
-
-            .header {
-                padding: 10px;
-            }
-
-            .header-left h1 {
-                font-size: 16px;
-            }
-
-            .header-left p {
-                display: none;
-            }
-
-            .stat-content h3 {
-                font-size: 24px;
-            }
-
-            .stat-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
-            }
-
-            .quick-action-btn span {
-                font-size: 13px;
-            }
-
-            .notification-btn,
-            .user-profile {
-                transform: scale(0.95);
-            }
-
-            /* Sidebar Notifications */
-            .sidebar-notifications {
-                margin: 12px 8px;
-            }
-
-            .sidebar-notification-item {
-                padding: 10px;
-            }
-
-            .sidebar-notification-text {
-                font-size: 11px;
-            }
-
-            .mobile-menu-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-
-            .card-header h2 {
-                font-size: 15px;
-            }
-
-            .form-control {
-                padding: 10px;
-            }
-        }
-
-        /* Extra Small (360px and below) */
-        @media (max-width: 360px) {
-            .header-left h1 {
-                font-size: 15px;
-            }
-
-            .stat-card {
-                padding: 12px;
-            }
-
-            .stat-content h3 {
-                font-size: 22px;
-            }
-
-            .content-card {
-                padding: 12px;
-            }
-        }
-
-        /* Landscape Orientation - Mobile */
-        @media (max-height: 600px) and (orientation: landscape) {
-            .sidebar {
-                overflow-y: auto;
-                padding: 15px;
-            }
-
-            .modal-content {
-                max-height: 95vh;
-                overflow-y: auto;
-            }
-
-            .notification-dropdown {
-                max-height: 85vh;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Landscape Tablets */
-        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            .quick-actions-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        /* Touch Device Optimizations */
-        @media (hover: none) and (pointer: coarse) {
-            /* Minimum touch target: 44x44px */
-            .nav-link,
-            .quick-action-btn,
-            .btn,
-            .action-btn,
-            .notification-btn,
-            .user-profile,
-            .toggle-btn,
-            .mobile-menu-btn {
-                min-height: 44px;
-                min-width: 44px;
-            }
-
-            /* Remove hover effects */
-            .nav-link:hover,
-            .quick-action-btn:hover,
-            .btn:hover,
-            .stat-card:hover {
-                transform: none;
-            }
-
-            /* Touch feedback */
-            .nav-link:active,
-            .quick-action-btn:active,
-            .btn:active {
-                transform: scale(0.97);
-                opacity: 0.8;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .sidebar,
-            .notification-btn,
-            .user-profile,
-            .mobile-menu-btn,
-            .quick-actions-grid,
-            .modal,
-            .notification-dropdown {
-                display: none !important;
-            }
-
-            .main-content {
-                margin-left: 0 !important;
-                padding: 0 !important;
-            }
-
-            .header {
-                border: none;
-                box-shadow: none;
-            }
-
-            .stat-card,
-            .content-card {
-                break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
-        }
-
-        /* Mobile Menu Button */
-        .mobile-menu-btn {
-            display: none;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            border: none;
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 20px;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .mobile-menu-btn:active {
-            transform: scale(0.95);
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: flex;
-            }
-        }
-
-        /* Mobile Landscape Mode */
-        @media (max-width: 896px) and (max-height: 500px) and (orientation: landscape) {
-            .sidebar {
-                width: 260px;
-            }
-
-            .main-content {
-                padding: 12px;
-            }
-
-            .header {
-                padding: 10px 15px;
-            }
-
-            .modal-content {
-                width: 90%;
-                max-height: 90vh;
-            }
-
-            .notification-dropdown {
-                max-height: 80vh;
             }
         }
 
         
         .modal {
-            display: none !important;
+            display: none;
             position: fixed;
             z-index: 2000;
             left: 0;
@@ -12060,6 +11190,10 @@
             transition: opacity 0.3s ease;
         }
 
+        .modal.show {
+            opacity: 1;
+        }
+
         .modal-content {
             animation: modalSlideIn 0.3s ease;
         }
@@ -12303,6 +11437,7 @@
     </style>
 </head>
 <body>
+    
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="#" class="logo">
@@ -12503,13 +11638,8 @@
         
         <div class="header">
             <div class="header-left">
-                <button class="mobile-menu-btn" onclick="toggleSidebar()" title="Toggle Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div>
-                    <h1>Admin Dashboard 📊</h1>
-                    <p>Welcome back, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Administrator'); ?>!</p>
-                </div>
+                <h1>Admin Dashboard 📊</h1>
+                <p>Welcome back, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Administrator'); ?>!</p>
             </div>
             <div class="header-right">
                 <div class="search-box">
@@ -13161,23 +12291,10 @@
                             </div>
                             <div class="settings-item">
                                 <div class="settings-item-info">
-                                    <div class="settings-item-label">Theme Mode</div>
-                                    <div class="settings-item-desc">Choose your preferred theme</div>
+                                    <div class="settings-item-label">Dark Mode</div>
+                                    <div class="settings-item-desc">Switch to dark theme</div>
                                 </div>
-                                <div style="display: flex; gap: 15px;">
-                                    <label style="display: flex; align-items: center; cursor: pointer;">
-                                        <input type="radio" name="theme" value="light" checked style="margin-right: 5px;">
-                                        <i class="fas fa-sun" style="margin-right: 5px;"></i> Light
-                                    </label>
-                                    <label style="display: flex; align-items: center; cursor: pointer;">
-                                        <input type="radio" name="theme" value="dark" style="margin-right: 5px;">
-                                        <i class="fas fa-moon" style="margin-right: 5px;"></i> Dark
-                                    </label>
-                                    <label style="display: flex; align-items: center; cursor: pointer;">
-                                        <input type="radio" name="theme" value="auto" style="margin-right: 5px;">
-                                        <i class="fas fa-magic" style="margin-right: 5px;"></i> Auto
-                                    </label>
-                                </div>
+                                <div class="toggle-switch"></div>
                             </div>
                             <div class="settings-item">
                                 <div class="settings-item-info">
@@ -14562,15 +13679,15 @@
     </div>
 
     <!-- Live Chat Modal -->
-    <div class="modal" id="liveChatModel" style="display: none !important;">
-        <div class="modal-content" id="liveChatModelContent" style="max-width: 900px; height: 85vh; display: none; flex-direction: column;">
+    <div class="modal" id="liveChatModal">
+        <div class="modal-content" style="max-width: 900px; height: 85vh; display: flex; flex-direction: column;">
             <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); flex-shrink: 0;">
                 <h2><i class="fas fa-comments"></i> Live Chat Support</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <span style="padding: 6px 12px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 12px;">
                         <i class="fas fa-circle" style="color: #4caf50; font-size: 8px;"></i> Online
                     </span>
-                    <button class="close-btn" onclick="closeModal('liveChatModel')">&times;</button>
+                    <button class="close-btn" onclick="closeModal('liveChatModal')">&times;</button>
                 </div>
             </div>
             <div class="modal-body" style="padding: 0; flex: 1; display: flex; flex-direction: column; overflow: hidden;">
@@ -14632,19 +13749,19 @@
                 <!-- Chat Input Area -->
                 <div style="padding: 20px; background: white; border-top: 2px solid #e0e0e0; flex-shrink: 0;">
                     <form id="chatForm" onsubmit="sendChatMessage(event)" style="display: flex; gap: 10px; align-items: flex-end;">
-                    
+                        <!-- Attachment Button -->
                         <button type="button" onclick="document.getElementById('chatFileInput').click()" style="padding: 12px; background: white; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; color: #7f8c8d;" title="Attach File">
                             <i class="fas fa-paperclip" style="font-size: 18px;"></i>
                         </button>
                         <input type="file" id="chatFileInput" style="display: none;" onchange="attachChatFile(event)">
 
-                    
+                        <!-- Message Input -->
                         <div style="flex: 1; position: relative;">
                             <textarea id="chatMessageInput" placeholder="Type your message..." 
                                       style="width: 100%; padding: 12px 45px 12px 15px; border: 2px solid #e0e0e0; border-radius: 12px; resize: none; font-size: 14px; font-family: inherit; min-height: 48px; max-height: 120px;"
                                       onkeydown="handleChatKeyPress(event)"
                                       oninput="handleChatTyping()"></textarea>
-                        
+                            <!-- Emoji Picker Button -->
                             <button type="button" onclick="toggleEmojiPicker()" style="position: absolute; right: 10px; bottom: 12px; background: none; border: none; cursor: pointer; font-size: 20px;" title="Add Emoji">
                                 😊
                             </button>
@@ -21263,78 +20380,9 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
-            
-            if (window.innerWidth <= 768) {
-                // Mobile: Toggle sidebar visibility
-                sidebar.classList.toggle('active');
-            } else {
-                // Desktop: Toggle sidebar collapse
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
-            }
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
         }
-
-        // Handle mobile sidebar with overlay
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.getElementById('mainContent');
-                
-                // Create overlay for mobile
-                const overlay = document.createElement('div');
-                overlay.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9998; display: none;';
-                overlay.id = 'sidebarOverlay';
-                document.body.appendChild(overlay);
-                
-                // Close sidebar when clicking overlay
-                overlay.addEventListener('click', function() {
-                    sidebar.classList.remove('active');
-                    overlay.style.display = 'none';
-                });
-                
-                // Show/hide overlay with sidebar
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.attributeName === 'class') {
-                            if (sidebar.classList.contains('active')) {
-                                overlay.style.display = 'block';
-                            } else {
-                                overlay.style.display = 'none';
-                            }
-                        }
-                    });
-                });
-                observer.observe(sidebar, { attributes: true });
-                
-                // Close sidebar on navigation link click (mobile)
-                const navLinks = sidebar.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        if (window.innerWidth <= 768) {
-                            sidebar.classList.remove('active');
-                            overlay.style.display = 'none';
-                        }
-                    });
-                });
-            }
-
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.getElementById('mainContent');
-                const overlay = document.getElementById('sidebarOverlay');
-                
-                if (window.innerWidth > 768) {
-                    // Desktop mode
-                    sidebar.classList.remove('active');
-                    if (overlay) overlay.style.display = 'none';
-                } else {
-                    // Mobile mode - reset collapsed state
-                    sidebar.classList.remove('collapsed');
-                    mainContent.classList.remove('expanded');
-                }
-            });
-        });
 
         
         function toggleMobileMenu() {
@@ -21345,25 +20393,19 @@
         
         function openModal(modalId) {
             console.log('openModal called with modalId:', modalId);
-            console.trace('openModal call stack:'); // Track who is calling this
-            
-            // PROTECTION: Block live chat from auto
-            if (modalId === 'liveChatModel' && !liveChatUserClicked) {
-                console.log('⚠️ Blocked auto-opening of live chat modal - user must click');
-                return;
-            }
-            
             const modal = document.getElementById(modalId);
             console.log('Modal element:', modal);
             if (modal) {
                 
-                if (modalId === 'liveChatModel') {
-                    modal.style.cssText = modal.style.cssText.replace('display: none !important;', 'display: none;');
-                }
-                
+                modal.style.display = 'flex';
+                modal.style.alignItems = 'center';
+                modal.style.justifyContent = 'center';
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
                 console.log('Modal should now be visible');
+                
+                
+                modal.style.overflow = 'auto';
             } else {
                 console.error('Modal not found:', modalId);
             }
@@ -21375,18 +20417,7 @@
                 modal.classList.remove('show');
                 modal.style.display = 'none';
                 
-                // Reset live chat flag when closing and add !important back
-                if (modalId === 'liveChatModel' && typeof liveChatUserClicked !== 'undefined') {
-                    liveChatUserClicked = false;
-                    modal.style.setProperty('display', 'none', 'important');
-                    // Also hide modal content
-                    const modalContent = document.getElementById('liveChatModelContent');
-                    if (modalContent) {
-                        modalContent.style.display = 'none';
-                    }
-                    console.log('✓ Live chat - User closed modal, flag reset, !important restored');
-                }
-                
+               
                 const openModals = document.querySelectorAll('.modal.show');
                 if (openModals.length === 0) {
                     document.body.style.overflow = 'auto';
@@ -25522,89 +24553,71 @@
             }, 3000);
         }
 
-        // Settings Modal Initialization - wrapped in DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', function() {
-            const settingsBtn = document.getElementById('settingsBtn');
-            const settingsModal = document.getElementById('settingsModal');
-            const closeButtons = document.querySelectorAll('[id^="closeSettingsBtn"]');
-            const settingsNavLinks = document.querySelectorAll('.settings-nav-link');
-            const settingsSections = document.querySelectorAll('.settings-section');
-            const toggleSwitches = document.querySelectorAll('.toggle-switch');
+    
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeButtons = document.querySelectorAll('[id^="closeSettingsBtn"]');
+        const settingsNavLinks = document.querySelectorAll('.settings-nav-link');
+        const settingsSections = document.querySelectorAll('.settings-section');
+        const toggleSwitches = document.querySelectorAll('.toggle-switch');
 
-            console.log('Settings initialization:', {
-                settingsBtn: settingsBtn,
-                settingsModal: settingsModal,
-                closeButtons: closeButtons.length,
-                navLinks: settingsNavLinks.length
+        console.log('Settings initialization:', {
+            settingsBtn: settingsBtn,
+            settingsModal: settingsModal,
+            closeButtons: closeButtons.length,
+            navLinks: settingsNavLinks.length
+        });
+
+    
+        if (settingsBtn && settingsModal) {
+            settingsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Settings button clicked - opening modal');
+                settingsModal.classList.add('show');
+                settingsBtn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('Modal opened, classes:', settingsModal.className);
             });
+            console.log('Settings click handler attached successfully');
+        } else {
+            console.error('Settings elements missing!', {btn: settingsBtn, modal: settingsModal});
+        }
 
-            // Settings button click handler
-            if (settingsBtn && settingsModal) {
-                settingsBtn.addEventListener('click', function(e) {
+        
+        function closeSettings() {
+            if (settingsModal) settingsModal.classList.remove('show');
+            if (settingsBtn) settingsBtn.classList.remove('active');
+            document.body.style.overflow = '';
+            console.log('Settings modal closed');
+        }
+
+        
+        if (closeButtons.length > 0) {
+            closeButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Settings button clicked - opening modal');
-                    
-                    // Set display first
-                    settingsModal.style.display = 'flex';
-                    
-                    // Force reflow to ensure display is applied before transition
-                    settingsModal.offsetHeight;
-                    
-                    // Then add show class for transition
-                    settingsModal.classList.add('show');
-                    settingsBtn.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                    console.log('Modal opened, classes:', settingsModal.className);
+                    closeSettings();
                 });
-                console.log('Settings click handler attached successfully');
-            } else {
-                console.error('Settings elements missing!', {btn: settingsBtn, modal: settingsModal});
-            }
+            });
+            console.log('Close buttons attached:', closeButtons.length);
+        }
 
-            // Close settings function - make it global
-            window.closeSettings = function() {
-                const settingsModal = document.getElementById('settingsModal');
-                const settingsBtn = document.getElementById('settingsBtn');
-                if (settingsModal) {
-                    settingsModal.classList.remove('show');
-                    // Wait for transition to complete before hiding
-                    setTimeout(() => {
-                        settingsModal.style.display = 'none';
-                    }, 300);
-                }
-                if (settingsBtn) settingsBtn.classList.remove('active');
-                document.body.style.overflow = '';
-                console.log('Settings modal closed');
-            }
-
-            // Close buttons
-            if (closeButtons.length > 0) {
-                closeButtons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        window.closeSettings();
-                    });
-                });
-                console.log('Close buttons attached:', closeButtons.length);
-            }
-
-            // Click outside to close
-            if (settingsModal) {
-                settingsModal.addEventListener('click', function(e) {
-                    if (e.target === settingsModal) {
-                        window.closeSettings();
-                    }
-                });
-            }
-
-            // Escape key to close
-            document.addEventListener('keydown', function(e) {
-                const modal = document.getElementById('settingsModal');
-                if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
-                    window.closeSettings();
+    
+        if (settingsModal) {
+            settingsModal.addEventListener('click', function(e) {
+                if (e.target === settingsModal) {
+                    closeSettings();
                 }
             });
+        }
+
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && settingsModal && settingsModal.classList.contains('show')) {
+                closeSettings();
+            }
+        });
 
         
         if (settingsNavLinks.length > 0) {
@@ -25689,52 +24702,51 @@
                     }
                 });
             });
-            }
+        }
 
-            console.log('Settings system fully initialized!');
+        console.log('Settings system fully initialized!');
 
-            // Admin Profile Dropdown
-            const adminProfileBtn = document.getElementById('adminProfileBtn');
-            const adminDropdown = document.getElementById('adminDropdown');
+        
+        const adminProfileBtn = document.getElementById('adminProfileBtn');
+        const adminDropdown = document.getElementById('adminDropdown');
 
-            console.log('Admin dropdown elements:', {
-                profileBtn: adminProfileBtn,
-                dropdown: adminDropdown
-            });
+        console.log('Admin dropdown elements:', {
+            profileBtn: adminProfileBtn,
+            dropdown: adminDropdown
+        });
 
-            // Admin profile button click
-            if (adminProfileBtn && adminDropdown) {
-                adminProfileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    console.log('Admin profile clicked');
-                    
-                    // Close notification dropdown if open
-                    const notificationDropdown = document.getElementById('notificationDropdown');
-                    if (notificationDropdown && notificationDropdown.classList.contains('show')) {
-                        notificationDropdown.classList.remove('show');
-                        const notificationBtn = document.getElementById('notificationBtn');
-                        if (notificationBtn) notificationBtn.classList.remove('active');
-                    }
-                    
-                    adminDropdown.classList.toggle('show');
-                    adminProfileBtn.classList.toggle('active');
-                    console.log('Admin dropdown toggled:', adminDropdown.classList.contains('show'));
-                });
-                console.log('Admin profile click handler attached');
-            } else {
-                console.error('Admin dropdown elements not found!');
-            }
-
-            // Close admin dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (adminDropdown && adminProfileBtn) {
-                    if (!e.target.closest('#adminProfileBtn') && !e.target.closest('#adminDropdown')) {
-                        adminDropdown.classList.remove('show');
-                        adminProfileBtn.classList.remove('active');
-                    }
+    
+        if (adminProfileBtn && adminDropdown) {
+            adminProfileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Admin profile clicked');
+                
+                
+                const notificationDropdown = document.getElementById('notificationDropdown');
+                if (notificationDropdown && notificationDropdown.classList.contains('show')) {
+                    notificationDropdown.classList.remove('show');
+                    const notificationBtn = document.getElementById('notificationBtn');
+                    if (notificationBtn) notificationBtn.classList.remove('active');
                 }
+                
+                adminDropdown.classList.toggle('show');
+                adminProfileBtn.classList.toggle('active');
+                console.log('Admin dropdown toggled:', adminDropdown.classList.contains('show'));
             });
-        }); // End of DOMContentLoaded for settings
+            console.log('Admin profile click handler attached');
+        } else {
+            console.error('Admin dropdown elements not found!');
+        }
+
+        
+        document.addEventListener('click', function(e) {
+            if (adminDropdown && adminProfileBtn) {
+                if (!e.target.closest('#adminProfileBtn') && !e.target.closest('#adminDropdown')) {
+                    adminDropdown.classList.remove('show');
+                    adminProfileBtn.classList.remove('active');
+                }
+            }
+        });
 
         
         window.viewProfile = function() {
@@ -25768,29 +24780,18 @@
             openModal('changePasswordModal');
         }
 
-        window.openSettings = function() { 
-            console.log('openSettings called');
+        window.openSettings = function() {
             
-            // Close admin dropdown if open
-            const adminDropdown = document.getElementById('adminDropdown');
-            const adminProfileBtn = document.getElementById('adminProfileBtn');
             if (adminDropdown) adminDropdown.classList.remove('show');
             if (adminProfileBtn) adminProfileBtn.classList.remove('active');
             
-            // Open settings modal
+            
             const settingsModal = document.getElementById('settingsModal');
             const settingsBtn = document.getElementById('settingsBtn');
-            
-            console.log('Settings elements:', { modal: settingsModal, btn: settingsBtn });
-            
             if (settingsModal) {
                 settingsModal.classList.add('show');
-                settingsModal.style.display = 'flex';
                 if (settingsBtn) settingsBtn.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                console.log('Settings modal opened successfully');
-            } else {
-                console.error('Settings modal not found!');
             }
         }
 
@@ -26390,117 +25391,16 @@
         
         let chatAttachedFile = null;
 
-        // PREVENT LIVE CHAT AUTO-OPEN - MULTIPLE LAYERS OF PROTECTION
-        let liveChatModalInitialized = false;
-        let liveChatUserClicked = false;
-        
-        function forceLiveChatClosed() {
-            const liveChatModal = document.getElementById('liveChatModel');
-            const liveChatModalContent = document.getElementById('liveChatModelContent');
-            if (liveChatModal && !liveChatUserClicked) {
-                liveChatModal.style.setProperty('display', 'none', 'important');
-                liveChatModal.classList.remove('show');
-                if (liveChatModalContent) {
-                    liveChatModalContent.style.display = 'none';
-                }
-                document.body.style.overflow = 'auto';
-                return true;
-            }
-            return false;
-        }
-        
-        // Check 1: DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', function() {
-            if (forceLiveChatClosed()) {
-                console.log('✓ Live chat modal - DOMContentLoaded check: CLOSED');
-            }
-            liveChatModalInitialized = true;
-        });
-        
-        // Check 2: Immediate timeout
-        setTimeout(function() {
-            if (forceLiveChatClosed()) {
-                console.log('✓ Live chat modal - 100ms check: CLOSED');
-            }
-        }, 100);
-        
-        // Check 3: Medium delay
-        setTimeout(function() {
-            if (forceLiveChatClosed()) {
-                console.log('✓ Live chat modal - 500ms check: CLOSED');
-            }
-        }, 500);
-        
-        // Check 4: Window load
-        window.addEventListener('load', function() {
-            if (forceLiveChatClosed()) {
-                console.log('✓ Live chat modal - Window load check: CLOSED');
-            }
-        });
-        
-        // Check 5: Final delayed check
-        setTimeout(function() {
-            if (forceLiveChatClosed()) {
-                console.log('✓ Live chat modal - 1000ms final check: CLOSED');
-            }
-        }, 1000);
-        
-        // Check 6: MutationObserver to watch for any unwanted changes
-        setTimeout(function() {
-            const liveChatModal = document.getElementById('liveChatModel');
-            if (liveChatModal) {
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                            if (!liveChatUserClicked) {
-                                // Force it closed if user hasn't clicked
-                                forceLiveChatClosed();
-                                console.log('⚠️ Live chat - Blocked unauthorized display change');
-                            }
-                        }
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                            if (!liveChatUserClicked && liveChatModal.classList.contains('show')) {
-                                liveChatModal.classList.remove('show');
-                                forceLiveChatClosed();
-                                console.log('⚠️ Live chat - Removed unauthorized show class');
-                            }
-                        }
-                    });
-                });
-                
-                observer.observe(liveChatModal, {
-                    attributes: true,
-                    attributeFilter: ['style', 'class']
-                });
-                
-                console.log('✓ Live chat - MutationObserver active, monitoring for unauthorized changes');
-            }
-        }, 100);
-    
         window.openLiveChat = function() {
-            console.log('✓ Live chat - User clicked to OPEN');
-            liveChatUserClicked = true; // Set flag to allow opening
-            
-            const modal = document.getElementById('liveChatModel');
-            const modalContent = document.getElementById('liveChatModelContent');
-            console.log('liveChatModel element:', modal);
+            console.log('openLiveChat called');
+            const modal = document.getElementById('liveChatModal');
+            console.log('liveChatModal element:', modal);
             if (!modal) {
                 console.error('Live chat modal not found!');
                 alert('Live chat modal not found. Please refresh the page.');
-                liveChatUserClicked = false;
                 return;
             }
-            
-            // Remove the !important inline style before opening
-            modal.style.cssText = modal.style.cssText.replace('display: none !important;', '');
-            
-            // Show modal content with flex display
-            if (modalContent) {
-                modalContent.style.display = 'flex';
-            }
-            
-            openModal('liveChatModel');
-            
+            openModal('liveChatModal');
             // Hide quick replies 
             setTimeout(() => {
                 const quickRepliesBar = document.getElementById('quickRepliesBar');
@@ -26521,18 +25421,18 @@
             const quickRepliesBar = document.getElementById('quickRepliesBar');
             if (quickRepliesBar) quickRepliesBar.style.display = 'none';
             
-            
+            // Add user message
             addChatMessage(message, 'user', chatAttachedFile);
             
-            
+            // Clear input and file
             messageInput.value = '';
             chatAttachedFile = null;
             document.getElementById('chatFilePreview').style.display = 'none';
             
-        
+            // Show typing indicator
             showTypingIndicator();
             
-            
+            // Simulate agent response after delay
             setTimeout(() => {
                 hideTypingIndicator();
                 simulateAgentResponse(message);
@@ -26540,16 +25440,16 @@
         }
 
         function sendQuickReply(message) {
-            
+            // Add user message
             addChatMessage(message, 'user', null);
             
-            
+            // Hide quick replies
             document.getElementById('quickRepliesBar').style.display = 'none';
             
-            
+            // Show typing indicator
             showTypingIndicator();
             
-            
+            // Simulate agent response
             setTimeout(() => {
                 hideTypingIndicator();
                 simulateAgentResponse(message);
@@ -26686,12 +25586,12 @@
         }
 
         function startVideoCall() {
-            showToast('📹 Video Call - Video call feature will be available soon!', 'info');
+            showNotification('📹 Video Call', 'Video call feature will be available soon!', 'info');
         }
 
-        
+        // ============================================
         // Video Upload Functions
-        
+        // ============================================
         let selectedVideoFile = null;
 
         function openUploadVideoModal() {
@@ -26740,14 +25640,14 @@
             // Validate file type
             const allowedTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'];
             if (!allowedTypes.includes(file.type)) {
-                showToast('❌ Invalid File - Please upload a valid video file (MP4, WebM, OGG, MOV)', 'error');
+                showNotification('Invalid File', 'Please upload a valid video file (MP4, WebM, OGG, MOV)', 'error');
                 return;
             }
             
             // Validate file size (max 500MB)
             const maxSize = 500 * 1024 * 1024;
             if (file.size > maxSize) {
-                showToast('❌ File Too Large - Video file must be less than 500MB', 'error');
+                showNotification('File Too Large', 'Video file must be less than 500MB', 'error');
                 return;
             }
             
@@ -26793,7 +25693,7 @@
             event.preventDefault();
             
             if (!selectedVideoFile) {
-                showToast('❌ No Video Selected - Please select a video file to upload', 'error');
+                showNotification('No Video Selected', 'Please select a video file to upload', 'error');
                 return;
             }
             
@@ -26802,7 +25702,7 @@
             const description = document.getElementById('videoDescription').value;
             
             if (!title || !category) {
-                showToast('❌ Missing Information - Please fill in all required fields', 'error');
+                showNotification('Missing Information', 'Please fill in all required fields', 'error');
                 return;
             }
             
@@ -26822,7 +25722,7 @@
                     
                     // Show success message
                     setTimeout(() => {
-                        showToast('✅ Upload Successful - Video tutorial has been uploaded successfully!', 'success');
+                        showNotification('✅ Upload Successful', 'Video tutorial has been uploaded successfully!', 'success');
                         closeModal('uploadVideoModal');
                         resetVideoUploadForm();
                     }, 500);
@@ -26832,7 +25732,19 @@
                 progressText.textContent = Math.floor(progress) + '%';
             }, 300);
             
-            
+            // In production, you would use FormData and AJAX to upload the file
+            // Example:
+            // const formData = new FormData();
+            // formData.append('video', selectedVideoFile);
+            // formData.append('title', title);
+            // formData.append('category', category);
+            // formData.append('description', description);
+            // 
+            // fetch('upload_video.php', {
+            //     method: 'POST',
+            //     body: formData
+            // }).then(response => response.json())
+            //   .then(data => { /* handle response */ });
         }
 
         function formatFileSize(bytes) {
@@ -26843,8 +25755,9 @@
             return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
         }
 
+        // ============================================
         // Help & Support Functions
-        
+        // ============================================
         function toggleFAQ(element) {
             const answer = element.nextElementSibling;
             const icon = element.querySelector('i');
@@ -26853,7 +25766,7 @@
                 answer.style.maxHeight = '0px';
                 icon.style.transform = 'rotate(0deg)';
             } else {
-                
+                // Close all other FAQs
                 document.querySelectorAll('.faq-answer').forEach(ans => {
                     ans.style.maxHeight = '0px';
                 });
@@ -26861,7 +25774,7 @@
                     ico.style.transform = 'rotate(0deg)';
                 });
                 
-                
+                // Open this FAQ
                 answer.style.maxHeight = answer.scrollHeight + 'px';
                 icon.style.transform = 'rotate(180deg)';
             }
@@ -27026,9 +25939,9 @@
             });
         }
 
-        
+        // ============================================
         // Settings Functions
-        
+        // ============================================
         
         // General Settings Functions
         window.saveGeneralSettings = function() {
@@ -27053,16 +25966,21 @@
                 };
                 
                 console.log('Saving general settings:', settings);
-                showToast('✅ Settings Saved - General settings have been saved successfully!', 'success');
+                showNotification('✅ Settings Saved', 'General settings have been saved successfully!', 'success');
                 
                 // Store in localStorage for demo
                 localStorage.setItem('generalSettings', JSON.stringify(settings));
                 
-               
+                // In production: Send to backend
+                // fetch('save_general_settings.php', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(settings)
+                // }).then(response => response.json()).then(data => { /* handle response */ });
                 
             } catch (error) {
                 console.error('Error saving general settings:', error);
-                showToast('❌ Error - Failed to save settings. Please try again.', 'error');
+                showNotification('❌ Error', 'Failed to save settings. Please try again.', 'error');
             }
         }
 
@@ -27084,19 +26002,19 @@
                     const toggles = generalSection.querySelectorAll('.toggle-switch');
                     toggles.forEach((toggle, index) => {
                         if (index < 2) {
-                            toggle.classList.add('active'); 
+                            toggle.classList.add('active'); // Auto-refresh and animations ON
                         } else {
-                            toggle.classList.remove('active'); 
+                            toggle.classList.remove('active'); // Compact mode OFF
                         }
                     });
                     
                     localStorage.removeItem('generalSettings');
-                    showToast('🔄 Settings Reset - General settings have been reset to defaults', 'success');
+                    showNotification('🔄 Settings Reset', 'General settings have been reset to defaults', 'success');
                     console.log('General settings reset to default');
                     
                 } catch (error) {
                     console.error('Error resetting settings:', error);
-                    showToast('❌ Error - Failed to reset settings', 'error');
+                    showNotification('❌ Error', 'Failed to reset settings', 'error');
                 }
             }
         }
@@ -27116,30 +26034,35 @@
                 const phone = inputs[2]?.value?.trim();
                 
                 if (!fullName || !email) {
-                    showToast('⚠️ Validation Error - Please fill in all required fields (Name and Email)', 'error');
+                    showNotification('⚠️ Validation Error', 'Please fill in all required fields (Name and Email)', 'error');
                     return;
                 }
                 
                 // Email validation
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
-                    showToast('⚠️ Invalid Email - Please enter a valid email address', 'error');
+                    showNotification('⚠️ Invalid Email', 'Please enter a valid email address', 'error');
                     return;
                 }
                 
                 const profileData = { fullName, email, phone };
                 console.log('Updating profile:', profileData);
                 
-                showToast('✅ Profile Updated - Your profile information has been updated successfully!', 'success');
+                showNotification('✅ Profile Updated', 'Your profile information has been updated successfully!', 'success');
                 
                 // Store in localStorage
                 localStorage.setItem('profileData', JSON.stringify(profileData));
                 
-            
+                // In production: Send to backend
+                // fetch('update_profile.php', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(profileData)
+                // });
                 
             } catch (error) {
                 console.error('Error updating profile:', error);
-                showToast('❌ Error - Failed to update profile', 'error');
+                showNotification('❌ Error', 'Failed to update profile', 'error');
             }
         }
 
@@ -27158,7 +26081,7 @@
                             inputs[2].value = data.phone || '';
                         }
                     }
-                    showToast('❌ Changes Discarded - Profile changes have been cancelled', 'info');
+                    showNotification('❌ Changes Discarded', 'Profile changes have been cancelled', 'info');
                 } catch (error) {
                     console.error('Error cancelling profile edit:', error);
                 }
@@ -27185,13 +26108,18 @@
                 console.log('Saving security settings:', securitySettings);
                 localStorage.setItem('securitySettings', JSON.stringify(securitySettings));
                 
-                showToast('✅ Security Updated - Security settings have been saved successfully!', 'success');
+                showNotification('✅ Security Updated', 'Security settings have been saved successfully!', 'success');
                 
-             
+                // In production: Update backend
+                // fetch('save_security_settings.php', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(securitySettings)
+                // });
                 
             } catch (error) {
                 console.error('Error saving security settings:', error);
-                showToast('❌ Error - Failed to save security settings', 'error');
+                showNotification('❌ Error', 'Failed to save security settings', 'error');
             }
         }
 
@@ -27201,17 +26129,23 @@
                     console.log('Logging out from all devices');
                     
                     // Show progress
-                    showToast('🔐 Processing - Logging out from all other devices...', 'info');
+                    showNotification('🔐 Processing', 'Logging out from all other devices...', 'info');
                     
                     setTimeout(() => {
-                        showToast('✅ Success - Successfully logged out from all other devices', 'success');
+                        showNotification('✅ Success', 'Successfully logged out from all other devices', 'success');
                         
-                       
+                        // In production: Call backend to invalidate all other sessions
+                        // fetch('logout_all_devices.php', {
+                        //     method: 'POST',
+                        //     headers: { 'Content-Type': 'application/json' }
+                        // }).then(response => response.json()).then(data => {
+                        //     showNotification('✅ Success', data.message, 'success');
+                        // });
                     }, 1500);
                     
                 } catch (error) {
                     console.error('Error logging out devices:', error);
-                    showToast('❌ Error - Failed to logout devices', 'error');
+                    showNotification('❌ Error', 'Failed to logout devices', 'error');
                 }
             }
         }
@@ -27237,13 +26171,18 @@
                 console.log('Saving notification preferences:', preferences);
                 localStorage.setItem('notificationPreferences', JSON.stringify(preferences));
                 
-                showToast('✅ Preferences Saved - Notification preferences have been updated!', 'success');
+                showNotification('✅ Preferences Saved', 'Notification preferences have been updated!', 'success');
                 
-               
+                // In production: Save to backend
+                // fetch('save_notification_preferences.php', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(preferences)
+                // });
                 
             } catch (error) {
                 console.error('Error saving notification preferences:', error);
-                showToast('❌ Error - Failed to save preferences', 'error');
+                showNotification('❌ Error', 'Failed to save preferences', 'error');
             }
         }
 
@@ -27252,7 +26191,7 @@
                 console.log('Testing notification');
                 
                 // Show in-app notification
-                showToast('🔔 Test Notification - This is a test notification! If you can see this, notifications are working correctly.', 'info');
+                showNotification('🔔 Test Notification', 'This is a test notification! If you can see this, notifications are working correctly.', 'info');
                 
                 // Request browser notification permission if not granted
                 if ('Notification' in window) {
@@ -27298,45 +26237,31 @@
                 
                 console.log('Applying theme:', selectedTheme);
                 
-                
-                if (selectedTheme === 'auto') {
-                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        selectedTheme = 'dark';
-                    } else {
-                        selectedTheme = 'light';
-                    }
-                }
-                
                 // Apply theme to document
                 document.body.setAttribute('data-theme', selectedTheme);
                 document.documentElement.setAttribute('data-theme', selectedTheme);
+                localStorage.setItem('theme', selectedTheme);
                 
-            
+                // Update colors based on theme
                 if (selectedTheme === 'dark') {
-                    document.body.style.backgroundColor = '#1a1a2e';
-                    document.body.style.color = '#eaeaea';
-                    document.body.classList.add('dark-mode');
-                    document.body.classList.remove('light-mode');
-                } else {
-                    document.body.style.backgroundColor = '#f5f6fa';
-                    document.body.style.color = '#2c3e50';
-                    document.body.classList.add('light-mode');
-                    document.body.classList.remove('dark-mode');
+                    document.body.style.backgroundColor = '#1a1a1a';
+                    document.body.style.color = '#ffffff';
+                } else if (selectedTheme === 'light') {
+                    document.body.style.backgroundColor = '#ffffff';
+                    document.body.style.color = '#000000';
                 }
                 
-                //  localStorage
-                const themeRadio = appearanceSection.querySelector('input[name="theme"]:checked');
-                const savedThemeValue = themeRadio ? themeRadio.value : 'light';
-                localStorage.setItem('theme', savedThemeValue);
-                localStorage.setItem('appliedTheme', selectedTheme);
+                showNotification('🎨 Theme Applied', `${selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} theme has been applied successfully!`, 'success');
                 
-                showToast('🎨 Theme Applied - ' + selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1) + ' theme applied successfully!', 'success');
-                
-             
+                // In production: Save to backend
+                // fetch('save_theme.php', {
+                //     method: 'POST',
+                //     body: JSON.stringify({ theme: selectedTheme })
+                // });
                 
             } catch (error) {
                 console.error('Error applying theme:', error);
-                showToast('❌ Error - Failed to apply theme', 'error');
+                showNotification('❌ Error', 'Failed to apply theme', 'error');
             }
         }
 
@@ -27354,49 +26279,31 @@
                     }
                 });
                 
-                // Handle auto theme
-                if (selectedTheme === 'auto') {
-                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        selectedTheme = 'dark';
-                    } else {
-                        selectedTheme = 'light';
-                    }
-                }
-                
                 console.log('Previewing theme:', selectedTheme);
-                
-                // Store original theme
-                const originalBgColor = document.body.style.backgroundColor;
-                const originalColor = document.body.style.color;
-                const originalTheme = document.body.getAttribute('data-theme');
                 
                 // Temporarily apply theme
                 document.body.setAttribute('data-theme-preview', selectedTheme);
                 
                 if (selectedTheme === 'dark') {
-                    document.body.style.backgroundColor = '#1a1a2e';
-                    document.body.style.color = '#eaeaea';
-                } else {
-                    document.body.style.backgroundColor = '#f5f6fa';
-                    document.body.style.color = '#2c3e50';
+                    document.body.style.backgroundColor = '#1a1a1a';
+                    document.body.style.color = '#ffffff';
+                } else if (selectedTheme === 'light') {
+                    document.body.style.backgroundColor = '#ffffff';
+                    document.body.style.color = '#000000';
                 }
                 
-                showToast('👁️ Preview - Previewing ' + selectedTheme + ' theme for 5 seconds...', 'info');
+                showNotification('👁️ Preview Mode', `Previewing ${selectedTheme} theme. Click "Apply Theme" to save permanently.`, 'info');
                 
                 // Reset after 5 seconds
                 setTimeout(() => {
-                    document.body.style.backgroundColor = originalBgColor;
-                    document.body.style.color = originalColor;
-                    if (originalTheme) {
-                        document.body.setAttribute('data-theme', originalTheme);
-                    }
+                    const savedTheme = localStorage.getItem('theme') || 'light';
+                    document.body.setAttribute('data-theme', savedTheme);
                     document.body.removeAttribute('data-theme-preview');
-                    console.log('Preview ended, reverted to original theme');
+                    showNotification('ℹ️ Preview Ended', 'Reverted to saved theme. Apply to make changes permanent.', 'info');
                 }, 5000);
                 
             } catch (error) {
                 console.error('Error previewing theme:', error);
-                showToast('❌ Error - Failed to preview theme', 'error');
             }
         }
 
@@ -27420,13 +26327,18 @@
                 console.log('Saving system settings:', systemSettings);
                 localStorage.setItem('systemSettings', JSON.stringify(systemSettings));
                 
-                showToast('✅ System Settings Saved - System configuration has been updated successfully!', 'success');
+                showNotification('✅ System Settings Saved', 'System configuration has been updated successfully!', 'success');
                 
-                
+                // In production: Update backend
+                // fetch('save_system_settings.php', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(systemSettings)
+                // });
                 
             } catch (error) {
                 console.error('Error saving system settings:', error);
-                showToast('❌ Error - Failed to save system settings', 'error');
+                showNotification('❌ Error', 'Failed to save system settings', 'error');
             }
         }
 
@@ -27435,18 +26347,25 @@
                 if (confirm('⚠️ FINAL CONFIRMATION: Please confirm system restart')) {
                     try {
                         console.log('System restart initiated');
-                        showToast('🔄 System Restarting - System will restart in 10 seconds...', 'warning');
+                        showNotification('🔄 System Restarting', 'System will restart in 10 seconds...', 'warning');
                         
                         let countdown = 10;
                         const countdownInterval = setInterval(() => {
                             countdown--;
                             if (countdown > 0) {
-                                showToast('⏱️ Restarting - System restart in ' + countdown + ' seconds...', 'warning');
+                                showNotification('⏱️ Restarting', `System restart in ${countdown} seconds...`, 'warning');
                             } else {
                                 clearInterval(countdownInterval);
-                                showToast('🔄 Restarting Now - System is restarting...', 'info');
+                                showNotification('🔄 Restarting Now', 'System is restarting...', 'info');
                                 
+                                // In production: Call backend to restart services
+                                // fetch('restart_system.php', {
+                                //     method: 'POST'
+                                // }).then(() => {
+                                //     setTimeout(() => location.reload(), 2000);
+                                // });
                                 
+                                // For demo: just reload after 2 seconds
                                 setTimeout(() => {
                                     location.reload();
                                 }, 2000);
@@ -27455,7 +26374,7 @@
                         
                     } catch (error) {
                         console.error('Error restarting system:', error);
-                        showToast('❌ Error - Failed to restart system', 'error');
+                        showNotification('❌ Error', 'Failed to restart system', 'error');
                     }
                 }
             }
@@ -27465,22 +26384,23 @@
         window.downloadBackup = function() {
             try {
                 console.log('Backup download initiated');
-                showToast('📥 Generating Backup - Creating backup file... This may take a few minutes.', 'info');
+                showNotification('📥 Generating Backup', 'Creating backup file... This may take a few minutes.', 'info');
                 
-            
+                // Simulate backup creation with progress
                 let progress = 0;
                 const progressInterval = setInterval(() => {
                     progress += 10;
                     if (progress <= 100) {
-                        showToast('📦 Creating Backup - Progress: ' + progress + '%', 'info');
+                        showNotification('📦 Creating Backup', `Progress: ${progress}%`, 'info');
                     } else {
                         clearInterval(progressInterval);
                         const filename = `education_portal_backup_${new Date().toISOString().split('T')[0]}_${Date.now()}.sql`;
                         
-                        showToast('✅ Backup Ready - Backup file is ready for download!', 'success');
+                        showNotification('✅ Backup Ready', 'Backup file is ready for download!', 'success');
                         console.log('Downloading:', filename);
                         
-                        
+                        // In production: Trigger actual file download
+                        // window.location.href = 'download_backup.php?filename=' + filename;
                         
                         // For demo: create a download link
                         const dummyData = '-- Education Portal Database Backup\n-- Generated: ' + new Date().toISOString() + '\n-- Tables: users, courses, students, etc.';
@@ -27496,7 +26416,7 @@
                 
             } catch (error) {
                 console.error('Error downloading backup:', error);
-                showToast('❌ Error - Failed to create backup', 'error');
+                showNotification('❌ Error', 'Failed to create backup', 'error');
             }
         }
 
@@ -27504,30 +26424,38 @@
             if (confirm('⚠️ This will permanently delete all backups older than 30 days.\n\nThis action cannot be undone. Continue?')) {
                 try {
                     console.log('Deleting old backups');
-                    showToast('🗑️ Deleting Old Backups - Removing old backup files...', 'info');
+                    showNotification('🗑️ Deleting Old Backups', 'Removing old backup files...', 'info');
                     
                     setTimeout(() => {
                         const deletedCount = Math.floor(Math.random() * 10) + 1;
                         const freedSpace = (Math.random() * 500 + 100).toFixed(2);
                         
-                        showToast('✅ Cleanup Complete - Deleted ' + deletedCount + ' old backups. Freed ' + freedSpace + ' MB of space.', 'success');
+                        showNotification('✅ Cleanup Complete', `Deleted ${deletedCount} old backups. Freed ${freedSpace} MB of space.`, 'success');
                         console.log(`Deleted ${deletedCount} backups, freed ${freedSpace} MB`);
                         
+                        // In production: Call backend to delete old files
+                        // fetch('delete_old_backups.php', {
+                        //     method: 'POST',
+                        //     headers: { 'Content-Type': 'application/json' },
+                        //     body: JSON.stringify({ days: 30 })
+                        // }).then(response => response.json()).then(data => {
+                        //     showNotification('✅ Success', `Deleted ${data.count} backups`, 'success');
+                        // });
                         
                     }, 2000);
                     
                 } catch (error) {
                     console.error('Error deleting backups:', error);
-                    showToast('❌ Error - Failed to delete old backups', 'error');
+                    showNotification('❌ Error', 'Failed to delete old backups', 'error');
                 }
             }
         }
 
-        // Functions
+        // About Section Functions
         window.checkForUpdates = function() {
             try {
                 console.log('Checking for updates');
-                showToast('🔍 Checking for Updates - Searching for available updates...', 'info');
+                showNotification('🔍 Checking for Updates', 'Searching for available updates...', 'info');
                 
                 setTimeout(() => {
                     // Simulate random update check
@@ -27536,12 +26464,12 @@
                     const newVersion = '2.1.0';
                     
                     if (hasUpdate) {
-                        showToast('🆕 Update Available! - Version ' + newVersion + ' is available! Current: ' + currentVersion + '. Click to download and install.', 'success');
+                        showNotification('🆕 Update Available!', `Version ${newVersion} is available! Current: ${currentVersion}. Click to download and install.`, 'success');
                         console.log(`Update available: ${currentVersion} -> ${newVersion}`);
                         
                       
                     } else {
-                        showToast('✅ Up to Date - You are running the latest version (' + currentVersion + ')!', 'success');
+                        showNotification('✅ Up to Date', `You are running the latest version (${currentVersion})!`, 'success');
                         console.log('System is up to date');
                     }
                     
@@ -27551,14 +26479,14 @@
                 
             } catch (error) {
                 console.error('Error checking for updates:', error);
-                showToast('❌ Error - Failed to check for updates', 'error');
+                showNotification('❌ Error', 'Failed to check for updates', 'error');
             }
         }
 
         window.reportIssue = function() {
             try {
                 console.log('Report issue clicked');
-                showToast('📝 Report Issue - Opening issue report form...', 'info');
+                showNotification('📝 Report Issue', 'Opening issue report form...', 'info');
                 
                 // Close settings and open feedback modal
                 const settingsModal = document.getElementById('settingsModal');
@@ -27573,14 +26501,14 @@
                 
             } catch (error) {
                 console.error('Error reporting issue:', error);
-                showToast('❌ Error - Failed to open issue report', 'error');
+                showNotification('❌ Error', 'Failed to open issue report', 'error');
             }
         }
 
         window.viewLicense = function() {
             try {
                 console.log('View license clicked');
-                showToast('📄 License Information - Opening license details...', 'info');
+                showNotification('📄 License Information', 'Opening license details...', 'info');
                 
                 const licenseModal = document.createElement('div');
                 licenseModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;';
@@ -27605,90 +26533,55 @@
                 
             } catch (error) {
                 console.error('Error viewing license:', error);
-                showToast('❌ Error - Failed to display license', 'error');
+                showNotification('❌ Error', 'Failed to display license', 'error');
             }
         }
 
         window.openDocs = function() {
             try {
                 console.log('Open docs clicked');
-                showToast('📚 Opening Documentation - Redirecting to documentation...', 'info');
+                showNotification('📚 Opening Documentation', 'Redirecting to documentation...', 'info');
                 
-              
+                // In production: Open actual documentation URL
+                // window.open('https://docs.educationportal.com', '_blank');
+                
+                // For demo: show notification
                 setTimeout(() => {
-                    showToast('📖 Documentation - Documentation would open in a new tab. URL: https://docs.educationportal.com', 'info');
+                    showNotification('📖 Documentation', 'Documentation would open in a new tab. URL: https://docs.educationportal.com', 'info');
                 }, 1000);
                 
             } catch (error) {
                 console.error('Error opening docs:', error);
-                showToast('❌ Error - Failed to open documentation', 'error');
+                showNotification('❌ Error', 'Failed to open documentation', 'error');
             }
         }
 
         window.contactSupport = function() {
             try {
                 console.log('Contact support clicked');
-                showToast('💬 Contact Support - Opening support channels...', 'info');
+                showNotification('💬 Contact Support', 'Opening support channels...', 'info');
                 
-                
+                // Close settings modal
                 const settingsModal = document.getElementById('settingsModal');
                 if (settingsModal) {
                     settingsModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
                 }
                 
-        
+                // Open live chat after brief delay
                 setTimeout(() => {
                     if (typeof window.openLiveChat === 'function') {
                         openLiveChat();
                     } else {
-                        showToast('💬 Live Chat - Live chat will be available shortly', 'info');
+                        showNotification('💬 Live Chat', 'Live chat will be available shortly', 'info');
                     }
                 }, 300);
                 
             } catch (error) {
                 console.error('Error contacting support:', error);
-                showToast('❌ Error - Failed to open support', 'error');
+                showNotification('❌ Error', 'Failed to open support', 'error');
             }
         }
-
-        
-        (function loadSavedTheme() {
-            try {
-                const savedTheme = localStorage.getItem('theme') || 'light';
-                const appliedTheme = localStorage.getItem('appliedTheme') || 'light';
-                
-                console.log('Loading saved theme:', savedTheme, 'Applied:', appliedTheme);
-                
-        
-                setTimeout(() => {
-                    const themeRadio = document.querySelector(`input[name="theme"][value="${savedTheme}"]`);
-                    if (themeRadio) {
-                        themeRadio.checked = true;
-                    }
-                }, 100);
-                
-                // Apply the theme
-                document.body.setAttribute('data-theme', appliedTheme);
-                document.documentElement.setAttribute('data-theme', appliedTheme);
-                
-                if (appliedTheme === 'dark') {
-                    document.body.style.backgroundColor = '#1a1a2e';
-                    document.body.style.color = '#eaeaea';
-                    document.body.classList.add('dark-mode');
-                    document.body.classList.remove('light-mode');
-                } else {
-                    document.body.style.backgroundColor = '#f5f6fa';
-                    document.body.style.color = '#2c3e50';
-                    document.body.classList.add('light-mode');
-                    document.body.classList.remove('dark-mode');
-                }
-                
-                console.log('Theme loaded successfully');
-            } catch (error) {
-                console.error('Error loading saved theme:', error);
-            }
-        })();
 
         // Student Data Management
         function generateStudentData(count) {
@@ -27700,7 +26593,7 @@
             showToast(`Generated ${count} student records for pagination demo`, 'info');
         }
 
-        
+        // Export Students Function
         function exportStudents() {
             const format = prompt('Export format:\n1. Excel (XLSX)\n2. CSV\n3. PDF\n\nEnter number (1-3):', '1');
             

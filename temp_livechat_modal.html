@@ -1,0 +1,371 @@
+<div class="modal" id="liveChatModal" style="display: none">
+  <div
+    class="modal-content"
+    style="
+      max-width: 900px;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+    "
+  >
+    <div
+      class="modal-header"
+      style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        flex-shrink: 0;
+      "
+    >
+      <h2><i class="fas fa-comments"></i> Live Chat Support</h2>
+      <div style="display: flex; gap: 10px; align-items: center">
+        <span
+          style="
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+          "
+        >
+          <i class="fas fa-circle" style="color: #4caf50; font-size: 8px"></i>
+          Online
+        </span>
+        <button class="close-btn" onclick="closeModal('liveChatModal')">
+          &times;
+        </button>
+      </div>
+    </div>
+    <div
+      class="modal-body"
+      style="
+        padding: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      "
+    >
+      <div
+        style="
+          padding: 15px 20px;
+          background: #f8f9fa;
+          border-bottom: 2px solid #e0e0e0;
+          flex-shrink: 0;
+        "
+      >
+        <div style="display: flex; align-items: center; gap: 15px">
+          <div
+            style="
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: 600;
+              font-size: 20px;
+            "
+          >
+            SA
+          </div>
+          <div style="flex: 1">
+            <h4 style="margin: 0 0 4px 0; color: #2c3e50">Support Agent</h4>
+            <p style="margin: 0; color: #7f8c8d; font-size: 13px">
+              <i
+                class="fas fa-circle"
+                style="color: #4caf50; font-size: 8px"
+              ></i>
+              Online - Typically replies in minutes
+            </p>
+          </div>
+          <button
+            onclick="startVideoCall()"
+            style="
+              padding: 8px 16px;
+              background: white;
+              border: 2px solid #667eea;
+              color: #667eea;
+              border-radius: 8px;
+              cursor: pointer;
+              font-weight: 600;
+            "
+          >
+            <i class="fas fa-video"></i> Video Call
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="chatMessagesContainer"
+        style="flex: 1; overflow-y: auto; padding: 20px; background: #ffffff"
+      >
+        <div style="text-align: center; margin-bottom: 30px">
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              margin: 0 auto 15px;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <i class="fas fa-headset" style="font-size: 36px; color: white"></i>
+          </div>
+          <h3 style="margin: 0 0 8px 0; color: #2c3e50">
+            Welcome to Live Support!
+          </h3>
+          <p style="margin: 0; color: #7f8c8d; font-size: 14px">
+            Our team is here to help you. Start typing below to begin.
+          </p>
+        </div>
+
+        <div id="chatMessages"></div>
+
+        <div id="typingIndicator" style="display: none; margin: 15px 0">
+          <div style="display: flex; align-items: flex-start; gap: 10px">
+            <div
+              style="
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                flex-shrink: 0;
+              "
+            ></div>
+            <div
+              style="
+                background: #f0f0f0;
+                padding: 12px 18px;
+                border-radius: 18px;
+                border-top-left-radius: 4px;
+              "
+            >
+              <div class="typing-dots">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="quickRepliesBar"
+        style="
+          padding: 12px 20px;
+          background: #f8f9fa;
+          border-top: 1px solid #e0e0e0;
+          flex-shrink: 0;
+        "
+      >
+        <div style="display: flex; gap: 8px; overflow-x: auto">
+          <button
+            onclick="sendQuickReply('I need help with user management')"
+            class="quick-reply-btn"
+          >
+            👥 User Management
+          </button>
+          <button
+            onclick="sendQuickReply('System is running slow')"
+            class="quick-reply-btn"
+          >
+            🐌 Performance Issue
+          </button>
+          <button
+            onclick="sendQuickReply('How do I reset password?')"
+            class="quick-reply-btn"
+          >
+            🔒 Password Reset
+          </button>
+          <button
+            onclick="sendQuickReply('I want to export reports')"
+            class="quick-reply-btn"
+          >
+            📊 Export Reports
+          </button>
+        </div>
+      </div>
+
+      <div
+        style="
+          padding: 20px;
+          background: white;
+          border-top: 2px solid #e0e0e0;
+          flex-shrink: 0;
+        "
+      >
+        <form
+          id="chatForm"
+          onsubmit="sendChatMessage(event)"
+          style="display: flex; gap: 10px; align-items: flex-end"
+        >
+          <!-- Attachment Button -->
+          <button
+            type="button"
+            onclick="document.getElementById('chatFileInput').click()"
+            style="
+              padding: 12px;
+              background: white;
+              border: 2px solid #e0e0e0;
+              border-radius: 8px;
+              cursor: pointer;
+              color: #7f8c8d;
+            "
+            title="Attach File"
+          >
+            <i class="fas fa-paperclip" style="font-size: 18px"></i>
+          </button>
+          <input
+            type="file"
+            id="chatFileInput"
+            style="display: none"
+            onchange="attachChatFile(event)"
+          />
+
+          <div style="flex: 1; position: relative">
+            <textarea
+              id="chatMessageInput"
+              placeholder="Type your message..."
+              style="
+                width: 100%;
+                padding: 12px 45px 12px 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                resize: none;
+                font-size: 14px;
+                font-family: inherit;
+                min-height: 48px;
+                max-height: 120px;
+              "
+              onkeydown="handleChatKeyPress(event)"
+              oninput="handleChatTyping()"
+            ></textarea>
+
+            <button
+              type="button"
+              onclick="toggleEmojiPicker()"
+              style="
+                position: absolute;
+                right: 10px;
+                bottom: 12px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 20px;
+              "
+              title="Add Emoji"
+            >
+              😊
+            </button>
+
+            <div
+              id="emojiPicker"
+              style="
+                display: none;
+                position: absolute;
+                bottom: 100%;
+                right: 0;
+                background: white;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                padding: 15px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                margin-bottom: 10px;
+                width: 300px;
+              "
+            >
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(8, 1fr);
+                  gap: 8px;
+                  max-height: 200px;
+                  overflow-y: auto;
+                "
+              >
+                <span class="emoji-btn" onclick="insertEmoji('😊')">😊</span>
+                <span class="emoji-btn" onclick="insertEmoji('😂')">😂</span>
+                <span class="emoji-btn" onclick="insertEmoji('👍')">👍</span>
+                <span class="emoji-btn" onclick="insertEmoji('❤️')">❤️</span>
+                <span class="emoji-btn" onclick="insertEmoji('😍')">😍</span>
+                <span class="emoji-btn" onclick="insertEmoji('🎉')">🎉</span>
+                <span class="emoji-btn" onclick="insertEmoji('👏')">👏</span>
+                <span class="emoji-btn" onclick="insertEmoji('🙏')">🙏</span>
+                <span class="emoji-btn" onclick="insertEmoji('💯')">💯</span>
+                <span class="emoji-btn" onclick="insertEmoji('🔥')">🔥</span>
+                <span class="emoji-btn" onclick="insertEmoji('✨')">✨</span>
+                <span class="emoji-btn" onclick="insertEmoji('💪')">💪</span>
+                <span class="emoji-btn" onclick="insertEmoji('🤔')">🤔</span>
+                <span class="emoji-btn" onclick="insertEmoji('😅')">😅</span>
+                <span class="emoji-btn" onclick="insertEmoji('😎')">😎</span>
+                <span class="emoji-btn" onclick="insertEmoji('🚀')">🚀</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            style="
+              padding: 12px 24px;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              font-weight: 600;
+              white-space: nowrap;
+            "
+          >
+            <i class="fas fa-paper-plane"></i> Send
+          </button>
+        </form>
+
+        <div id="chatFilePreview" style="display: none; margin-top: 10px">
+          <div
+            style="
+              padding: 12px;
+              background: #f0f0f0;
+              border-radius: 8px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 10px">
+              <i
+                class="fas fa-file"
+                style="color: #667eea; font-size: 20px"
+              ></i>
+              <div>
+                <p
+                  id="chatFileName"
+                  style="
+                    margin: 0;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    font-size: 14px;
+                  "
+                ></p>
+                <small id="chatFileSize" style="color: #7f8c8d"></small>
+              </div>
+            </div>
+            <button
+              onclick="removeChatFile()"
+              style="
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #e74c3c;
+                font-size: 18px;
+              "
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
