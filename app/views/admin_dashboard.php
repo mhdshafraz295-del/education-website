@@ -12372,7 +12372,7 @@
                
                
                 <li class="nav-item">
-                    <a href="/logout.php" class="nav-link">
+                    <a href="/education_site/app/views/login.php" class="nav-link">
                         <i class="fas fa-sign-out-alt"></i>
                         <span class="nav-text">Logout</span>
                     </a>

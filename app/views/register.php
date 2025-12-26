@@ -727,7 +727,7 @@
         
                     <div class="login-link">
                         Already have an account?
-                        <a href="/app/views/login.php">Sign In</a>
+                        <a href="/education_site/app/views/login.php">Sign In</a>
                     </div>
                 </form>
             </div>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - Education Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -302,6 +303,2813 @@
             color: white;
         }
 
+        /* Assignment Section in Sidebar */
+        .nav-item.assignment-section {
+            margin-bottom: 15px;
+        }
+
+        .assignment-count-badge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: auto;
+            min-width: 22px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% {
+                box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+            }
+            50% {
+                box-shadow: 0 2px 15px rgba(255, 107, 107, 0.6);
+            }
+        }
+
+        .sidebar.collapsed .assignment-count-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            padding: 4px 7px;
+        }
+
+        /* Assignments Dropdown */
+        .assignments-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 35px;
+            margin-top: 8px;
+        }
+
+        .nav-item.assignment-section.open .assignments-dropdown {
+            max-height: auto !important;
+            height: auto;
+            max-height: 350px;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sidebar.collapsed .assignments-dropdown {
+            display: none;
+        }
+
+        /* Scrollbar for assignments dropdown */
+        .assignments-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .assignments-dropdown::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            margin: 5px 0;
+        }
+
+        .assignments-dropdown::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.6);
+            border-radius: 10px;
+        }
+
+        .assignments-dropdown::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.8);
+        }
+
+        /* Assignment Stats Summary */
+        .assignment-stats-summary {
+            display: flex;
+            gap: 6px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .stat-mini {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 8px 6px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Pending Stat */
+        .stat-mini.pending {
+            border-color: rgba(255, 152, 0, 0.4);
+            background: rgba(255, 152, 0, 0.1);
+        }
+
+        /* Submitted Stat */
+        .stat-mini.submitted {
+            border-color: rgba(33, 150, 243, 0.4);
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        /* Stat Mini Icon */
+        .stat-mini-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .stat-mini-icon i {
+            font-size: 13px;
+        }
+
+        .stat-mini.pending .stat-mini-icon {
+            background: #ff9800;
+            box-shadow: 0 2px 6px rgba(255, 152, 0, 0.3);
+        }
+
+        .stat-mini.pending .stat-mini-icon i {
+            color: white;
+        }
+
+        .stat-mini.submitted .stat-mini-icon {
+            background: #2196f3;
+            box-shadow: 0 2px 6px rgba(33, 150, 243, 0.3);
+        }
+
+        .stat-mini.submitted .stat-mini-icon i {
+            color: white;
+        }
+
+        /* Stat Mini Content */
+        .stat-mini-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .stat-mini-number {
+            font-size: 16px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+
+        .stat-mini-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-mini.pending .stat-mini-label {
+            color: #ffb74d;
+        }
+
+        .stat-mini.submitted .stat-mini-label {
+            color: #64b5f6;
+        }
+
+        /* Stat Mini Progress Bar */
+        .stat-mini-progress {
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .stat-mini-progress-bar {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .stat-mini.pending .stat-mini-progress-bar {
+            background: #ff9800;
+        }
+
+        .stat-mini.submitted .stat-mini-progress-bar {
+            background: #2196f3;
+        }
+
+        /* Remove graded styles */
+        .stat-mini.graded {
+            display: none;
+        }
+
+        /* Assignment Dropdown List */
+        .assignment-dropdown-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .assignment-dropdown-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            text-decoration: none;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Pending Assignment Items */
+        .assignment-dropdown-item.submitted {
+            background: rgba(33, 150, 243, 0.08);
+            border-left-color: #2196f3;
+        }
+
+        .assignment-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assignment-item-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .assignment-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .assignment-item-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .assignment-item-course {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+        }
+
+        .assignment-item-footer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 34px;
+        }
+
+        .assignment-item-due {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Assignments Dropdown Footer */
+        .assignments-dropdown-footer {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .view-all-assignments {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            background: rgba(102, 126, 234, 0.2);
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.4);
+        }
+
+        .view-all-assignments i {
+            font-size: 11px;
+        }
+
+        .assignments-total-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+
+        /* ============================================
+           GRADES DROPDOWN STYLES - Premium UI
+           ============================================ */
+        
+        .gpa-badge {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: auto;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(67, 233, 123, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar.collapsed .gpa-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .grades-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 0;
+            margin-top: 5px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        .nav-item.has-dropdown.open .grades-dropdown {
+            max-height: 600px;
+            padding: 14px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .grades-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .grades-dropdown::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .grades-dropdown::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .grades-dropdown::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .sidebar.collapsed .grades-dropdown {
+            display: none;
+        }
+
+        /* GPA Overview Card */
+        .gpa-overview-card {
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.15) 0%, rgba(56, 249, 215, 0.15) 100%);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(67, 233, 123, 0.3);
+            box-shadow: 0 4px 12px rgba(67, 233, 123, 0.2);
+        }
+
+        .gpa-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .gpa-value-container {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .gpa-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            position: absolute;
+            top: 14px;
+        }
+
+        .gpa-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+            margin-top: 18px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .gpa-scale {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .gpa-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(67, 233, 123, 0.25);
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(67, 233, 123, 0.4);
+        }
+
+        .gpa-trend i {
+            color: #43e97b;
+            font-size: 12px;
+        }
+
+        .gpa-trend span {
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .gpa-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .gpa-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gpa-bar-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            min-width: 75px;
+            font-weight: 600;
+        }
+
+        .gpa-bar-progress {
+            flex: 1;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gpa-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
+        .gpa-bar-value {
+            font-size: 11px;
+            color: white;
+            font-weight: 700;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Grade Stats Grid */
+        .grade-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .grade-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .grade-stat-item.excellent {
+            background: rgba(255, 193, 7, 0.15);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .grade-stat-item.good {
+            background: rgba(33, 150, 243, 0.15);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .grade-stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .grade-stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .grade-stat-item.excellent .grade-stat-icon {
+            background: rgba(255, 193, 7, 0.3);
+        }
+
+        .grade-stat-item.good .grade-stat-icon {
+            background: rgba(33, 150, 243, 0.3);
+        }
+
+        .grade-stat-icon i {
+            color: white;
+            font-size: 14px;
+        }
+
+        .grade-stat-content {
+            flex: 1;
+        }
+
+        .grade-stat-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+
+        .grade-stat-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Course Grades List */
+        .course-grades-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .course-grade-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .course-grade-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(3px);
+        }
+
+        .course-grade-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .course-grade-icon.purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .course-grade-icon.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .course-grade-icon.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .course-grade-icon.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .course-grade-icon.red {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .course-grade-icon.teal {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .course-grade-icon i {
+            color: white;
+            font-size: 16px;
+        }
+
+        .course-grade-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .course-grade-name {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .course-grade-code {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .course-grade-value {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            min-width: 45px;
+        }
+
+        .course-grade-value.grade-a {
+            background: rgba(67, 233, 123, 0.25);
+            border: 1px solid rgba(67, 233, 123, 0.4);
+        }
+
+        .course-grade-value.grade-b {
+            background: rgba(33, 150, 243, 0.25);
+            border: 1px solid rgba(33, 150, 243, 0.4);
+        }
+
+        .grade-letter {
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+
+        .grade-points {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        /* Grades Dropdown Footer */
+        .grades-dropdown-footer {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .view-all-grades {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .view-all-grades:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .view-all-grades i {
+            font-size: 12px;
+        }
+
+        .view-all-grades .fa-arrow-right {
+            margin-left: auto;
+            font-size: 10px;
+        }
+
+        /* ============================================
+           GRADES DASHBOARD SECTION STYLES
+           ============================================ */
+        
+        .grades-dashboard-section {
+            padding: 0;
+        }
+
+        .section-header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary i {
+            font-size: 14px;
+        }
+
+        /* ============================================
+           EXAMS DROPDOWN STYLES - Enhanced UI
+           ============================================ */
+        
+        .exam-badge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: auto;
+            min-width: 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .sidebar.collapsed .exam-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            padding: 3px 6px;
+        }
+
+        .exams-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 0;
+            margin-top: 5px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 0;
+        }
+
+        .nav-item.has-dropdown.open .exams-dropdown {
+            max-height: 500px;
+            padding: 12px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar for Exams Dropdown */
+        .exams-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .exams-dropdown::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .exams-dropdown::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .exams-dropdown::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .sidebar.collapsed .exams-dropdown {
+            display: none;
+        }
+
+        /* Dropdown Section Headers */
+        .dropdown-section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .dropdown-section-header:first-child {
+            margin-top: 0;
+        }
+
+        .dropdown-section-header i {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Exams List Items */
+        .exams-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .exam-dropdown-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exam-dropdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .exam-dropdown-item:hover::before {
+            opacity: 1;
+        }
+
+        .exam-dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(3px);
+        }
+
+        .exam-dropdown-item.urgent {
+            border-left-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .exam-dropdown-item.upcoming {
+            border-left-color: #feca57;
+            background: rgba(254, 202, 87, 0.1);
+        }
+
+        .exam-dropdown-item.scheduled {
+            border-left-color: #48dbfb;
+            background: rgba(72, 219, 251, 0.1);
+        }
+
+        .exam-dropdown-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+        }
+
+        .exam-dropdown-icon i {
+            font-size: 16px;
+            color: white;
+        }
+
+        .exam-dropdown-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .exam-dropdown-title {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .exam-dropdown-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .exam-date,
+        .exam-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .exam-date i,
+        .exam-time i {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .exam-location {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .exam-location i {
+            font-size: 9px;
+        }
+
+        .exam-status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .urgent-indicator {
+            background: rgba(255, 107, 107, 0.25);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .upcoming-indicator {
+            background: rgba(254, 202, 87, 0.25);
+            color: #feca57;
+            border: 1px solid rgba(254, 202, 87, 0.4);
+        }
+
+        .scheduled-indicator {
+            background: rgba(72, 219, 251, 0.25);
+            color: #48dbfb;
+            border: 1px solid rgba(72, 219, 251, 0.4);
+        }
+
+        /* Exam Categories */
+        .exam-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .exam-category-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .exam-category-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(3px);
+        }
+
+        .exam-category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .exam-category-icon.midterm {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .exam-category-icon.final {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
+        }
+
+        .exam-category-icon.practical {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+        }
+
+        .exam-category-icon.quiz {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+        }
+
+        .exam-category-icon i {
+            font-size: 14px;
+            color: white;
+        }
+
+        .exam-category-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .exam-category-name {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .exam-category-count {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 10px;
+        }
+
+        /* Exam Stats Container */
+        .exam-stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+        }
+
+        .exam-stat-item {
+            text-align: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .exam-stat-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .exam-stat-value {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .exam-stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* Exams Dropdown Footer */
+        .exams-dropdown-footer {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .view-all-exams {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 12px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .view-all-exams:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .view-all-exams i:first-child {
+            font-size: 14px;
+        }
+
+        .view-all-exams i:last-child {
+            font-size: 10px;
+            margin-left: auto;
+        }
+
+        /* ============================================
+           END OF EXAMS DROPDOWN STYLES
+           ============================================ */
+
+        /* ============================================
+           TRANSCRIPT MODAL STYLES
+           ============================================ */
+        .transcript-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .transcript-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .transcript-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .transcript-modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            color: white;
+            position: relative;
+        }
+
+        .transcript-modal-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .transcript-modal-header h2 i {
+            font-size: 32px;
+        }
+
+        .transcript-modal-subtitle {
+            margin-top: 8px;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .transcript-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .transcript-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .transcript-modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 180px);
+            overflow-y: auto;
+        }
+
+        .transcript-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .transcript-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .transcript-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .transcript-header-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .transcript-header-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .transcript-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .transcript-info-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .transcript-info-value {
+            font-size: 15px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .transcript-summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .transcript-summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+        }
+
+        .transcript-summary-card.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .transcript-summary-card.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .transcript-summary-card.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .transcript-summary-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .transcript-summary-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .semester-section {
+            margin-bottom: 30px;
+        }
+
+        .semester-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .semester-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .semester-gpa {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .transcript-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+        }
+
+        .transcript-table thead {
+            background: #f8f9fa;
+        }
+
+        .transcript-table th {
+            padding: 15px;
+            text-align: left;
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .transcript-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .transcript-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .transcript-table tbody tr:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .transcript-table td {
+            padding: 15px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .course-code {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .course-name {
+            font-weight: 600;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            text-align: center;
+            min-width: 45px;
+        }
+
+        .grade-badge.A {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .grade-badge.B {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .grade-badge.C {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: white;
+        }
+
+        .grade-badge.D {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .transcript-footer {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transcript-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .transcript-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .transcript-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .transcript-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .transcript-btn.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .transcript-btn.secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        
+        
+        
+           
+         
+        .payments-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .payments-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .payments-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .payments-modal-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 30px;
+            color: white;
+            position: relative;
+        }
+
+        .payments-modal-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .payments-modal-header h2 i {
+            font-size: 32px;
+        }
+
+        .payments-modal-subtitle {
+            margin-top: 8px;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .payments-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .payments-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .payments-modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 180px);
+            overflow-y: auto;
+        }
+
+        .payments-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .payments-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .payments-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 10px;
+        }
+
+        .payment-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-summary-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .payment-summary-card.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .payment-summary-card.red {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .payment-summary-card.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .payment-summary-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .payment-summary-label {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .payment-summary-value {
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .payment-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0;
+        }
+
+        .payment-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .payment-tab.active {
+            color: #4facfe;
+            border-bottom-color: #4facfe;
+        }
+
+        .payment-tab:hover {
+            color: #4facfe;
+        }
+
+        .payment-tab-content {
+            display: none;
+        }
+
+        .payment-tab-content.active {
+            display: block;
+        }
+
+        .outstanding-fees-section {
+            background: #fff5f5;
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .outstanding-fees-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .outstanding-fees-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .outstanding-fees-title i {
+            color: #ff6b6b;
+            font-size: 20px;
+        }
+
+        .outstanding-total {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .fee-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ffe0e0;
+        }
+
+        .fee-item-info {
+            flex: 1;
+        }
+
+        .fee-item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .fee-item-due {
+            font-size: 12px;
+            color: #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .fee-item-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-right: 15px;
+        }
+
+        .fee-pay-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fee-pay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .payment-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .payment-history-table thead {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .payment-history-table th {
+            padding: 15px;
+            text-align: left;
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .payment-history-table tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .payment-history-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .payment-history-table td {
+            padding: 15px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .payment-status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .payment-status-badge.paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .payment-status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .payment-status-badge.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .payment-method-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-method-card:hover {
+            border-color: #4facfe;
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .payment-method-card.selected {
+            border-color: #4facfe;
+            background: #f0faff;
+        }
+
+        .payment-method-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .payment-method-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .payment-method-desc {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .payment-amount-input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .payment-amount-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .payment-amount-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 24px;
+            font-weight: 700;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .payment-amount-input:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
+        }
+
+        .quick-amount-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quick-amount-btn {
+            flex: 1;
+            padding: 10px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-amount-btn:hover {
+            border-color: #4facfe;
+            background: #f0faff;
+        }
+
+        /* 
+           PAYMENT PROCESSING MODAL STYLES
+            */
+        .payment-process-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .payment-process-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .payment-process-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .payment-process-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 25px 30px;
+            color: white;
+            position: relative;
+        }
+
+        .payment-process-header h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-process-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .payment-process-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .payment-process-body {
+            padding: 30px;
+            max-height: calc(90vh - 200px);
+            overflow-y: auto;
+        }
+
+        .payment-process-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .payment-process-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .payment-process-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 10px;
+        }
+
+        .payment-detail-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .payment-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .payment-detail-row:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 2px dashed #d0d0d0;
+            margin-top: 10px;
+        }
+
+        .payment-detail-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .payment-detail-value {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .payment-detail-value.amount {
+            font-size: 24px;
+            color: #4facfe;
+        }
+
+        .payment-method-selector {
+            margin-bottom: 25px;
+        }
+
+        .payment-method-selector h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .payment-method-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .payment-method-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-method-option:hover {
+            border-color: #4facfe;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        .payment-method-option.selected {
+            border-color: #4facfe;
+            background: #f0faff;
+        }
+
+        .payment-method-option-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .payment-method-option-info {
+            flex: 1;
+        }
+
+        .payment-method-option-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .payment-method-option-desc {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        .card-details-form {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .card-details-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .card-input-wrapper {
+            position: relative;
+        }
+
+        .card-input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #7f8c8d;
+        }
+
+        .security-notice {
+            background: #f0fff4;
+            border: 1px solid #43e97b;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .security-notice i {
+            color: #43e97b;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .security-notice-text {
+            flex: 1;
+        }
+
+        .security-notice-title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .security-notice-desc {
+            font-size: 12px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .payment-process-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .payment-process-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .payment-process-btn.primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .payment-process-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .payment-process-btn.secondary {
+            background: #f8f9fa;
+            color: #7f8c8d;
+            border: 2px solid #e0e0e0;
+        }
+
+        .payment-process-btn.secondary:hover {
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+
+        .processing-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .processing-overlay.active {
+            display: flex;
+        }
+
+        .processing-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* 
+           END OF PAYMENT PROCESSING MODAL STYLES
+           */
+
+        /* 
+           END OF PAYMENTS MODAL STYLES
+            */
+
+        /* 
+           SCHEDULE MODAL STYLES
+           */
+        .schedule-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .schedule-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .schedule-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .schedule-modal-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            padding: 30px;
+            color: white;
+            position: relative;
+        }
+
+        .schedule-modal-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .schedule-modal-header h2 i {
+            font-size: 32px;
+        }
+
+        .schedule-modal-subtitle {
+            margin-top: 8px;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .schedule-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .schedule-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .schedule-modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 180px);
+            overflow-y: auto;
+        }
+
+        .schedule-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .schedule-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .schedule-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 10px;
+        }
+
+        .schedule-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0;
+        }
+
+        .schedule-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .schedule-tab.active {
+            color: #43e97b;
+            border-bottom-color: #43e97b;
+        }
+
+        .schedule-tab:hover {
+            color: #43e97b;
+        }
+
+        .schedule-tab-content {
+            display: none;
+        }
+
+        .schedule-tab-content.active {
+            display: block;
+        }
+
+        .week-schedule-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .time-slot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .day-header.today {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .schedule-cell {
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 60px;
+        }
+
+        .class-block {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .class-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .class-block.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .class-block.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .class-block.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .class-block.red {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .class-name {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .class-time {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .class-room {
+            font-size: 10px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .today-classes-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .today-class-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .today-class-card:hover {
+            border-color: #43e97b;
+            box-shadow: 0 8px 25px rgba(67, 233, 123, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .today-class-time-badge {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .today-class-time-badge.upcoming {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .today-class-time-badge.completed {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+
+        .today-class-time {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .today-class-duration {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .today-class-info {
+            flex: 1;
+        }
+
+        .today-class-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .today-class-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .today-class-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .today-class-meta-item i {
+            color: #43e97b;
+        }
+
+        .today-class-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .today-class-status.now {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .today-class-status.upcoming {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .today-class-status.completed {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .calendar-view {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-month {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav-btn:hover {
+            border-color: #43e97b;
+            background: #f0fff4;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #7f8c8d;
+            padding: 10px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            border-color: #43e97b;
+            background: #f0fff4;
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border-color: #43e97b;
+        }
+
+        .calendar-day.has-class::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #43e97b;
+            border-radius: 50%;
+        }
+
+        .calendar-day.today.has-class::after {
+            background: white;
+        }
+
+        .calendar-day-number {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           END OF SCHEDULE MODAL STYLES
+           ============================================ */
+
         /* All Courses Modal */
         .all-courses-modal {
             display: none;
@@ -320,6 +3128,4295 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        /* ID Card Modal Styles */
+        .idcard-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .idcard-modal.show {
+            display: flex;
+        }
+
+        .idcard-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 95vh;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .idcard-modal-header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .idcard-modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+
+        .idcard-modal-header h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .idcard-modal-body {
+            padding: 40px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .idcard-view-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 16px;
+        }
+
+        .idcard-tab {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            background: transparent;
+            color: #7f8c8d;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .idcard-tab.active {
+            background: white;
+            color: #fa709a;
+            box-shadow: 0 4px 12px rgba(250, 112, 154, 0.15);
+        }
+
+        .idcard-tab-content {
+            display: none;
+        }
+
+        .idcard-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Digital ID Card */
+        .digital-idcard {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .idcard-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .idcard-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .idcard-container::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .idcard-university {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-university-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .idcard-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .idcard-photo-section {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 16px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            font-weight: 700;
+            color: #667eea;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .idcard-details {
+            flex: 1;
+        }
+
+        .idcard-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .idcard-id {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .idcard-program {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        .idcard-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-info-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 16px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .idcard-info-label {
+            font-size: 11px;
+            opacity: 0.85;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .idcard-info-value {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .idcard-qr-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-qr {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .idcard-validity {
+            flex: 1;
+            padding-left: 20px;
+        }
+
+        .idcard-validity-label {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-bottom: 5px;
+        }
+
+        .idcard-validity-date {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Physical ID Card */
+        .physical-idcard {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .idcard-physical-container {
+            perspective: 1500px;
+        }
+
+        .idcard-flip {
+            position: relative;
+            width: 100%;
+            padding-top: 63.18%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .idcard-flip.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .idcard-side {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .idcard-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .idcard-front::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -15%;
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .idcard-back {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            padding: 35px;
+            transform: rotateY(180deg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .idcard-back::before {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -15%;
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .idcard-front-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-front-logo {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .idcard-front-photo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            color: #667eea;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .idcard-front-body {
+            position: relative;
+            z-index: 1;
+        }
+
+        .idcard-front-name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .idcard-front-id {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+
+        .idcard-front-details {
+            display: grid;
+            gap: 10px;
+        }
+
+        .idcard-front-detail {
+            display: flex;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .idcard-front-label {
+            opacity: 0.85;
+            min-width: 100px;
+        }
+
+        .idcard-front-value {
+            font-weight: 600;
+        }
+
+        .idcard-back-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .idcard-barcode {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .barcode-lines {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .barcode-line {
+            width: 3px;
+            height: 60px;
+            background: #2c3e50;
+        }
+
+        .barcode-number {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .idcard-back-info {
+            flex: 1;
+        }
+
+        .idcard-back-section {
+            margin-bottom: 20px;
+        }
+
+        .idcard-back-title {
+            font-size: 12px;
+            opacity: 0.85;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .idcard-back-text {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .idcard-signature {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 12px;
+        }
+
+        .flip-instruction {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+        }
+
+        .flip-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .flip-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(250, 112, 154, 0.3);
+        }
+
+        .idcard-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .idcard-action-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .idcard-action-btn:hover {
+            border-color: #fa709a;
+            background: #fff0f4;
+            transform: translateY(-2px);
+        }
+
+        .idcard-action-btn i {
+            font-size: 16px;
+        }
+
+        /* Request New Card Modal Styles */
+        .request-card-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .request-card-modal.show {
+            display: flex;
+        }
+
+        .request-card-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .request-card-modal-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .request-card-modal-header h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .request-card-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .request-card-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .request-card-modal-body {
+            padding: 35px;
+            max-height: calc(90vh - 100px);
+            overflow-y: auto;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #f093fb;
+        }
+
+        .reason-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .reason-option input[type="radio"] {
+            display: none;
+        }
+
+        .reason-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reason-card i {
+            font-size: 32px;
+            color: #95a5a6;
+            transition: all 0.3s ease;
+        }
+
+        .reason-card span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+
+        .reason-option input[type="radio"]:checked + .reason-card {
+            border-color: #f093fb;
+            background: linear-gradient(135deg, #fff5fd 0%, #ffe5f0 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.2);
+        }
+
+        .reason-option input[type="radio"]:checked + .reason-card i {
+            color: #f093fb;
+            transform: scale(1.1);
+        }
+
+        .reason-option input[type="radio"]:checked + .reason-card span {
+            color: #f5576c;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #f093fb;
+            background: #fff5fd;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .delivery-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .delivery-option input[type="radio"] {
+            display: none;
+        }
+
+        .delivery-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .delivery-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-info {
+            width: 100%;
+        }
+
+        .delivery-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .delivery-subtitle {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .delivery-time {
+            font-size: 11px;
+            color: #95a5a6;
+            margin-bottom: 6px;
+        }
+
+        .delivery-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .delivery-option input[type="radio"]:checked + .delivery-card {
+            border-color: #f093fb;
+            background: linear-gradient(135deg, #fff5fd 0%, #ffe5f0 100%);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.2);
+        }
+
+        .delivery-option input[type="radio"]:checked + .delivery-card .delivery-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .fee-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .fee-row.total {
+            border-top: 2px solid #dee2e6;
+            margin-top: 10px;
+            padding-top: 15px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .fee-amount {
+            font-weight: 700;
+            color: #f5576c;
+        }
+
+        .fee-row.total .fee-amount {
+            font-size: 20px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe5a0 100%);
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .important-notice i {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel,
+        .btn-submit {
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-cancel {
+            background: white;
+            color: #7f8c8d;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-cancel:hover {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Request Success Modal Styles */
+        .request-success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10002;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .request-success-modal.show {
+            display: flex;
+        }
+
+        .request-success-content {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 24px;
+            padding: 50px 40px 40px;
+            text-align: center;
+            animation: successSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes successSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .success-animation {
+            margin-bottom: 30px;
+        }
+
+        .success-checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #4CAF50;
+            stroke-miterlimit: 10;
+            margin: 0 auto 20px;
+            box-shadow: inset 0px 0px 0px #4CAF50;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+            position: relative;
+        }
+
+        .check-icon {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            border-radius: 50%;
+            box-sizing: content-box;
+            border: 4px solid #4CAF50;
+        }
+
+        .icon-line {
+            height: 5px;
+            background-color: #4CAF50;
+            display: block;
+            border-radius: 2px;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .icon-line.line-tip {
+            top: 46px;
+            left: 14px;
+            width: 25px;
+            transform: rotate(45deg);
+            animation: checkmark-tip 0.75s;
+        }
+
+        .icon-line.line-long {
+            top: 38px;
+            right: 8px;
+            width: 47px;
+            transform: rotate(-45deg);
+            animation: checkmark-long 0.75s;
+        }
+
+        .icon-circle {
+            top: -4px;
+            left: -4px;
+            z-index: 10;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: absolute;
+            box-sizing: content-box;
+            border: 4px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .icon-fix {
+            top: 8px;
+            width: 5px;
+            left: 26px;
+            z-index: 1;
+            height: 85px;
+            position: absolute;
+            transform: rotate(-45deg);
+            background-color: #fff;
+        }
+
+        @keyframes checkmark-tip {
+            0% { width: 0; left: 1px; top: 19px; }
+            54% { width: 0; left: 1px; top: 19px; }
+            70% { width: 25px; left: -8px; top: 37px; }
+            84% { width: 17px; left: 21px; top: 48px; }
+            100% { width: 25px; left: 14px; top: 46px; }
+        }
+
+        @keyframes checkmark-long {
+            0% { width: 0; right: 46px; top: 54px; }
+            65% { width: 0; right: 46px; top: 54px; }
+            84% { width: 55px; right: 0px; top: 35px; }
+            100% { width: 47px; right: 8px; top: 38px; }
+        }
+
+        @keyframes fill {
+            100% { box-shadow: inset 0px 0px 0px 60px #4CAF50; }
+        }
+
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+
+        .success-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .success-subtitle {
+            font-size: 15px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .request-tracking-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tracking-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .tracking-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f093fb;
+            font-family: 'Courier New', monospace;
+        }
+
+        .request-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .detail-item i {
+            font-size: 20px;
+            color: #f093fb;
+            margin-top: 3px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .next-steps-section {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .next-steps-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .steps-timeline {
+            position: relative;
+            padding-left: 0;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: #e9ecef;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #95a5a6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item.completed .step-number {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 5px;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .confirmation-notice {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196F3;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirmation-notice i {
+            font-size: 24px;
+            color: #2196F3;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .confirmation-notice p {
+            font-size: 13px;
+            color: #1976D2;
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+
+        .success-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .success-actions button {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-view-payment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-track-request {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-done {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e9ecef !important;
+        }
+
+        .success-actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Share Modal Styles */
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .share-modal.show {
+            display: flex;
+        }
+
+        .share-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        .share-modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .share-modal-header h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .share-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .share-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .share-modal-body {
+            padding: 35px;
+        }
+
+        .share-options-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .share-option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .share-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .share-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .share-option:hover .share-icon {
+            transform: scale(1.1);
+        }
+
+        .share-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        /* 
+           VIEW ALL ASSIGNMENTS MODAL STYLES
+           */
+        
+        .view-all-assignments-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 10002;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view-all-assignments-modal.show {
+            display: flex;
+        }
+
+        .assignments-modal-content {
+            background: #f5f7fa;
+            width: 95%;
+            max-width: 1600px;
+            max-height: 95vh;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .assignments-modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .assignments-modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .assignments-modal-header h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .assignments-modal-header h2 i {
+            font-size: 36px;
+        }
+
+        .assignments-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .assignments-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* Stats Summary Bar */
+        .assignments-stats-bar {
+            background: white;
+            padding: 25px 40px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .assignment-stat-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .assignment-stat-box:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .assignment-stat-box.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .assignment-stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .assignment-stat-box.total .assignment-stat-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .assignment-stat-box.pending .assignment-stat-icon {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #ff6b6b;
+        }
+
+        .assignment-stat-box.submitted .assignment-stat-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .assignment-stat-box.graded .assignment-stat-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .assignment-stat-box.overdue .assignment-stat-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #d32f2f;
+        }
+
+        .assignment-stat-box.active .assignment-stat-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .assignment-stat-info {
+            flex: 1;
+        }
+
+        .assignment-stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .assignment-stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Filters & Search Section */
+        .assignments-filters-section {
+            background: white;
+            padding: 25px 40px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .assignments-search-filter-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .assignments-search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .assignments-search-box input {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .assignments-search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .assignments-search-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #95a5a6;
+            font-size: 16px;
+        }
+
+        .assignments-filter-dropdowns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .assignments-filter-dropdown {
+            position: relative;
+        }
+
+        .assignments-filter-dropdown select {
+            padding: 14px 40px 14px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+        }
+
+        .assignments-filter-dropdown select:hover {
+            border-color: #667eea;
+        }
+
+        .assignments-filter-dropdown select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .assignments-filter-dropdown i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #95a5a6;
+        }
+
+        /* Assignments Grid */
+        .assignments-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px 40px;
+        }
+
+        .assignments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+        }
+
+        .assignment-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .assignment-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.15);
+        }
+
+        .assignment-card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .assignment-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .assignment-card.pending .assignment-card-icon {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #ff6b6b;
+        }
+
+        .assignment-card.submitted .assignment-card-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .assignment-card.graded .assignment-card-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .assignment-card.overdue .assignment-card-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #d32f2f;
+        }
+
+        .assignment-card-title-section {
+            flex: 1;
+        }
+
+        .assignment-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .assignment-card-course {
+            font-size: 13px;
+            color: #667eea;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .assignment-card-status-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .assignment-card.pending .assignment-card-status-badge {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #d32f2f;
+        }
+
+        .assignment-card.submitted .assignment-card-status-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .assignment-card.graded .assignment-card-status-badge {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .assignment-card.overdue .assignment-card-status-badge {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #d32f2f;
+        }
+
+        .assignment-card-body {
+            padding: 20px;
+        }
+
+        .assignment-card-description {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .assignment-card-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .assignment-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .assignment-meta-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #f8f9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        .assignment-meta-info {
+            flex: 1;
+        }
+
+        .assignment-meta-label {
+            font-size: 11px;
+            color: #95a5a6;
+            margin-bottom: 2px;
+        }
+
+        .assignment-meta-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .assignment-card.overdue .assignment-meta-value {
+            color: #d32f2f;
+        }
+
+        .assignment-card-progress {
+            margin-bottom: 20px;
+        }
+
+        .assignment-progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .assignment-progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .assignment-progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .assignment-card.pending .assignment-progress-fill {
+            background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 100%);
+        }
+
+        .assignment-card.submitted .assignment-progress-fill {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .assignment-card.graded .assignment-progress-fill {
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .assignment-card-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .assignment-card-action {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .assignment-card-action.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .assignment-card-action.secondary {
+            background: #f8f9ff;
+            color: #667eea;
+            border: 2px solid #e9ecef;
+        }
+
+        .assignment-card-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .assignment-card-grade-display {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .assignment-grade-score {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .assignment-grade-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Empty State */
+        .assignments-empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .assignments-empty-icon {
+            font-size: 80px;
+            color: #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        .assignments-empty-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .assignments-empty-desc {
+            font-size: 16px;
+            color: #95a5a6;
+        }
+
+        /* Scrollbar */
+        .assignments-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .assignments-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .assignments-modal-body::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        .assignments-modal-body::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        /* 
+           SUBMIT ASSIGNMENT MODAL STYLES
+            */
+        
+        .submit-assignment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 10003;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .submit-assignment-modal.show {
+            display: flex;
+        }
+
+        .submit-modal-content {
+            background: white;
+            width: 95%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .submit-modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .submit-modal-title {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .submit-modal-title h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-modal-title p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .submit-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .submit-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .submit-section {
+            margin-bottom: 30px;
+        }
+
+        .submit-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-section-title i {
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .assignment-details-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .assignment-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .assignment-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .assignment-detail-label {
+            font-size: 13px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .assignment-detail-value {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .assignment-detail-value.due-soon {
+            color: #ff6b6b;
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #f8f9ff;
+            position: relative;
+        }
+
+        .file-upload-area:hover,
+        .file-upload-area.drag-over {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: translateY(-2px);
+        }
+
+        .file-upload-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .file-upload-hint {
+            font-size: 13px;
+            color: #95a5a6;
+        }
+
+        .file-upload-input {
+            display: none;
+        }
+
+        /* Uploaded Files List */
+        .uploaded-files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .uploaded-file-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .uploaded-file-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .file-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .file-icon.pdf {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .file-icon.doc {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .file-icon.image {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .file-icon.zip {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .file-icon.other {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        .file-remove {
+            background: #fee;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d32f2f;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .file-remove:hover {
+            background: #d32f2f;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Text Submission Area */
+        .text-submission-area {
+            margin-top: 15px;
+        }
+
+        .text-submission-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .text-submission-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 8px;
+        }
+
+        /* Submission Options */
+        .submission-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .submission-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9ff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submission-option:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .submission-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .submission-option-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        /* Important Notes */
+        .submission-notes {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff 100%);
+            border-left: 4px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .submission-notes h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #f57c00;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submission-notes ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .submission-notes li {
+            font-size: 13px;
+            color: #5d4037;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        /* Submit Modal Footer */
+        .submit-modal-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .submit-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .submit-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .submit-stat-item i {
+            color: #667eea;
+        }
+
+        .submit-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .submit-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .submit-btn.secondary {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e9ecef;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success Animation */
+        .submit-success-animation {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .submit-success-animation.show {
+            display: block;
+        }
+
+        .success-checkmark-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .success-checkmark-circle i {
+            font-size: 50px;
+            color: white;
+            animation: checkmarkPop 0.5s 0.3s ease both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes checkmarkPop {
+            0%, 50% {
+                transform: scale(0);
+            }
+            70% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .submit-success-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .submit-success-message {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar for Submit Modal */
+        .submit-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .submit-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .submit-modal-body::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        .submit-modal-body::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        /*
+           DOWNLOAD SUBMISSION MODAL STYLES
+            */
+        
+        .download-submission-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 10004;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .download-submission-modal.show {
+            display: flex;
+        }
+
+        .download-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 550px;
+            max-height: 90vh;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .download-modal-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .download-modal-title h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-modal-title p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .download-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .download-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .download-modal-body {
+            padding: 20px 24px;
+            max-height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar for Download Modal */
+        .download-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .download-modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .download-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 10px;
+        }
+
+        .download-modal-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
+        }
+
+        .submission-info-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+        }
+
+        .submission-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .submission-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .submission-info-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .submission-info-value {
+            font-size: 13px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .submission-info-badge {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Download Options */
+        .download-options-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .download-option-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .download-option-card:hover {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.05) 0%, rgba(56, 249, 215, 0.05) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(67, 233, 123, 0.15);
+        }
+
+        .download-option-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .download-option-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .download-option-desc {
+            font-size: 11px;
+            color: #95a5a6;
+            line-height: 1.3;
+        }
+
+        /* Files List in Download Modal */
+        .download-files-section {
+            margin-bottom: 18px;
+        }
+
+        .download-files-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .download-file-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9ff;
+            border: 1px solid #e9ecef;
+            border-radius: 7px;
+            transition: all 0.3s ease;
+        }
+
+        .download-file-item:hover {
+            background: white;
+            border-color: #43e97b;
+        }
+
+        .download-file-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .download-file-icon-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .download-file-info {
+            flex: 1;
+        }
+
+        .download-file-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .download-file-meta {
+            font-size: 10px;
+            color: #95a5a6;
+        }
+
+        .download-individual-btn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .download-individual-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+        }
+
+        /* Download Progress */
+        .download-progress-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .download-progress-section.show {
+            display: block;
+        }
+
+        .download-progress-bar-container {
+            background: #e9ecef;
+            height: 6px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .download-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 8px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .download-progress-text {
+            text-align: center;
+            font-size: 12px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        /* Download Modal Footer */
+        .download-modal-footer {
+            padding: 14px 24px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .download-select-options {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .download-select-link {
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .download-select-link:hover {
+            text-decoration: underline;
+        }
+
+        .download-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .download-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+        }
+
+        .download-btn.primary {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .download-btn.secondary {
+            background: white;
+            color: #2c3e50;
+            border: 2px solid #e9ecef;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Scrollbar for Download Files List */
+        .download-files-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .download-files-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .download-files-list::-webkit-scrollbar-thumb {
+            background: #43e97b;
+            border-radius: 3px;
+        }
+
+        .download-files-list::-webkit-scrollbar-thumb:hover {
+            background: #38f9d7;
+        }
+
+        /* ============================================
+           VIEW ASSIGNMENT DETAILS MODAL STYLES
+        ============================================ */
+        .view-details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 10005;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view-details-modal.show {
+            display: flex;
+        }
+
+        .view-details-content {
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .view-details-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .view-details-title h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-details-title p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .view-details-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .view-details-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .view-details-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 150px);
+        }
+
+        .view-details-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .view-details-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .view-details-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .view-details-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        /* Assignment Overview Section */
+        .assignment-overview {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .assignment-overview-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .assignment-overview-course {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .assignment-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .assignment-detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .assignment-detail-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .assignment-detail-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .assignment-detail-icon.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .assignment-detail-icon.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .assignment-detail-icon.purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .assignment-detail-icon.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .assignment-detail-label {
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .assignment-detail-value {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* Description Section */
+        .assignment-section {
+            margin-bottom: 25px;
+        }
+
+        .assignment-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .assignment-section-title i {
+            color: #667eea;
+        }
+
+        .assignment-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c3e50;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Objectives List */
+        .assignment-objectives-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .assignment-objectives-list li {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .assignment-objectives-list li i {
+            color: #43e97b;
+            margin-top: 3px;
+        }
+
+        /* Requirements List */
+        .assignment-requirements-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .assignment-requirements-list li {
+            background: #fff3e0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+            border-left: 3px solid #ff9800;
+        }
+
+        .assignment-requirements-list li i {
+            color: #ff9800;
+            margin-top: 3px;
+        }
+
+        /* Attachments Section */
+        .assignment-attachments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .assignment-attachment-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .assignment-attachment-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .assignment-attachment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+        }
+
+        .assignment-attachment-icon.pdf {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .assignment-attachment-icon.doc {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        }
+
+        .assignment-attachment-icon.image {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+        }
+
+        .assignment-attachment-name {
+            font-size: 12px;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .assignment-attachment-size {
+            font-size: 11px;
+            color: #95a5a6;
+        }
+
+        /* Grading Rubric */
+        .grading-rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .grading-rubric-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .grading-rubric-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+
+        .grading-rubric-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .grading-rubric-table tr:hover {
+            background: #f8f9ff;
+        }
+
+        /* Submission Status */
+        .submission-status-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .submission-status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .submission-status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .submission-status-badge.pending {
+            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+            color: white;
+        }
+
+        .submission-status-badge.submitted {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .submission-status-badge.graded {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .submission-status-info {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .submission-status-item {
+            flex: 1;
+        }
+
+        .submission-status-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .submission-status-value {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        /* Action Buttons */
+        .view-details-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .view-details-action-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .view-details-action-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .view-details-action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .view-details-action-btn.success {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .view-details-action-btn.success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(67, 233, 123, 0.4);
+        }
+
+        .view-details-action-btn.outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .view-details-action-btn.outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Print Button */
+        .print-assignment-btn {
+            background: white;
+            color: #7f8c8d;
+            border: 2px solid #e9ecef;
+        }
+
+        .print-assignment-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        /* 
+           VIEW FEEDBACK MODAL STYLES
+         */
+        .view-feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 10006;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view-feedback-modal.show {
+            display: flex;
+        }
+
+        .view-feedback-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .view-feedback-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .view-feedback-title h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-feedback-title p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .view-feedback-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .view-feedback-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .view-feedback-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 150px);
+        }
+
+        .view-feedback-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .view-feedback-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .view-feedback-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 10px;
+        }
+
+        .view-feedback-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
+        }
+
+        /* Grade Summary Card */
+        .feedback-grade-summary {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .feedback-score-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+        }
+
+        .feedback-score-value {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .feedback-score-total {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .feedback-grade-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .feedback-grade-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feedback-grade-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .feedback-percentage {
+            font-size: 18px;
+            color: #43e97b;
+            font-weight: 700;
+        }
+
+        .feedback-grade-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .feedback-stat-item {
+            text-align: center;
+        }
+
+        .feedback-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .feedback-stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Rubric Breakdown */
+        .feedback-section {
+            margin-bottom: 25px;
+        }
+
+        .feedback-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .feedback-section-title i {
+            color: #43e97b;
+        }
+
+        .feedback-rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .feedback-rubric-table th {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .feedback-rubric-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .feedback-rubric-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feedback-rubric-table tr:hover {
+            background: #f8f9ff;
+        }
+
+        .feedback-score-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .feedback-score-badge.excellent {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .feedback-score-badge.good {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .feedback-score-badge.average {
+            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+            color: white;
+        }
+
+        .feedback-score-badge.poor {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+
+        /* Instructor Comments */
+        .feedback-comments-box {
+            background: #f8f9fa;
+            border-left: 4px solid #43e97b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-instructor-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .feedback-instructor-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .feedback-instructor-details h4 {
+            margin: 0 0 3px 0;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .feedback-instructor-details p {
+            margin: 0;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .feedback-comment-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #2c3e50;
+            white-space: pre-wrap;
+        }
+
+        /* Strengths and Improvements */
+        .feedback-highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feedback-highlight-box {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .feedback-highlight-box.strengths {
+            border-left: 4px solid #43e97b;
+        }
+
+        .feedback-highlight-box.improvements {
+            border-left: 4px solid #ffa726;
+        }
+
+        .feedback-highlight-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback-highlight-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feedback-highlight-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #2c3e50;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .feedback-highlight-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feedback-highlight-list li i {
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .feedback-highlight-list.strengths li i {
+            color: #43e97b;
+        }
+
+        .feedback-highlight-list.improvements li i {
+            color: #ffa726;
+        }
+
+        /* Action Buttons */
+        .view-feedback-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .view-feedback-action-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .view-feedback-action-btn.primary {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .view-feedback-action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(67, 233, 123, 0.4);
+        }
+
+        .view-feedback-action-btn.outline {
+            background: white;
+            color: #43e97b;
+            border: 2px solid #43e97b;
+        }
+
+        .view-feedback-action-btn.outline:hover {
+            background: #43e97b;
+            color: white;
+        }
+
+        /* b
+           DOWNLOAD ASSIGNMENT MODAL STYLES
+         */
+        .download-assignment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 10007;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .download-assignment-modal.show {
+            display: flex;
+        }
+
+        .download-assignment-content {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .download-assignment-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .download-assignment-title h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-assignment-title p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .download-assignment-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .download-assignment-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .download-assignment-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 150px);
+        }
+
+        .download-assignment-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .download-assignment-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .download-assignment-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .download-assignment-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        /* Download Categories */
+        .download-category {
+            margin-bottom: 25px;
+        }
+
+        .download-category-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .download-category-title i {
+            color: #667eea;
+        }
+
+        .download-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .download-item-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .download-item-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .download-item-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .download-item-icon.pdf {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .download-item-icon.doc {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        }
+
+        .download-item-icon.zip {
+            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+        }
+
+        .download-item-icon.report {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .download-item-icon.image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .download-item-info {
+            flex: 1;
+        }
+
+        .download-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .download-item-meta {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .download-item-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .download-item-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Quick Actions */
+        .download-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .download-quick-action {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-quick-action:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.15);
+        }
+
+        .download-quick-action i {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .download-quick-action-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .download-quick-action-desc {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        /* Download Progress */
+        .download-assignment-progress {
+            display: none;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .download-assignment-progress.show {
+            display: block;
+        }
+
+        .download-assignment-progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .download-assignment-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .download-assignment-progress-text {
+            text-align: center;
+            font-size: 13px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .download-assignment-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .download-assignment-footer-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .download-assignment-footer-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .download-assignment-footer-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-assignment-footer-btn.outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .download-assignment-footer-btn.outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .idcard-container,
+            .idcard-container *,
+            .idcard-physical-container,
+            .idcard-physical-container * {
+                visibility: visible;
+            }
+            
+            .idcard-modal {
+                position: absolute;
+                top: 0;
+                left: 0;
+                background: none;
+                backdrop-filter: none;
+            }
+            
+            .idcard-modal-content {
+                box-shadow: none;
+                max-width: 100%;
+                max-height: 100%;
+            }
+            
+            .idcard-modal-header,
+            .idcard-view-tabs,
+            .idcard-actions,
+            .flip-instruction {
+                display: none !important;
+            }
+            
+            .idcard-modal-body {
+                padding: 0;
+            }
+            
+            @page {
+                size: auto;
+                margin: 10mm;
+            }
         }
 
         .all-courses-modal-content {
@@ -647,6 +7744,7 @@
             margin: 0 0 10px 0;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -2917,30 +10015,55 @@
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
-            padding: 10px 16px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            padding: 12px 18px;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid transparent;
             position: relative;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .user-profile::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #4facfe);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .user-profile:hover::before {
+            opacity: 1;
         }
 
         .user-profile:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            background: linear-gradient(145deg, #ffffff, #fafbff);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.25), 
+                        0 4px 12px rgba(118, 75, 162, 0.15);
         }
 
         .user-profile.active {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-            border-color: #667eea;
+            background: linear-gradient(145deg, #f8f9ff, #ffffff);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2),
+                        0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .user-profile.active::before {
+            opacity: 1;
         }
 
         .user-avatar {
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
@@ -2948,99 +10071,125 @@
             justify-content: center;
             color: white;
             font-weight: 700;
-            font-size: 20px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            border: 3px solid white;
+            font-size: 22px;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4),
+                        0 0 0 4px rgba(255, 255, 255, 0.8),
+                        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
             position: relative;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.08) rotate(-5deg);
+            box-shadow: 0 8px 28px rgba(102, 126, 234, 0.5),
+                        0 0 0 4px rgba(255, 255, 255, 0.9),
+                        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .user-avatar::after {
             content: '';
             position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 12px;
-            height: 12px;
-            background: #43e97b;
-            border: 2px solid white;
+            bottom: 0px;
+            right: 0px;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border: 3px solid white;
             border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            animation: pulse 2s infinite;
+            box-shadow: 0 2px 8px rgba(67, 233, 123, 0.6);
+            animation: pulseGlow 2s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes pulseGlow {
             0%, 100% {
-                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 2px 8px rgba(67, 233, 123, 0.6);
             }
             50% {
-                opacity: 0.6;
+                transform: scale(1.15);
+                box-shadow: 0 4px 16px rgba(67, 233, 123, 0.9);
             }
-        }
-
-        .user-profile-wrapper {
-            position: relative;
-        }
-
-        .user-profile {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .user-profile:hover {
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 12px;
         }
 
         .user-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
+            flex: 1;
         }
 
         .user-info h4 {
-            font-size: 15px;
-            color: #2c3e50;
-            margin-bottom: 0;
-            font-weight: 600;
+            font-size: 16px;
+            color: #1a202c;
+            margin: 0;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
         }
 
         .user-info h4 .fa-circle-check {
-            animation: verifiedBounce 3s ease-in-out infinite;
+            color: #667eea;
+            font-size: 14px;
+            animation: verifiedPulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
         }
 
-        @keyframes verifiedBounce {
+        @keyframes verifiedPulse {
             0%, 100% {
                 transform: scale(1);
+                filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
             }
             50% {
                 transform: scale(1.2);
+                filter: drop-shadow(0 3px 8px rgba(102, 126, 234, 0.5));
             }
         }
 
         .user-info p {
-            font-size: 12px;
-            color: #7f8c8d;
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            font-weight: 500;
         }
 
         .user-info p i {
-            font-size: 10px;
-            color: #95a5a6;
+            font-size: 11px;
+            color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 3px 4px;
+            border-radius: 4px;
         }
 
         .dropdown-arrow {
-            margin-left: 8px;
-            transition: transform 0.3s ease;
-            color: #7f8c8d;
+            margin-left: auto;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #94a3b8;
+            font-size: 14px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .user-profile:hover .dropdown-arrow {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+            color: #667eea;
         }
 
         .user-profile.active .dropdown-arrow {
             transform: rotate(180deg);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            color: #667eea;
         }
 
         .profile-dropdown {
@@ -4548,101 +11697,222 @@
         <nav>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a href="#" class="nav-link active" onclick="event.preventDefault(); showSection('dashboard');">
                         <i class="fas fa-home"></i>
                         <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item has-dropdown" id="coursesNavItem">
-                    <a href="#" class="nav-link" onclick="toggleCoursesDropdown(event)">
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('courses');">
                         <i class="fas fa-book"></i>
                         <span class="nav-text">My Courses</span>
-                        <span class="course-badge">6</span>
-                        <i class="fas fa-chevron-down dropdown-arrow"></i>
                     </a>
-                    <div class="courses-dropdown">
-                        <a href="#" class="course-dropdown-item active">
-                            <span class="course-dropdown-icon purple"></span>
-                            <span class="course-dropdown-text">Web Development</span>
-                            <span class="course-dropdown-progress">75%</span>
-                        </a>
-                        <a href="#" class="course-dropdown-item">
-                            <span class="course-dropdown-icon blue"></span>
-                            <span class="course-dropdown-text">Database Systems</span>
-                            <span class="course-dropdown-progress">60%</span>
-                        </a>
-                        <a href="#" class="course-dropdown-item">
-                            <span class="course-dropdown-icon green"></span>
-                            <span class="course-dropdown-text">Data Structures</span>
-                            <span class="course-dropdown-progress">90%</span>
-                        </a>
-                        <a href="#" class="course-dropdown-item">
-                            <span class="course-dropdown-icon orange"></span>
-                            <span class="course-dropdown-text">Machine Learning</span>
-                            <span class="course-dropdown-progress">45%</span>
-                        </a>
-                        <a href="#" class="course-dropdown-item">
-                            <span class="course-dropdown-icon red"></span>
-                            <span class="course-dropdown-text">Mobile App Dev</span>
-                            <span class="course-dropdown-progress">30%</span>
-                        </a>
-                        <a href="#" class="course-dropdown-item">
-                            <span class="course-dropdown-icon teal"></span>
-                            <span class="course-dropdown-text">Cloud Computing</span>
-                            <span class="course-dropdown-progress">55%</span>
-                        </a>
-                        <div class="courses-dropdown-footer">
-                            <a href="#" class="view-all-courses" onclick="event.preventDefault(); openAllCoursesModal();">
-                                <i class="fas fa-th-large"></i>
-                                <span>View All Courses</span>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('assignments');">
+                        <i class="fas fa-tasks"></i>
+                        <span class="nav-text">Assignments</span>
+                    </a>
+                </li>
+                
+                <!-- Exams Section -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('exams');">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="nav-text">Exams</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('grades');">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-text">Grades</span>
+                        <span class="gpa-badge">3.8</span>
+                    </a>
+                </li>
+                <li class="nav-item grades-dashboard-placeholder" style="display:none;">
+                    <div class="grades-dropdown">
+                        <!-- GPA Overview Card -->
+                        <div class="gpa-overview-card">
+                            <div class="gpa-main">
+                                <div class="gpa-value-container">
+                                    <div class="gpa-label">Cumulative GPA</div>
+                                    <div class="gpa-value">3.85</div>
+                                    <div class="gpa-scale">/ 4.0</div>
+                                </div>
+                                <div class="gpa-trend">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+0.15</span>
+                                </div>
+                            </div>
+                            <div class="gpa-bars">
+                                <div class="gpa-bar-item">
+                                    <div class="gpa-bar-label">Current Sem</div>
+                                    <div class="gpa-bar-progress">
+                                        <div class="gpa-bar-fill" style="width: 95%;"></div>
+                                    </div>
+                                    <div class="gpa-bar-value">3.9</div>
+                                </div>
+                                <div class="gpa-bar-item">
+                                    <div class="gpa-bar-label">Previous Sem</div>
+                                    <div class="gpa-bar-progress">
+                                        <div class="gpa-bar-fill" style="width: 88%;"></div>
+                                    </div>
+                                    <div class="gpa-bar-value">3.7</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Grade Stats -->
+                        <div class="grade-stats-grid">
+                            <div class="grade-stat-item excellent">
+                                <div class="grade-stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="grade-stat-content">
+                                    <div class="grade-stat-value">4</div>
+                                    <div class="grade-stat-label">A Grades</div>
+                                </div>
+                            </div>
+                            <div class="grade-stat-item good">
+                                <div class="grade-stat-icon">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </div>
+                                <div class="grade-stat-content">
+                                    <div class="grade-stat-value">2</div>
+                                    <div class="grade-stat-label">B Grades</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Course Grades List -->
+                        <div class="dropdown-section-header">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Current Semester</span>
+                        </div>
+                        
+                        <div class="course-grades-list">
+                            <a href="#" class="course-grade-item" onclick="event.preventDefault(); showSection('grades');">
+                                <div class="course-grade-icon purple">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="course-grade-content">
+                                    <div class="course-grade-name">Web Development</div>
+                                    <div class="course-grade-code">CSC 301</div>
+                                </div>
+                                <div class="course-grade-value grade-a">
+                                    <span class="grade-letter">A</span>
+                                    <span class="grade-points">4.0</span>
+                                </div>
+                            </a>
+
+                            <a href="#" class="course-grade-item" onclick="event.preventDefault(); showSection('grades');">
+                                <div class="course-grade-icon blue">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="course-grade-content">
+                                    <div class="course-grade-name">Database Systems</div>
+                                    <div class="course-grade-code">CSC 302</div>
+                                </div>
+                                <div class="course-grade-value grade-a">
+                                    <span class="grade-letter">A-</span>
+                                    <span class="grade-points">3.7</span>
+                                </div>
+                            </a>
+
+                            <a href="#" class="course-grade-item" onclick="event.preventDefault(); showSection('grades');">
+                                <div class="course-grade-icon green">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <div class="course-grade-content">
+                                    <div class="course-grade-name">Data Structures</div>
+                                    <div class="course-grade-code">CSC 205</div>
+                                </div>
+                                <div class="course-grade-value grade-a">
+                                    <span class="grade-letter">A+</span>
+                                    <span class="grade-points">4.0</span>
+                                </div>
+                            </a>
+
+                            <a href="#" class="course-grade-item" onclick="event.preventDefault(); showSection('grades');">
+                                <div class="course-grade-icon orange">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="course-grade-content">
+                                    <div class="course-grade-name">Machine Learning</div>
+                                    <div class="course-grade-code">CSC 401</div>
+                                </div>
+                                <div class="course-grade-value grade-b">
+                                    <span class="grade-letter">B+</span>
+                                    <span class="grade-points">3.3</span>
+                                </div>
+                            </a>
+
+                            <a href="#" class="course-grade-item" onclick="event.preventDefault(); showSection('grades');">
+                                <div class="course-grade-icon red">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="course-grade-content">
+                                    <div class="course-grade-name">Mobile App Dev</div>
+                                    <div class="course-grade-code">CSC 350</div>
+                                </div>
+                                <div class="course-grade-value grade-b">
+                                    <span class="grade-letter">B</span>
+                                    <span class="grade-points">3.0</span>
+                                </div>
+                            </a>
+
+                            <a href="#" class="course-grade-item" onclick="event.preventDefault(); showSection('grades');">
+                                <div class="course-grade-icon teal">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
+                                <div class="course-grade-content">
+                                    <div class="course-grade-name">Cloud Computing</div>
+                                    <div class="course-grade-code">CSC 405</div>
+                                </div>
+                                <div class="course-grade-value grade-a">
+                                    <span class="grade-letter">A</span>
+                                    <span class="grade-points">4.0</span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="grades-dropdown-footer">
+                            <a href="#" class="view-all-grades" onclick="event.preventDefault(); showSection('grades');">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>View Full Transcript</span>
+                                <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-tasks"></i>
-                        <span class="nav-text">Assignments</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-file-alt"></i>
-                        <span class="nav-text">Exams</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-line"></i>
-                        <span class="nav-text">Grades</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('schedule');">
                         <i class="fas fa-calendar-alt"></i>
                         <span class="nav-text">Schedule</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('library');">
                         <i class="fas fa-book-reader"></i>
                         <span class="nav-text">Library</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('payments');">
                         <i class="fas fa-credit-card"></i>
                         <span class="nav-text">Payments</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('messages');">
                         <i class="fas fa-comments"></i>
                         <span class="nav-text">Messages</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" onclick="event.preventDefault(); showSection('settings');">
                         <i class="fas fa-cog"></i>
                         <span class="nav-text">Settings</span>
                     </a>
@@ -4849,6 +12119,7 @@
         </div>
 
         <!-- Enhanced Student Profile Section -->
+        <div id="mainDashboardContent">
         <div style="background: white; border-radius: 20px; padding: 35px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
                 <h2 style="font-size: 24px; font-weight: 700; color: #2c3e50; display: flex; align-items: center; gap: 12px;">
@@ -4954,16 +12225,16 @@
 
                     <!-- Quick Actions -->
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
-                        <button style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#667eea'; this.style.background='#f0f4ff'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
-                            <i class="fas fa-file-download" style="color: #667eea;"></i> Transcript
+                        <button onclick="openTranscriptModal()" style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#667eea'; this.style.background='#f0f4ff'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
+                            <i class="fas fa-file-alt" style="color: #667eea;"></i> Transcript
                         </button>
-                        <button style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#4facfe'; this.style.background='#f0faff'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
+                        <button onclick="openPaymentsModal()" style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#4facfe'; this.style.background='#f0faff'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
                             <i class="fas fa-money-bill-wave" style="color: #4facfe;"></i> Payments
                         </button>
-                        <button style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#43e97b'; this.style.background='#f0fff4'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
+                        <button onclick="openScheduleModal()" style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#43e97b'; this.style.background='#f0fff4'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
                             <i class="fas fa-calendar-alt" style="color: #43e97b;"></i> Schedule
                         </button>
-                        <button style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#fa709a'; this.style.background='#fff0f4'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
+                        <button onclick="openIDCardModal()" style="background: white; border: 2px solid #e0e0e0; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: #2c3e50;" onmouseover="this.style.borderColor='#fa709a'; this.style.background='#fff0f4'" onmouseout="this.style.borderColor='#e0e0e0'; this.style.background='white'">
                             <i class="fas fa-id-card" style="color: #fa709a;"></i> ID Card
                         </button>
                     </div>
@@ -5308,6 +12579,3082 @@
                 </tbody>
             </table>
         </div>
+        </div>
+        <!-- End Main Dashboard Content -->
+
+        <!-- Comprehensive Grades Dashboard Section -->
+        <div class="grades-dashboard-section" id="gradesSection" style="display: none;">
+            <div class="section-header-main">
+                <div>
+                    <h2 style="font-size: 28px; font-weight: 700; color: #2c3e50; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <i class="fas fa-chart-line" style="color: #667eea;"></i> Academic Grades & Performance
+                    </h2>
+                    <p style="color: #7f8c8d; font-size: 14px;">Track your academic progress and performance across all courses</p>
+                </div>
+                <button class="btn-primary" onclick="openTranscript()">
+                    <i class="fas fa-file-alt"></i> View Transcript
+                </button>
+            </div>
+
+            <!-- GPA Overview Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 30px;">
+                <!-- Cumulative GPA Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 32px; color: white; box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div style="position: relative; z-index: 1;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                            <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-graduation-cap" style="font-size: 24px;"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 14px; opacity: 0.9; font-weight: 500;">Cumulative GPA</div>
+                                <div style="font-size: 12px; opacity: 0.7;">Overall Performance</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px;">
+                            <div style="font-size: 56px; font-weight: 800; line-height: 1;">3.85</div>
+                            <div style="font-size: 24px; opacity: 0.8;">/ 4.0</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: rgba(255,255,255,0.2); border-radius: 12px; backdrop-filter: blur(10px);">
+                            <i class="fas fa-arrow-up" style="color: #43e97b;"></i>
+                            <span style="font-size: 14px; font-weight: 600;">+0.15 from last semester</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Semester GPA -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 20px; padding: 32px; color: white; box-shadow: 0 8px 32px rgba(67, 233, 123, 0.3); position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div style="position: relative; z-index: 1;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                            <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-calendar-check" style="font-size: 24px;"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 14px; opacity: 0.9; font-weight: 500;">Current Semester</div>
+                                <div style="font-size: 12px; opacity: 0.7;">Fall 2025</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px;">
+                            <div style="font-size: 56px; font-weight: 800; line-height: 1;">3.92</div>
+                            <div style="font-size: 24px; opacity: 0.8;">/ 4.0</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; backdrop-filter: blur(10px);">
+                                <div style="font-size: 24px; font-weight: 700;">6</div>
+                                <div style="font-size: 11px; opacity: 0.9;">Courses</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; backdrop-filter: blur(10px);">
+                                <div style="font-size: 24px; font-weight: 700;">18</div>
+                                <div style="font-size: 11px; opacity: 0.9;">Credits</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grade Distribution -->
+                <div style="background: white; border-radius: 20px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="font-size: 18px; font-weight: 700; color: #2c3e50; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-chart-pie" style="color: #667eea;"></i> Grade Distribution
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #2c3e50;">A Grades</span>
+                                <span style="font-size: 14px; font-weight: 700; color: #43e97b;">4 (67%)</span>
+                            </div>
+                            <div style="height: 8px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
+                                <div style="width: 67%; height: 100%; background: linear-gradient(90deg, #43e97b, #38f9d7); border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #2c3e50;">B Grades</span>
+                                <span style="font-size: 14px; font-weight: 700; color: #4facfe;">2 (33%)</span>
+                            </div>
+                            <div style="height: 8px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
+                                <div style="width: 33%; height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px; padding-top: 16px; border-top: 2px dashed #e9ecef;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 13px; color: #7f8c8d;">Total Courses</span>
+                                <span style="font-size: 16px; font-weight: 700; color: #667eea;">6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Semester Grades Table -->
+            <div style="background: white; border-radius: 20px; padding: 32px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h3 style="font-size: 22px; font-weight: 700; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-book-open" style="color: #667eea;"></i> Current Semester Grades
+                    </h3>
+                    <div style="display: flex; gap: 12px;">
+                        <select style="padding: 10px 16px; border: 2px solid #e9ecef; border-radius: 12px; font-weight: 600; color: #2c3e50; cursor: pointer; outline: none;">
+                            <option>Fall 2025</option>
+                            <option>Spring 2025</option>
+                            <option>Fall 2024</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 16px 20px; text-align: left; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 12px 0 0 12px;">Course</th>
+                                <th style="padding: 16px 20px; text-align: center; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px;">Code</th>
+                                <th style="padding: 16px 20px; text-align: center; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px;">Credits</th>
+                                <th style="padding: 16px 20px; text-align: center; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px;">Assignments</th>
+                                <th style="padding: 16px 20px; text-align: center; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px;">Exams</th>
+                                <th style="padding: 16px 20px; text-align: center; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px;">Final Grade</th>
+                                <th style="padding: 16px 20px; text-align: center; font-size: 12px; font-weight: 700; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 0 12px 12px 0;">GPA Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'">
+                                <td style="padding: 20px; border-radius: 12px 0 0 12px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-code"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 15px; font-weight: 700; color: #2c3e50;">Web Development</div>
+                                            <div style="font-size: 12px; color: #7f8c8d;">Prof. Sarah Johnson</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #667eea;">CSC 301</td>
+                                <td style="padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #2c3e50;">3</td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #43e97b; margin-bottom: 4px;">95%</div>
+                                    <div style="font-size: 11px; color: #7f8c8d;">8/8 submitted</div>
+                                </td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #43e97b; margin-bottom: 4px;">92%</div>
+                                    <div style="font-size: 11px; color: #7f8c8d;">2/2 completed</div>
+                                </td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: linear-gradient(135deg, rgba(67, 233, 123, 0.15), rgba(56, 249, 215, 0.15)); border: 2px solid rgba(67, 233, 123, 0.4); border-radius: 12px;">
+                                        <span style="font-size: 20px; font-weight: 800; color: #43e97b;">A</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 20px; text-align: center; border-radius: 0 12px 12px 0;">
+                                    <div style="font-size: 18px; font-weight: 700; color: #2c3e50;">4.0</div>
+                                </td>
+                            </tr>
+
+                            <tr style="background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'">
+                                <td style="padding: 20px; border-radius: 12px 0 0 12px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-database"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 15px; font-weight: 700; color: #2c3e50;">Database Systems</div>
+                                            <div style="font-size: 12px; color: #7f8c8d;">Prof. Michael Chen</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #4facfe;">CSC 302</td>
+                                <td style="padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #2c3e50;">3</td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #43e97b; margin-bottom: 4px;">88%</div>
+                                    <div style="font-size: 11px; color: #7f8c8d;">7/8 submitted</div>
+                                </td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #4facfe; margin-bottom: 4px;">90%</div>
+                                    <div style="font-size: 11px; color: #7f8c8d;">2/2 completed</div>
+                                </td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: linear-gradient(135deg, rgba(67, 233, 123, 0.15), rgba(56, 249, 215, 0.15)); border: 2px solid rgba(67, 233, 123, 0.4); border-radius: 12px;">
+                                        <span style="font-size: 20px; font-weight: 800; color: #43e97b;">A-</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 20px; text-align: center; border-radius: 0 12px 12px 0;">
+                                    <div style="font-size: 18px; font-weight: 700; color: #2c3e50;">3.7</div>
+                                </td>
+                            </tr>
+
+                            <tr style="background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.04)'">
+                                <td style="padding: 20px; border-radius: 12px 0 0 12px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 15px; font-weight: 700; color: #2c3e50;">Data Structures</div>
+                                            <div style="font-size: 12px; color: #7f8c8d;">Dr. Emily Parker</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #43e97b;">CSC 205</td>
+                                <td style="padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #2c3e50;">4</td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #43e97b; margin-bottom: 4px;">98%</div>
+                                    <div style="font-size: 11px; color: #7f8c8d;">10/10 submitted</div>
+                                </td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="font-size: 16px; font-weight: 700; color: #43e97b; margin-bottom: 4px;">96%</div>
+                                    <div style="font-size: 11px; color: #7f8c8d;">3/3 completed</div>
+                                </td>
+                                <td style="padding: 20px; text-align: center;">
+                                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: linear-gradient(135deg, rgba(67, 233, 123, 0.15), rgba(56, 249, 215, 0.15)); border: 2px solid rgba(67, 233, 123, 0.4); border-radius: 12px;">
+                                        <span style="font-size: 20px; font-weight: 800; color: #43e97b;">A+</span>
+                                    </div>
+                                </td>
+                                <td style="padding: 20px; text-align: center; border-radius: 0 12px 12px 0;">
+                                    <div style="font-size: 18px; font-weight: 700; color: #2c3e50;">4.0</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Semester Summary -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 24px; padding: 24px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 8px; font-weight: 600;">Total Credits</div>
+                        <div style="font-size: 32px; font-weight: 800; color: #667eea;">18</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 8px; font-weight: 600;">Semester GPA</div>
+                        <div style="font-size: 32px; font-weight: 800; color: #43e97b;">3.92</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 8px; font-weight: 600;">Courses Completed</div>
+                        <div style="font-size: 32px; font-weight: 800; color: #4facfe;">6/6</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 8px; font-weight: 600;">Quality Points</div>
+                        <div style="font-size: 32px; font-weight: 800; color: #fa709a;">70.6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Grades Dashboard Section -->
+
+        <!-- Schedule Dashboard Section -->
+        <div class="schedule-dashboard-section" id="scheduleSection" style="display: none;">
+            <div class="section-header-main">
+                <div>
+                    <h2 style="font-size: 28px; font-weight: 700; color: #2c3e50; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <i class="fas fa-calendar-week" style="color: #667eea;"></i> Weekly Schedule
+                    </h2>
+                    <p style="color: #7f8c8d; font-size: 14px;">Manage your classes, assignments, and upcoming events</p>
+                </div>
+                <button class="btn-primary" onclick="exportSchedule()">
+                    <i class="fas fa-download"></i> Export Schedule
+                </button>
+            </div>
+
+            <!-- Quick Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Today's Classes -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 24px; color: white; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-chalkboard-teacher" style="font-size: 24px;"></i>
+                        </div>
+                        <div style="font-size: 36px; font-weight: 800;">5</div>
+                    </div>
+                    <div style="font-size: 14px; font-weight: 600; opacity: 0.9;">Classes Today</div>
+                    <div style="font-size: 12px; opacity: 0.7; margin-top: 4px;">Monday, Dec 22</div>
+                </div>
+
+                <!-- This Week -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 16px; padding: 24px; color: white; box-shadow: 0 8px 24px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-calendar-check" style="font-size: 24px;"></i>
+                        </div>
+                        <div style="font-size: 36px; font-weight: 800;">24</div>
+                    </div>
+                    <div style="font-size: 14px; font-weight: 600; opacity: 0.9;">Classes This Week</div>
+                    <div style="font-size: 12px; opacity: 0.7; margin-top: 4px;">Dec 22 - 26</div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 16px; padding: 24px; color: white; box-shadow: 0 8px 24px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-tasks" style="font-size: 24px;"></i>
+                        </div>
+                        <div style="font-size: 36px; font-weight: 800;">8</div>
+                    </div>
+                    <div style="font-size: 14px; font-weight: 600; opacity: 0.9;">Upcoming Events</div>
+                    <div style="font-size: 12px; opacity: 0.7; margin-top: 4px;">Next 7 days</div>
+                </div>
+
+                <!-- Study Hours -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 16px; padding: 24px; color: white; box-shadow: 0 8px 24px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-clock" style="font-size: 24px;"></i>
+                        </div>
+                        <div style="font-size: 36px; font-weight: 800;">18</div>
+                    </div>
+                    <div style="font-size: 14px; font-weight: 600; opacity: 0.9;">Study Hours/Week</div>
+                    <div style="font-size: 12px; opacity: 0.7; margin-top: 4px;">Average time</div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <div style="background: white; border-radius: 20px; padding: 32px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <h3 style="font-size: 22px; font-weight: 700; color: #2c3e50; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-clock" style="color: #667eea;"></i> Today's Classes
+                </h3>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Class 1 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; border-left: 4px solid #667eea;">
+                        <div style="text-align: center; min-width: 80px;">
+                            <div style="font-size: 24px; font-weight: 800; color: #667eea;">08:00</div>
+                            <div style="font-size: 12px; color: #7f8c8d; margin-top: 4px;">AM</div>
+                            <div style="font-size: 11px; color: #7f8c8d; margin-top: 8px;">90 min</div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 16px; font-weight: 700; color: #2c3e50; margin: 0;">Web Development</h4>
+                                    <p style="font-size: 12px; color: #7f8c8d; margin: 4px 0 0 0;">Prof. Sarah Johnson • Room A-301</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span style="padding: 4px 12px; background: rgba(102, 126, 234, 0.1); color: #667eea; border-radius: 6px; font-size: 11px; font-weight: 600;">CSC 301</span>
+                                <span style="padding: 4px 12px; background: rgba(67, 233, 123, 0.1); color: #43e97b; border-radius: 6px; font-size: 11px; font-weight: 600;">Lecture</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button style="padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Join Online</button>
+                        </div>
+                    </div>
+
+                    <!-- Class 2 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; border-left: 4px solid #4facfe;">
+                        <div style="text-align: center; min-width: 80px;">
+                            <div style="font-size: 24px; font-weight: 800; color: #4facfe;">10:00</div>
+                            <div style="font-size: 12px; color: #7f8c8d; margin-top: 4px;">AM</div>
+                            <div style="font-size: 11px; color: #7f8c8d; margin-top: 8px;">90 min</div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 16px; font-weight: 700; color: #2c3e50; margin: 0;">Database Systems</h4>
+                                    <p style="font-size: 12px; color: #7f8c8d; margin: 4px 0 0 0;">Prof. Michael Chen • Room B-205</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span style="padding: 4px 12px; background: rgba(79, 172, 254, 0.1); color: #4facfe; border-radius: 6px; font-size: 11px; font-weight: 600;">CSC 302</span>
+                                <span style="padding: 4px 12px; background: rgba(250, 112, 154, 0.1); color: #fa709a; border-radius: 6px; font-size: 11px; font-weight: 600;">Lab</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button style="padding: 8px 16px; background: #4facfe; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Class 3 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; border-left: 4px solid #43e97b;">
+                        <div style="text-align: center; min-width: 80px;">
+                            <div style="font-size: 24px; font-weight: 800; color: #43e97b;">14:00</div>
+                            <div style="font-size: 12px; color: #7f8c8d; margin-top: 4px;">PM</div>
+                            <div style="font-size: 11px; color: #7f8c8d; margin-top: 8px;">60 min</div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 16px; font-weight: 700; color: #2c3e50; margin: 0;">Data Structures</h4>
+                                    <p style="font-size: 12px; color: #7f8c8d; margin: 4px 0 0 0;">Dr. Emily Parker • Room C-110</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span style="padding: 4px 12px; background: rgba(67, 233, 123, 0.1); color: #43e97b; border-radius: 6px; font-size: 11px; font-weight: 600;">CSC 205</span>
+                                <span style="padding: 4px 12px; background: rgba(102, 126, 234, 0.1); color: #667eea; border-radius: 6px; font-size: 11px; font-weight: 600;">Tutorial</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button style="padding: 8px 16px; background: #43e97b; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Calendar View -->
+            <div style="background: white; border-radius: 20px; padding: 32px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h3 style="font-size: 22px; font-weight: 700; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-calendar-week" style="color: #667eea;"></i> Weekly Overview
+                    </h3>
+                    <div style="display: flex; gap: 12px;">
+                        <button style="padding: 10px 16px; border: 2px solid #e9ecef; background: white; border-radius: 12px; font-weight: 600; color: #2c3e50; cursor: pointer;">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button style="padding: 10px 16px; border: 2px solid #e9ecef; background: white; border-radius: 12px; font-weight: 600; color: #2c3e50; cursor: pointer;">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Days Header -->
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 20px;">
+                    <div style="text-align: center; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white;">
+                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">Monday</div>
+                        <div style="font-size: 24px; font-weight: 800;">22</div>
+                        <div style="font-size: 10px; opacity: 0.8; margin-top: 4px;">Today</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: #f8f9fa; border-radius: 12px; color: #2c3e50;">
+                        <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 4px;">Tuesday</div>
+                        <div style="font-size: 24px; font-weight: 800;">23</div>
+                        <div style="font-size: 10px; color: #7f8c8d; margin-top: 4px;">5 classes</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: #f8f9fa; border-radius: 12px; color: #2c3e50;">
+                        <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 4px;">Wednesday</div>
+                        <div style="font-size: 24px; font-weight: 800;">24</div>
+                        <div style="font-size: 10px; color: #7f8c8d; margin-top: 4px;">4 classes</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: #f8f9fa; border-radius: 12px; color: #2c3e50;">
+                        <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 4px;">Thursday</div>
+                        <div style="font-size: 24px; font-weight: 800;">25</div>
+                        <div style="font-size: 10px; color: #7f8c8d; margin-top: 4px;">Holiday</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: #f8f9fa; border-radius: 12px; color: #2c3e50;">
+                        <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 4px;">Friday</div>
+                        <div style="font-size: 24px; font-weight: 800;">26</div>
+                        <div style="font-size: 10px; color: #7f8c8d; margin-top: 4px;">5 classes</div>
+                    </div>
+                </div>
+
+                <!-- Time Slots Grid -->
+                <div style="display: grid; grid-template-columns: 80px repeat(5, 1fr); gap: 12px;">
+                    <!-- Time labels -->
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #7f8c8d;">08:00</div>
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #7f8c8d;">10:00</div>
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #7f8c8d;">12:00</div>
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #7f8c8d;">14:00</div>
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #7f8c8d;">16:00</div>
+                    </div>
+
+                    <!-- Monday -->
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-left: 3px solid #667eea; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #667eea;">Web Dev</div>
+                            <div style="color: #7f8c8d;">A-301</div>
+                        </div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); border-left: 3px solid #4facfe; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #4facfe;">Database</div>
+                            <div style="color: #7f8c8d;">B-205</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1)); border-left: 3px solid #43e97b; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #43e97b;">Data Struct</div>
+                            <div style="color: #7f8c8d;">C-110</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                    </div>
+
+                    <!-- Tuesday -->
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); border-left: 3px solid #4facfe; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #4facfe;">Database</div>
+                            <div style="color: #7f8c8d;">B-205</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-left: 3px solid #667eea; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #667eea;">Web Dev</div>
+                            <div style="color: #7f8c8d;">Lab A-301</div>
+                        </div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(250, 112, 154, 0.1), rgba(254, 225, 64, 0.1)); border-left: 3px solid #fa709a; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #fa709a;">AI Seminar</div>
+                            <div style="color: #7f8c8d;">Hall-2</div>
+                        </div>
+                    </div>
+
+                    <!-- Wednesday -->
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-left: 3px solid #667eea; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #667eea;">Web Dev</div>
+                            <div style="color: #7f8c8d;">A-301</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1)); border-left: 3px solid #43e97b; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #43e97b;">Data Struct</div>
+                            <div style="color: #7f8c8d;">C-110</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                    </div>
+
+                    <!-- Thursday (Holiday) -->
+                    <div style="display: flex; flex-direction: column; gap: 12px; opacity: 0.5;">
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(250, 112, 154, 0.1), rgba(254, 225, 64, 0.1)); border-radius: 8px; padding: 8px; font-size: 11px; text-align: center; display: flex; align-items: center; justify-content: center;">
+                            <div style="font-weight: 700; color: #fa709a;">Holiday</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                    </div>
+
+                    <!-- Friday -->
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); border-left: 3px solid #4facfe; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #4facfe;">Database</div>
+                            <div style="color: #7f8c8d;">B-205</div>
+                        </div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-left: 3px solid #667eea; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #667eea;">Web Dev</div>
+                            <div style="color: #7f8c8d;">A-301</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                        <div style="height: 60px; background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1)); border-left: 3px solid #43e97b; border-radius: 8px; padding: 8px; font-size: 11px;">
+                            <div style="font-weight: 700; color: #43e97b;">Data Struct</div>
+                            <div style="color: #7f8c8d;">C-110</div>
+                        </div>
+                        <div style="height: 60px; background: #f8f9fa; border-radius: 8px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Schedule Dashboard Section -->
+
+        <!-- Library Dashboard Section -->
+        <div id="librarySection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-book-reader" style="margin-right: 10px;"></i>Library Dashboard</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Browse and manage your library resources</p>
+                </div>
+                <button onclick="window.print()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+            </div>
+
+            <!-- Library Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Borrowed Books Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Borrowed Books</div>
+                            <div style="font-size: 32px; font-weight: 700;">8</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> 2 due this week</div>
+                </div>
+
+                <!-- Reserved Books Card -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Reserved Books</div>
+                            <div style="font-size: 32px; font-weight: 700;">3</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-bookmark" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-check"></i> Ready for pickup</div>
+                </div>
+
+                <!-- Reading Hours Card -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Reading Hours</div>
+                            <div style="font-size: 32px; font-weight: 700;">42</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-clock" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> This semester</div>
+                </div>
+
+                <!-- Library Fines Card -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Library Fines</div>
+                            <div style="font-size: 32px; font-weight: 700;">$0</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-dollar-sign" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-check-circle"></i> All clear</div>
+                </div>
+            </div>
+
+            <!-- Currently Borrowed Books -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-book-open" style="margin-right: 10px; color: #667eea;"></i>Currently Borrowed Books</h2>
+                
+                <div style="display: grid; gap: 15px;">
+                    <!-- Book 1 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <div style="width: 80px; height: 110px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-book" style="font-size: 32px; color: white;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Database System Concepts</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 5px;">by Abraham Silberschatz</div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <span style="background: #e8eaf6; color: #667eea; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">ISBN: 978-0078022159</span>
+                                        <span style="background: #fff3e0; color: #ff9800; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Due: Dec 28, 2025</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="color: #27ae60; font-weight: 600; font-size: 14px; margin-bottom: 5px;">6 days left</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-redo"></i> Renew</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-check"></i> Return</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 2 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #43e97b;">
+                        <div style="width: 80px; height: 110px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-book" style="font-size: 32px; color: white;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Clean Code</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 5px;">by Robert C. Martin</div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <span style="background: #e8f5e9; color: #43e97b; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">ISBN: 978-0132350884</span>
+                                        <span style="background: #fff3e0; color: #ff9800; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Due: Dec 25, 2025</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="color: #f39c12; font-weight: 600; font-size: 14px; margin-bottom: 5px;">3 days left</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #43e97b; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-redo"></i> Renew</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-check"></i> Return</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 3 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #fa709a;">
+                        <div style="width: 80px; height: 110px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-book" style="font-size: 32px; color: white;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Introduction to Algorithms</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 5px;">by Thomas H. Cormen</div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <span style="background: #fce4ec; color: #fa709a; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">ISBN: 978-0262033848</span>
+                                        <span style="background: #ffebee; color: #e74c3c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Due: Dec 23, 2025</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="color: #e74c3c; font-weight: 600; font-size: 14px; margin-bottom: 5px;">1 day left</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #fa709a; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-redo"></i> Renew</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-check"></i> Return</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Browse Library Catalog -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-search" style="margin-right: 10px; color: #667eea;"></i>Browse Library Catalog</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" placeholder="Search books..." style="padding: 10px 15px; border: 2px solid #ecf0f1; border-radius: 8px; width: 250px; font-size: 14px;">
+                        <button style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px;">All Books</button>
+                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px;">Computer Science</button>
+                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px;">Mathematics</button>
+                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px;">Engineering</button>
+                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px;">Business</button>
+                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px;">Reference</button>
+                </div>
+
+                <!-- Available Books Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+                    <!-- Available Book 1 -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.3s;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 48px; color: white;"></i>
+                        </div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #2c3e50;">Design Patterns</h4>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Gang of Four</div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="background: #e8f5e9; color: #27ae60; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Available</span>
+                        </div>
+                        <button style="width: 100%; background: #667eea; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">Reserve</button>
+                    </div>
+
+                    <!-- Available Book 2 -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.3s;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 48px; color: white;"></i>
+                        </div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #2c3e50;">Python Crash Course</h4>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Eric Matthes</div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="background: #e8f5e9; color: #27ae60; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Available</span>
+                        </div>
+                        <button style="width: 100%; background: #43e97b; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">Reserve</button>
+                    </div>
+
+                    <!-- Available Book 3 -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.3s;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 48px; color: white;"></i>
+                        </div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #2c3e50;">Data Science Handbook</h4>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Jake VanderPlas</div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="background: #fff3e0; color: #ff9800; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">2 copies left</span>
+                        </div>
+                        <button style="width: 100%; background: #fa709a; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">Reserve</button>
+                    </div>
+
+                    <!-- Available Book 4 -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.3s;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 48px; color: white;"></i>
+                        </div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #2c3e50;">Web Development</h4>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Jon Duckett</div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="background: #e8f5e9; color: #27ae60; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Available</span>
+                        </div>
+                        <button style="width: 100%; background: #4facfe; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">Reserve</button>
+                    </div>
+
+                    <!-- Available Book 5 -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.3s;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 48px; color: white;"></i>
+                        </div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #2c3e50;">Machine Learning</h4>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">Andrew Ng</div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="background: #ffebee; color: #e74c3c; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Borrowed</span>
+                        </div>
+                        <button disabled style="width: 100%; background: #bdc3c7; color: white; border: none; padding: 8px; border-radius: 8px; cursor: not-allowed; font-weight: 600; font-size: 12px;">Unavailable</button>
+                    </div>
+
+                    <!-- Available Book 6 -->
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.3s;">
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book" style="font-size: 48px; color: white;"></i>
+                        </div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #2c3e50;">Calculus</h4>
+                        <div style="color: #7f8c8d; font-size: 12px; margin-bottom: 10px;">James Stewart</div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="background: #e8f5e9; color: #27ae60; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Available</span>
+                        </div>
+                        <button style="width: 100%; background: #ee0979; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">Reserve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Library Dashboard Section -->
+
+        <!-- Payments Dashboard Section -->
+        <div id="paymentsSection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-credit-card" style="margin-right: 10px;"></i>Payments Dashboard</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Manage your tuition fees and payments</p>
+                </div>
+                <button onclick="window.print()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-download"></i> Download Receipt
+                </button>
+            </div>
+
+            <!-- Payment Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Total Paid Card -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Total Paid</div>
+                            <div style="font-size: 32px; font-weight: 700;">$8,450</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> This semester</div>
+                </div>
+
+                <!-- Pending Amount Card -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Pending Amount</div>
+                            <div style="font-size: 32px; font-weight: 700;">$1,550</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-exclamation-circle" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-clock"></i> Due: Jan 15, 2026</div>
+                </div>
+
+                <!-- Total Semester Fee Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Total Semester Fee</div>
+                            <div style="font-size: 32px; font-weight: 700;">$10,000</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-wallet" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-calendar"></i> Spring 2025-26</div>
+                </div>
+
+                <!-- Payment Progress Card -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Payment Progress</div>
+                            <div style="font-size: 32px; font-weight: 700;">84.5%</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-chart-line" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-info-circle"></i> Almost complete</div>
+                </div>
+            </div>
+
+            <!-- Pending Payments -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-exclamation-triangle" style="margin-right: 10px; color: #f39c12;"></i>Pending Payments</h2>
+                
+                <div style="display: grid; gap: 15px;">
+                    <!-- Pending Fee 1 -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: #fff3e0; border-radius: 12px; border-left: 4px solid #f39c12;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-graduation-cap" style="font-size: 24px;"></i>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Tuition Fees - Installment 3</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 5px;">Spring Semester 2025-26</div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <span style="background: #fff; color: #f39c12; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Due: Jan 15, 2026</span>
+                                        <span style="background: #fff; color: #e74c3c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">24 days left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right; margin: 0 30px;">
+                            <div style="font-size: 24px; font-weight: 700; color: #2c3e50;">$1,200</div>
+                            <div style="color: #7f8c8d; font-size: 13px;">Amount Due</div>
+                        </div>
+                        <button style="background: #f39c12; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap;"><i class="fas fa-credit-card"></i> Pay Now</button>
+                    </div>
+
+                    <!-- Pending Fee 2 -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: #fff3e0; border-radius: 12px; border-left: 4px solid #f39c12;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-book" style="font-size: 24px;"></i>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Library Fees</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 5px;">Annual Library Subscription</div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <span style="background: #fff; color: #f39c12; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Due: Jan 20, 2026</span>
+                                        <span style="background: #fff; color: #27ae60; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">29 days left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right; margin: 0 30px;">
+                            <div style="font-size: 24px; font-weight: 700; color: #2c3e50;">$150</div>
+                            <div style="color: #7f8c8d; font-size: 13px;">Amount Due</div>
+                        </div>
+                        <button style="background: #e74c3c; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap;"><i class="fas fa-credit-card"></i> Pay Now</button>
+                    </div>
+
+                    <!-- Pending Fee 3 -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: #fff3e0; border-radius: 12px; border-left: 4px solid #f39c12;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-flask" style="font-size: 24px;"></i>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Lab Fees</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 5px;">Computer Lab & Equipment Usage</div>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <span style="background: #fff; color: #f39c12; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Due: Jan 25, 2026</span>
+                                        <span style="background: #fff; color: #27ae60; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">34 days left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: right; margin: 0 30px;">
+                            <div style="font-size: 24px; font-weight: 700; color: #2c3e50;">$200</div>
+                            <div style="color: #7f8c8d; font-size: 13px;">Amount Due</div>
+                        </div>
+                        <button style="background: #9b59b6; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap;"><i class="fas fa-credit-card"></i> Pay Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-history" style="margin-right: 10px; color: #4facfe;"></i>Payment History</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <select style="padding: 8px 15px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 14px; cursor: pointer;">
+                            <option>All Payments</option>
+                            <option>This Month</option>
+                            <option>Last 3 Months</option>
+                            <option>This Year</option>
+                        </select>
+                        <button style="background: #4facfe; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                </div>
+
+                <!-- Payment History Table -->
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa; border-bottom: 2px solid #e0e0e0;">
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Transaction ID</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Date</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Description</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Payment Method</th>
+                                <th style="padding: 15px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 14px;">Amount</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Status</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Payment 1 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #667eea; font-weight: 600; font-size: 14px;">#TXN-20251215-001</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 15, 2025</td>
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Tuition Fees - Installment 2</td>
+                                <td style="padding: 15px; font-size: 14px;">
+                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-credit-card" style="color: #4facfe;"></i>
+                                        <span style="color: #7f8c8d;">Credit Card</span>
+                                    </span>
+                                </td>
+                                <td style="padding: 15px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 14px;">$3,500</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Completed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i> PDF</button>
+                                </td>
+                            </tr>
+
+                            <!-- Payment 2 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #667eea; font-weight: 600; font-size: 14px;">#TXN-20251201-002</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 1, 2025</td>
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Hostel Fees</td>
+                                <td style="padding: 15px; font-size: 14px;">
+                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-university" style="color: #43e97b;"></i>
+                                        <span style="color: #7f8c8d;">Bank Transfer</span>
+                                    </span>
+                                </td>
+                                <td style="padding: 15px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 14px;">$1,200</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Completed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i> PDF</button>
+                                </td>
+                            </tr>
+
+                            <!-- Payment 3 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #667eea; font-weight: 600; font-size: 14px;">#TXN-20251120-003</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Nov 20, 2025</td>
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Sports & Activities Fee</td>
+                                <td style="padding: 15px; font-size: 14px;">
+                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fab fa-paypal" style="color: #fa709a;"></i>
+                                        <span style="color: #7f8c8d;">PayPal</span>
+                                    </span>
+                                </td>
+                                <td style="padding: 15px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 14px;">$250</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Completed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i> PDF</button>
+                                </td>
+                            </tr>
+
+                            <!-- Payment 4 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #667eea; font-weight: 600; font-size: 14px;">#TXN-20251110-004</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Nov 10, 2025</td>
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Examination Fees</td>
+                                <td style="padding: 15px; font-size: 14px;">
+                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-credit-card" style="color: #4facfe;"></i>
+                                        <span style="color: #7f8c8d;">Debit Card</span>
+                                    </span>
+                                </td>
+                                <td style="padding: 15px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 14px;">$300</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Completed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i> PDF</button>
+                                </td>
+                            </tr>
+
+                            <!-- Payment 5 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #667eea; font-weight: 600; font-size: 14px;">#TXN-20251101-005</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Nov 1, 2025</td>
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Tuition Fees - Installment 1</td>
+                                <td style="padding: 15px; font-size: 14px;">
+                                    <span style="display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-university" style="color: #43e97b;"></i>
+                                        <span style="color: #7f8c8d;">Bank Transfer</span>
+                                    </span>
+                                </td>
+                                <td style="padding: 15px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 14px;">$3,200</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Completed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i> PDF</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-wallet" style="margin-right: 10px; color: #667eea;"></i>Saved Payment Methods</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- Credit Card 1 -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 20px; color: white; position: relative; min-height: 180px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 30px;">
+                            <div style="font-size: 14px; opacity: 0.9;">Credit Card</div>
+                            <i class="fab fa-cc-visa" style="font-size: 32px; opacity: 0.8;"></i>
+                        </div>
+                        <div style="font-size: 20px; font-weight: 600; letter-spacing: 2px; margin-bottom: 20px;">•••• •••• •••• 4532</div>
+                        <div style="display: flex; justify-content: space-between; align-items: end;">
+                            <div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Card Holder</div>
+                                <div style="font-size: 14px; font-weight: 600;">JOHN DOE</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Expires</div>
+                                <div style="font-size: 14px; font-weight: 600;">12/28</div>
+                            </div>
+                        </div>
+                        <div style="position: absolute; top: 15px; right: 15px;">
+                            <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">Primary</span>
+                        </div>
+                    </div>
+
+                    <!-- Debit Card -->
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 20px; color: white; position: relative; min-height: 180px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 30px;">
+                            <div style="font-size: 14px; opacity: 0.9;">Debit Card</div>
+                            <i class="fab fa-cc-mastercard" style="font-size: 32px; opacity: 0.8;"></i>
+                        </div>
+                        <div style="font-size: 20px; font-weight: 600; letter-spacing: 2px; margin-bottom: 20px;">•••• •••• •••• 8765</div>
+                        <div style="display: flex; justify-content: space-between; align-items: end;">
+                            <div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Card Holder</div>
+                                <div style="font-size: 14px; font-weight: 600;">JOHN DOE</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Expires</div>
+                                <div style="font-size: 14px; font-weight: 600;">06/27</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add New Card -->
+                    <div style="background: #f8f9fa; border: 2px dashed #bdc3c7; border-radius: 15px; padding: 20px; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                        <div style="width: 60px; height: 60px; background: #ecf0f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-plus" style="font-size: 24px; color: #7f8c8d;"></i>
+                        </div>
+                        <div style="font-size: 16px; font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Add New Card</div>
+                        <div style="font-size: 13px; color: #7f8c8d;">Link a payment method</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Payments Dashboard Section -->
+
+        <!-- Messages Dashboard Section -->
+        <div id="messagesSection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-comments" style="margin-right: 10px;"></i>Messages</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Chat with instructors and classmates</p>
+                </div>
+                <button onclick="alert('Compose new message')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-plus"></i> New Message
+                </button>
+            </div>
+
+            <!-- Messages Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Unread Messages Card -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Unread Messages</div>
+                            <div style="font-size: 32px; font-weight: 700;">12</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-envelope" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> 5 new today</div>
+                </div>
+
+                <!-- Total Conversations Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Conversations</div>
+                            <div style="font-size: 32px; font-weight: 700;">28</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-comments" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-users"></i> Active chats</div>
+                </div>
+
+                <!-- Group Chats Card -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Group Chats</div>
+                            <div style="font-size: 32px; font-weight: 700;">8</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-users" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-user-graduate"></i> Class groups</div>
+                </div>
+
+                <!-- Response Time Card -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Avg Response</div>
+                            <div style="font-size: 32px; font-weight: 700;">2h</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-clock" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-bolt"></i> Quick replies</div>
+                </div>
+            </div>
+
+            <!-- Messages Main Content -->
+            <div style="display: grid; grid-template-columns: 350px 1fr; gap: 20px; height: 600px;">
+                <!-- Conversations List -->
+                <div style="background: white; border-radius: 15px; padding: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column;">
+                    <!-- Search Bar -->
+                    <div style="padding: 20px; border-bottom: 1px solid #ecf0f1;">
+                        <div style="position: relative;">
+                            <input type="text" placeholder="Search messages..." style="width: 100%; padding: 12px 15px 12px 40px; border: 2px solid #ecf0f1; border-radius: 10px; font-size: 14px;">
+                            <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #7f8c8d;"></i>
+                        </div>
+                        <!-- Filter Tabs -->
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button style="flex: 1; background: #667eea; color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;">All</button>
+                            <button style="flex: 1; background: #ecf0f1; color: #2c3e50; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;">Unread</button>
+                            <button style="flex: 1; background: #ecf0f1; color: #2c3e50; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;">Groups</button>
+                        </div>
+                    </div>
+
+                    <!-- Conversations List -->
+                    <div style="flex: 1; overflow-y: auto;">
+                        <!-- Conversation 1 - Unread -->
+                        <div style="padding: 15px 20px; border-bottom: 1px solid #ecf0f1; cursor: pointer; background: #f0f4ff; transition: background 0.3s;" onmouseover="this.style.background='#e8eeff'" onmouseout="this.style.background='#f0f4ff'">
+                            <div style="display: flex; gap: 12px; align-items: start;">
+                                <div style="position: relative;">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">SJ</div>
+                                    <div style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; background: #27ae60; border: 2px solid white; border-radius: 50%;"></div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">Prof. Sarah Johnson</div>
+                                        <div style="font-size: 11px; color: #7f8c8d;">10:30 AM</div>
+                                    </div>
+                                    <div style="color: #2c3e50; font-size: 13px; font-weight: 600; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Assignment Deadline Extension</div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="color: #7f8c8d; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Thank you for the update on your progress...</div>
+                                        <span style="background: #fa709a; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; margin-left: 8px;">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation 2 - Unread -->
+                        <div style="padding: 15px 20px; border-bottom: 1px solid #ecf0f1; cursor: pointer; background: #f0f4ff; transition: background 0.3s;" onmouseover="this.style.background='#e8eeff'" onmouseout="this.style.background='#f0f4ff'">
+                            <div style="display: flex; gap: 12px; align-items: start;">
+                                <div style="position: relative;">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">MC</div>
+                                    <div style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; background: #27ae60; border: 2px solid white; border-radius: 50%;"></div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">Prof. Michael Chen</div>
+                                        <div style="font-size: 11px; color: #7f8c8d;">9:15 AM</div>
+                                    </div>
+                                    <div style="color: #2c3e50; font-size: 13px; font-weight: 600; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Database Project Feedback</div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="color: #7f8c8d; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Great work on your database schema design!</div>
+                                        <span style="background: #fa709a; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; margin-left: 8px;">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation 3 - Group Chat -->
+                        <div style="padding: 15px 20px; border-bottom: 1px solid #ecf0f1; cursor: pointer; background: white; transition: background 0.3s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                            <div style="display: flex; gap: 12px; align-items: start;">
+                                <div style="position: relative;">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div style="position: absolute; bottom: 0; right: 0; background: white; border-radius: 50%; padding: 2px;">
+                                        <span style="background: #e74c3c; color: white; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 10px;">5</span>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">Web Dev Study Group</div>
+                                        <div style="font-size: 11px; color: #7f8c8d;">Yesterday</div>
+                                    </div>
+                                    <div style="color: #7f8c8d; font-size: 13px; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><span style="font-weight: 600; color: #2c3e50;">Alex:</span> Does anyone have notes from last week's lecture?</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation 4 -->
+                        <div style="padding: 15px 20px; border-bottom: 1px solid #ecf0f1; cursor: pointer; background: white; transition: background 0.3s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                            <div style="display: flex; gap: 12px; align-items: start;">
+                                <div style="position: relative;">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">EP</div>
+                                    <div style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; background: #95a5a6; border: 2px solid white; border-radius: 50%;"></div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">Dr. Emily Parker</div>
+                                        <div style="font-size: 11px; color: #7f8c8d;">Dec 20</div>
+                                    </div>
+                                    <div style="color: #7f8c8d; font-size: 13px; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Your exam results are ready for review</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation 5 - Group -->
+                        <div style="padding: 15px 20px; border-bottom: 1px solid #ecf0f1; cursor: pointer; background: white; transition: background 0.3s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                            <div style="display: flex; gap: 12px; align-items: start;">
+                                <div style="position: relative;">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">CS 301 - Class Group</div>
+                                        <div style="font-size: 11px; color: #7f8c8d;">Dec 19</div>
+                                    </div>
+                                    <div style="color: #7f8c8d; font-size: 13px; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><span style="font-weight: 600; color: #2c3e50;">Sarah:</span> Meeting at library tomorrow 3pm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation 6 -->
+                        <div style="padding: 15px 20px; border-bottom: 1px solid #ecf0f1; cursor: pointer; background: white; transition: background 0.3s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                            <div style="display: flex; gap: 12px; align-items: start;">
+                                <div style="position: relative;">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">JW</div>
+                                    <div style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; background: #27ae60; border: 2px solid white; border-radius: 50%;"></div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                                        <div style="font-weight: 700; color: #2c3e50; font-size: 15px;">James Wilson</div>
+                                        <div style="font-size: 11px; color: #7f8c8d;">Dec 18</div>
+                                    </div>
+                                    <div style="color: #7f8c8d; font-size: 13px; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Can you share the presentation slides?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Window -->
+                <div style="background: white; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column;">
+                    <!-- Chat Header -->
+                    <div style="padding: 20px; border-bottom: 2px solid #ecf0f1; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="position: relative;">
+                                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px;">SJ</div>
+                                <div style="position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; background: #27ae60; border: 2px solid white; border-radius: 50%;"></div>
+                            </div>
+                            <div>
+                                <div style="font-weight: 700; color: #2c3e50; font-size: 16px;">Prof. Sarah Johnson</div>
+                                <div style="color: #27ae60; font-size: 13px; display: flex; align-items: center; gap: 5px;">
+                                    <div style="width: 8px; height: 8px; background: #27ae60; border-radius: 50%;"></div>
+                                    Active now
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button style="width: 40px; height: 40px; background: #ecf0f1; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #2c3e50;"><i class="fas fa-phone"></i></button>
+                            <button style="width: 40px; height: 40px; background: #ecf0f1; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #2c3e50;"><i class="fas fa-video"></i></button>
+                            <button style="width: 40px; height: 40px; background: #ecf0f1; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #2c3e50;"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Messages Area -->
+                    <div style="flex: 1; padding: 20px; overflow-y: auto; background: #f8f9fa;">
+                        <!-- Date Separator -->
+                        <div style="text-align: center; margin: 20px 0;">
+                            <span style="background: #ecf0f1; color: #7f8c8d; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 600;">Today, Dec 22</span>
+                        </div>
+
+                        <!-- Received Message -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0;">SJ</div>
+                            <div style="max-width: 70%;">
+                                <div style="background: white; padding: 12px 16px; border-radius: 15px; border-top-left-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="color: #2c3e50; font-size: 14px; line-height: 1.5;">Hi! I've reviewed your assignment submission. Overall, the work is excellent. However, I'd like to discuss a few improvements.</div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 11px; margin-top: 5px; padding-left: 5px;">10:28 AM</div>
+                            </div>
+                        </div>
+
+                        <!-- Received Message with Attachment -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0;">SJ</div>
+                            <div style="max-width: 70%;">
+                                <div style="background: white; padding: 12px 16px; border-radius: 15px; border-top-left-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="color: #2c3e50; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">I've attached my feedback document with detailed comments.</div>
+                                    <div style="background: #f8f9fa; border: 2px solid #ecf0f1; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                                        <div style="width: 40px; height: 40px; background: #667eea; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-file-pdf" style="font-size: 18px;"></i>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 600; color: #2c3e50; font-size: 13px;">assignment_feedback.pdf</div>
+                                            <div style="color: #7f8c8d; font-size: 11px;">245 KB</div>
+                                        </div>
+                                        <i class="fas fa-download" style="color: #667eea;"></i>
+                                    </div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 11px; margin-top: 5px; padding-left: 5px;">10:29 AM</div>
+                            </div>
+                        </div>
+
+                        <!-- Sent Message -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px; justify-content: flex-end;">
+                            <div style="max-width: 70%;">
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 12px 16px; border-radius: 15px; border-top-right-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="color: white; font-size: 14px; line-height: 1.5;">Thank you so much, Professor! I really appreciate your detailed feedback.</div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 11px; margin-top: 5px; padding-right: 5px; text-align: right;">10:30 AM • Read</div>
+                            </div>
+                        </div>
+
+                        <!-- Sent Message -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px; justify-content: flex-end;">
+                            <div style="max-width: 70%;">
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 12px 16px; border-radius: 15px; border-top-right-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="color: white; font-size: 14px; line-height: 1.5;">Would it be possible to get an extension on the next assignment? I'd like to implement your suggestions.</div>
+                                </div>
+                                <div style="color: #7f8c8d; font-size: 11px; margin-top: 5px; padding-right: 5px; text-align: right;">10:31 AM • Delivered</div>
+                            </div>
+                        </div>
+
+                        <!-- Typing Indicator -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0;">SJ</div>
+                            <div>
+                                <div style="background: white; padding: 12px 16px; border-radius: 15px; border-top-left-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; gap: 4px; align-items: center;">
+                                    <div style="width: 8px; height: 8px; background: #bdc3c7; border-radius: 50%; animation: typing 1.4s infinite;"></div>
+                                    <div style="width: 8px; height: 8px; background: #bdc3c7; border-radius: 50%; animation: typing 1.4s infinite 0.2s;"></div>
+                                    <div style="width: 8px; height: 8px; background: #bdc3c7; border-radius: 50%; animation: typing 1.4s infinite 0.4s;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div style="padding: 20px; border-top: 2px solid #ecf0f1; background: white;">
+                        <div style="display: flex; gap: 10px; align-items: end;">
+                            <button style="width: 40px; height: 40px; background: #ecf0f1; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #667eea; flex-shrink: 0;">
+                                <i class="fas fa-paperclip" style="font-size: 18px;"></i>
+                            </button>
+                            <button style="width: 40px; height: 40px; background: #ecf0f1; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #667eea; flex-shrink: 0;">
+                                <i class="fas fa-image" style="font-size: 18px;"></i>
+                            </button>
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 10px; padding: 10px 15px; min-height: 40px; max-height: 120px; overflow-y: auto;">
+                                <textarea placeholder="Type a message..." style="width: 100%; border: none; background: transparent; resize: none; outline: none; font-size: 14px; color: #2c3e50; font-family: inherit;" rows="1"></textarea>
+                            </div>
+                            <button style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;">
+                                <i class="fas fa-paper-plane" style="font-size: 18px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Messages Dashboard Section -->
+
+        <!-- Exams Dashboard Section -->
+        <div id="examsSection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-file-alt" style="margin-right: 10px;"></i>Exams Dashboard</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">View your exam schedule and results</p>
+                </div>
+                <button onclick="window.print()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-download"></i> Download Schedule
+                </button>
+            </div>
+
+            <!-- Exam Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Upcoming Exams Card -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Upcoming Exams</div>
+                            <div style="font-size: 32px; font-weight: 700;">5</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-calendar-check" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-exclamation-circle"></i> Next: Dec 25, 2025</div>
+                </div>
+
+                <!-- Completed Exams Card -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Completed Exams</div>
+                            <div style="font-size: 32px; font-weight: 700;">12</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> This semester</div>
+                </div>
+
+                <!-- Average Score Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Average Score</div>
+                            <div style="font-size: 32px; font-weight: 700;">87.5%</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-chart-line" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-trophy"></i> Above average</div>
+                </div>
+
+                <!-- Study Hours Card -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Study Hours</div>
+                            <div style="font-size: 32px; font-weight: 700;">145</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-clock" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-book-reader"></i> This semester</div>
+                </div>
+            </div>
+
+            <!-- Upcoming Exams Schedule -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-calendar-alt" style="margin-right: 10px; color: #fa709a;"></i>Upcoming Exams</h2>
+                
+                <div style="display: grid; gap: 15px;">
+                    <!-- Exam 1 - Urgent -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #fff3f3; border-radius: 12px; border-left: 4px solid #e74c3c;">
+                        <div style="width: 80px; text-align: center; flex-shrink: 0;">
+                            <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; border-radius: 12px; padding: 10px;">
+                                <div style="font-size: 24px; font-weight: 700;">25</div>
+                                <div style="font-size: 12px; opacity: 0.9;">DEC</div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-top: 5px;">3 days</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Mathematics Final Exam</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 8px;">MAT 301 - Calculus III</div>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-clock" style="color: #e74c3c;"></i> 10:00 AM - 12:00 PM
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-map-marker-alt" style="color: #e74c3c;"></i> Exam Hall A - Room 304
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-user" style="color: #e74c3c;"></i> Prof. David Miller
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="background: #ffebee; color: #e74c3c; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">URGENT</span>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-book"></i> Study Materials</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-bell"></i> Set Reminder</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exam 2 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #fff8f0; border-radius: 12px; border-left: 4px solid #f39c12;">
+                        <div style="width: 80px; text-align: center; flex-shrink: 0;">
+                            <div style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; border-radius: 12px; padding: 10px;">
+                                <div style="font-size: 24px; font-weight: 700;">28</div>
+                                <div style="font-size: 12px; opacity: 0.9;">DEC</div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-top: 5px;">6 days</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Database Systems</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 8px;">CS 401 - Advanced Databases</div>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-clock" style="color: #f39c12;"></i> 2:00 PM - 4:00 PM
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-map-marker-alt" style="color: #f39c12;"></i> Computer Lab 201
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-user" style="color: #f39c12;"></i> Prof. Michael Chen
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="background: #fff3e0; color: #f39c12; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">UPCOMING</span>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #f39c12; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-book"></i> Study Materials</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-bell"></i> Set Reminder</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exam 3 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #f0f8ff; border-radius: 12px; border-left: 4px solid #4facfe;">
+                        <div style="width: 80px; text-align: center; flex-shrink: 0;">
+                            <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 12px; padding: 10px;">
+                                <div style="font-size: 24px; font-weight: 700;">05</div>
+                                <div style="font-size: 12px; opacity: 0.9;">JAN</div>
+                                <div style="font-size: 11px; opacity: 0.8; margin-top: 5px;">14 days</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Web Development Project</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 8px;">CS 305 - Full Stack Development</div>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-clock" style="color: #4facfe;"></i> 9:00 AM - 12:00 PM
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-map-marker-alt" style="color: #4facfe;"></i> Development Lab
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-user" style="color: #4facfe;"></i> Prof. Sarah Johnson
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="background: #e8f5ff; color: #4facfe; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">SCHEDULED</span>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #4facfe; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-book"></i> Study Materials</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-bell"></i> Set Reminder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Results -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-trophy" style="margin-right: 10px; color: #f39c12;"></i>Recent Exam Results</h2>
+                    <button style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;"><i class="fas fa-chart-bar"></i> View All Results</button>
+                </div>
+
+                <!-- Results Table -->
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa; border-bottom: 2px solid #e0e0e0;">
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Exam Name</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Course</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Date</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Score</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Grade</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Status</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Result 1 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Midterm Exam</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Data Structures</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 10, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <div style="display: inline-block; position: relative; width: 60px; height: 60px;">
+                                        <svg style="transform: rotate(-90deg);" width="60" height="60">
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#ecf0f1" stroke-width="5"/>
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#43e97b" stroke-width="5" stroke-dasharray="157" stroke-dashoffset="13" stroke-linecap="round"/>
+                                        </svg>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; color: #2c3e50; font-size: 14px;">92%</div>
+                                    </div>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">A</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Passed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-eye"></i> View</button>
+                                </td>
+                            </tr>
+
+                            <!-- Result 2 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Practical Test</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Physics Lab</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 8, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <div style="display: inline-block; position: relative; width: 60px; height: 60px;">
+                                        <svg style="transform: rotate(-90deg);" width="60" height="60">
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#ecf0f1" stroke-width="5"/>
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#667eea" stroke-width="5" stroke-dasharray="157" stroke-dashoffset="22" stroke-linecap="round"/>
+                                        </svg>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; color: #2c3e50; font-size: 14px;">86%</div>
+                                    </div>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">B+</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Passed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-eye"></i> View</button>
+                                </td>
+                            </tr>
+
+                            <!-- Result 3 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Unit Test 3</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Algorithms</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 5, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <div style="display: inline-block; position: relative; width: 60px; height: 60px;">
+                                        <svg style="transform: rotate(-90deg);" width="60" height="60">
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#ecf0f1" stroke-width="5"/>
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#4facfe" stroke-width="5" stroke-dasharray="157" stroke-dashoffset="28" stroke-linecap="round"/>
+                                        </svg>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; color: #2c3e50; font-size: 14px;">82%</div>
+                                    </div>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">B</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Passed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-eye"></i> View</button>
+                                </td>
+                            </tr>
+
+                            <!-- Result 4 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Quiz 5</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Statistics</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 1, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <div style="display: inline-block; position: relative; width: 60px; height: 60px;">
+                                        <svg style="transform: rotate(-90deg);" width="60" height="60">
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#ecf0f1" stroke-width="5"/>
+                                            <circle cx="30" cy="30" r="25" fill="none" stroke="#fa709a" stroke-width="5" stroke-dasharray="157" stroke-dashoffset="7" stroke-linecap="round"/>
+                                        </svg>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; color: #2c3e50; font-size: 14px;">95%</div>
+                                    </div>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">A+</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Passed</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-eye"></i> View</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Exam Preparation Tips -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-lightbulb" style="margin-right: 10px; color: #f39c12;"></i>Exam Preparation Resources</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                    <!-- Resource 1 -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-book" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Study Materials</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Access notes, textbooks, and practice questions for all subjects</p>
+                    </div>
+
+                    <!-- Resource 2 -->
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-file-alt" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Past Papers</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Download previous years' exam papers with solutions</p>
+                    </div>
+
+                    <!-- Resource 3 -->
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-video" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Video Tutorials</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Watch recorded lectures and concept explanations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Exams Dashboard Section -->
+
+        <!-- Assignments Dashboard Section -->
+        <div id="assignmentsSection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-tasks" style="margin-right: 10px;"></i>Assignments Dashboard</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Track and manage your assignments</p>
+                </div>
+                <button onclick="alert('Create new assignment')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-plus"></i> Submit Assignment
+                </button>
+            </div>
+
+            <!-- Assignment Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Total Assignments Card -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Total Assignments</div>
+                            <div style="font-size: 32px; font-weight: 700;">18</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-tasks" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-calendar"></i> This semester</div>
+                </div>
+
+                <!-- Pending Assignments Card -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Pending</div>
+                            <div style="font-size: 32px; font-weight: 700;">5</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-clock" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-exclamation-circle"></i> Due soon</div>
+                </div>
+
+                <!-- Submitted Assignments Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Submitted</div>
+                            <div style="font-size: 32px; font-weight: 700;">13</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> 72% completion</div>
+                </div>
+
+                <!-- Avg Grade Card -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Average Grade</div>
+                            <div style="font-size: 32px; font-weight: 700;">88%</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-star" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-trophy"></i> Excellent work</div>
+                </div>
+            </div>
+
+            <!-- Pending Assignments -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-exclamation-triangle" style="margin-right: 10px; color: #fa709a;"></i>Pending Assignments</h2>
+                
+                <div style="display: grid; gap: 15px;">
+                    <!-- Assignment 1 - Urgent -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #fff3f3; border-radius: 12px; border-left: 4px solid #e74c3c;">
+                        <div style="width: 70px; text-align: center; flex-shrink: 0;">
+                            <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <i class="fas fa-tasks" style="font-size: 24px; margin-bottom: 5px;"></i>
+                                <div style="font-size: 11px; opacity: 0.9;">URGENT</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Web Development Final Project</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 8px;">CS 305 - Full Stack Development</div>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-calendar" style="color: #e74c3c;"></i> Due: Dec 24, 2025
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-user" style="color: #e74c3c;"></i> Prof. Sarah Johnson
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-star" style="color: #e74c3c;"></i> 30% of final grade
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="background: #ffebee; color: #e74c3c; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">2 DAYS LEFT</span>
+                            </div>
+                            <p style="color: #7f8c8d; font-size: 14px; margin: 10px 0; line-height: 1.5;">Build a complete full-stack web application using React and Node.js with database integration and authentication.</p>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-upload"></i> Submit Now</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-file-download"></i> Download Instructions</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assignment 2 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #fff8f0; border-radius: 12px; border-left: 4px solid #f39c12;">
+                        <div style="width: 70px; text-align: center; flex-shrink: 0;">
+                            <div style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <i class="fas fa-database" style="font-size: 24px; margin-bottom: 5px;"></i>
+                                <div style="font-size: 11px; opacity: 0.9;">PENDING</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Database Schema Design</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 8px;">CS 401 - Advanced Databases</div>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-calendar" style="color: #f39c12;"></i> Due: Dec 27, 2025
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-user" style="color: #f39c12;"></i> Prof. Michael Chen
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-star" style="color: #f39c12;"></i> 20% of final grade
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="background: #fff3e0; color: #f39c12; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">5 DAYS LEFT</span>
+                            </div>
+                            <p style="color: #7f8c8d; font-size: 14px; margin: 10px 0; line-height: 1.5;">Design a comprehensive database schema for an online library system with ER diagrams and normalization.</p>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #f39c12; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-upload"></i> Submit Now</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-file-download"></i> Download Instructions</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assignment 3 -->
+                    <div style="display: flex; gap: 20px; padding: 20px; background: #f0f8ff; border-radius: 12px; border-left: 4px solid #4facfe;">
+                        <div style="width: 70px; text-align: center; flex-shrink: 0;">
+                            <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <i class="fas fa-code" style="font-size: 24px; margin-bottom: 5px;"></i>
+                                <div style="font-size: 11px; opacity: 0.9;">TODO</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <div>
+                                    <h3 style="margin: 0 0 5px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Data Structures Lab Assignment</h3>
+                                    <div style="color: #7f8c8d; font-size: 14px; margin-bottom: 8px;">CS 205 - Data Structures & Algorithms</div>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-calendar" style="color: #4facfe;"></i> Due: Dec 30, 2025
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-user" style="color: #4facfe;"></i> Dr. Emily Parker
+                                        </span>
+                                        <span style="display: flex; align-items: center; gap: 5px; color: #7f8c8d; font-size: 13px;">
+                                            <i class="fas fa-star" style="color: #4facfe;"></i> 15% of final grade
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="background: #e8f5ff; color: #4facfe; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">8 DAYS LEFT</span>
+                            </div>
+                            <p style="color: #7f8c8d; font-size: 14px; margin: 10px 0; line-height: 1.5;">Implement binary search trees, AVL trees, and graph traversal algorithms in C++.</p>
+                            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button style="background: #4facfe; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-upload"></i> Submit Now</button>
+                                <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;"><i class="fas fa-file-download"></i> Download Instructions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submitted Assignments -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-check-double" style="margin-right: 10px; color: #43e97b;"></i>Recently Submitted</h2>
+                    <button style="background: #43e97b; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;"><i class="fas fa-history"></i> View All</button>
+                </div>
+
+                <!-- Submitted Assignments Table -->
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f8f9fa; border-bottom: 2px solid #e0e0e0;">
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Assignment</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Course</th>
+                                <th style="padding: 15px; text-align: left; font-weight: 700; color: #2c3e50; font-size: 14px;">Submitted On</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Status</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Grade</th>
+                                <th style="padding: 15px; text-align: center; font-weight: 700; color: #2c3e50; font-size: 14px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Submitted Assignment 1 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">Algorithm Analysis Report</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">CS 205</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 18, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Graded</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">92%</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px;"><i class="fas fa-eye"></i> View</button>
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Submitted Assignment 2 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">React Component Library</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">CS 305</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 15, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #fff3e0; color: #f39c12; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-clock"></i> Pending</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="color: #95a5a6; font-size: 13px;">-</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px;"><i class="fas fa-eye"></i> View</button>
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Submitted Assignment 3 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">SQL Query Optimization</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">CS 401</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 12, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Graded</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">85%</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px;"><i class="fas fa-eye"></i> View</button>
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Submitted Assignment 4 -->
+                            <tr style="border-bottom: 1px solid #ecf0f1;">
+                                <td style="padding: 15px; color: #2c3e50; font-size: 14px; font-weight: 600;">UX Design Prototype</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">CS 350</td>
+                                <td style="padding: 15px; color: #7f8c8d; font-size: 14px;">Dec 10, 2025</td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: #e8f5e9; color: #27ae60; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;"><i class="fas fa-check-circle"></i> Graded</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <span style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 6px 15px; border-radius: 20px; font-size: 13px; font-weight: 700;">95%</span>
+                                </td>
+                                <td style="padding: 15px; text-align: center;">
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 5px;"><i class="fas fa-eye"></i> View</button>
+                                    <button style="background: #ecf0f1; color: #2c3e50; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Assignment Tips & Resources -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-lightbulb" style="margin-right: 10px; color: #f39c12;"></i>Assignment Resources</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <!-- Resource 1 -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-file-pdf" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Templates & Guides</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Download assignment templates and formatting guides</p>
+                    </div>
+
+                    <!-- Resource 2 -->
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-question-circle" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Submission Help</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Get help with file formats, submission process, and troubleshooting</p>
+                    </div>
+
+                    <!-- Resource 3 -->
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-users" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Study Groups</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Join or create study groups for collaborative learning</p>
+                    </div>
+
+                    <!-- Resource 4 -->
+                    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-calendar-alt" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Extension Requests</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.5;">Request deadline extensions for valid reasons</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Assignments Dashboard Section -->
+
+        <!-- My Courses Dashboard Section -->
+        <div id="coursesSection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-book" style="margin-right: 10px;"></i>My Courses</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Manage and track your enrolled courses</p>
+                </div>
+                <button onclick="alert('Add new course')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-plus"></i> Enroll Course
+                </button>
+            </div>
+
+            <!-- Course Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <!-- Active Courses Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Active Courses</div>
+                            <div style="font-size: 32px; font-weight: 700;">6</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-book-open" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-calendar"></i> This semester</div>
+                </div>
+
+                <!-- Total Credits Card -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Total Credits</div>
+                            <div style="font-size: 32px; font-weight: 700;">18</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-award" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-graduation-cap"></i> Credits earned</div>
+                </div>
+
+                <!-- Avg Progress Card -->
+                <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Avg Progress</div>
+                            <div style="font-size: 32px; font-weight: 700;">68%</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-chart-pie" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-arrow-up"></i> On track</div>
+                </div>
+
+                <!-- Attendance Rate Card -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Attendance Rate</div>
+                            <div style="font-size: 32px; font-weight: 700;">92%</div>
+                        </div>
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user-check" style="font-size: 24px;"></i>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; opacity: 0.8;"><i class="fas fa-check-circle"></i> Excellent</div>
+                </div>
+            </div>
+
+            <!-- Active Courses Grid -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-graduation-cap" style="margin-right: 10px; color: #667eea;"></i>Active Courses</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+                    <!-- Course 1 -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Web Development</h3>
+                                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">CS 305 • 3 Credits</div>
+                                <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-user"></i> Prof. Sarah Johnson</div>
+                            </div>
+                            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-code" style="font-size: 24px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; opacity: 0.9;">Progress</span>
+                                <span style="font-size: 13px; font-weight: 700;">75%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: white; height: 100%; width: 75%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Lectures</div>
+                                <div style="font-size: 14px; font-weight: 700;">24/32</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Assignments</div>
+                                <div style="font-size: 14px; font-weight: 700;">8/10</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Grade</div>
+                                <div style="font-size: 14px; font-weight: 700;">A-</div>
+                            </div>
+                        </div>
+
+                        <button style="width: 100%; margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-arrow-right"></i> View Course Details
+                        </button>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Database Systems</h3>
+                                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">CS 401 • 3 Credits</div>
+                                <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-user"></i> Prof. Michael Chen</div>
+                            </div>
+                            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-database" style="font-size: 24px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; opacity: 0.9;">Progress</span>
+                                <span style="font-size: 13px; font-weight: 700;">60%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: white; height: 100%; width: 60%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Lectures</div>
+                                <div style="font-size: 14px; font-weight: 700;">18/30</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Assignments</div>
+                                <div style="font-size: 14px; font-weight: 700;">6/12</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Grade</div>
+                                <div style="font-size: 14px; font-weight: 700;">B+</div>
+                            </div>
+                        </div>
+
+                        <button style="width: 100%; margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-arrow-right"></i> View Course Details
+                        </button>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 15px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Data Structures</h3>
+                                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">CS 205 • 4 Credits</div>
+                                <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-user"></i> Dr. Emily Parker</div>
+                            </div>
+                            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-project-diagram" style="font-size: 24px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; opacity: 0.9;">Progress</span>
+                                <span style="font-size: 13px; font-weight: 700;">90%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: white; height: 100%; width: 90%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Lectures</div>
+                                <div style="font-size: 14px; font-weight: 700;">27/28</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Assignments</div>
+                                <div style="font-size: 14px; font-weight: 700;">9/10</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Grade</div>
+                                <div style="font-size: 14px; font-weight: 700;">A+</div>
+                            </div>
+                        </div>
+
+                        <button style="width: 100%; margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-arrow-right"></i> View Course Details
+                        </button>
+                    </div>
+
+                    <!-- Course 4 -->
+                    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 15px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Machine Learning</h3>
+                                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">CS 501 • 3 Credits</div>
+                                <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-user"></i> Prof. David Miller</div>
+                            </div>
+                            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-brain" style="font-size: 24px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; opacity: 0.9;">Progress</span>
+                                <span style="font-size: 13px; font-weight: 700;">45%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: white; height: 100%; width: 45%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Lectures</div>
+                                <div style="font-size: 14px; font-weight: 700;">12/32</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Assignments</div>
+                                <div style="font-size: 14px; font-weight: 700;">4/10</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Grade</div>
+                                <div style="font-size: 14px; font-weight: 700;">B</div>
+                            </div>
+                        </div>
+
+                        <button style="width: 100%; margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-arrow-right"></i> View Course Details
+                        </button>
+                    </div>
+
+                    <!-- Course 5 -->
+                    <div style="background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%); border-radius: 15px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Mobile App Dev</h3>
+                                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">CS 350 • 3 Credits</div>
+                                <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-user"></i> Prof. Lisa Anderson</div>
+                            </div>
+                            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-mobile-alt" style="font-size: 24px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; opacity: 0.9;">Progress</span>
+                                <span style="font-size: 13px; font-weight: 700;">30%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: white; height: 100%; width: 30%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Lectures</div>
+                                <div style="font-size: 14px; font-weight: 700;">8/28</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Assignments</div>
+                                <div style="font-size: 14px; font-weight: 700;">3/10</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Grade</div>
+                                <div style="font-size: 14px; font-weight: 700;">C+</div>
+                            </div>
+                        </div>
+
+                        <button style="width: 100%; margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-arrow-right"></i> View Course Details
+                        </button>
+                    </div>
+
+                    <!-- Course 6 -->
+                    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 15px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div>
+                                <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 700;">Cloud Computing</h3>
+                                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">CS 450 • 2 Credits</div>
+                                <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-user"></i> Prof. James Wilson</div>
+                            </div>
+                            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-cloud" style="font-size: 24px;"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; opacity: 0.9;">Progress</span>
+                                <span style="font-size: 13px; font-weight: 700;">55%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: white; height: 100%; width: 55%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Lectures</div>
+                                <div style="font-size: 14px; font-weight: 700;">14/24</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Assignments</div>
+                                <div style="font-size: 14px; font-weight: 700;">5/8</div>
+                            </div>
+                            <div style="flex: 1; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">Grade</div>
+                                <div style="font-size: 14px; font-weight: 700;">B+</div>
+                            </div>
+                        </div>
+
+                        <button style="width: 100%; margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                            <i class="fas fa-arrow-right"></i> View Course Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Schedule This Week -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-calendar-week" style="margin-right: 10px; color: #4facfe;"></i>This Week's Schedule</h2>
+                
+                <div style="display: grid; gap: 12px;">
+                    <!-- Monday -->
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 15px;">
+                        <div style="font-weight: 700; color: #2c3e50; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-calendar-day" style="color: #667eea; margin-right: 5px;"></i> Monday, Dec 22</div>
+                        <div style="display: grid; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #667eea;">
+                                <div>
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Web Development</div>
+                                    <div style="color: #7f8c8d; font-size: 12px;">Prof. Sarah Johnson • Room A-301</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: #667eea; font-size: 14px;">08:00 AM</div>
+                                    <div style="color: #7f8c8d; font-size: 11px;">90 min</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #4facfe;">
+                                <div>
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Database Systems</div>
+                                    <div style="color: #7f8c8d; font-size: 12px;">Prof. Michael Chen • Room B-205</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: #4facfe; font-size: 14px;">10:00 AM</div>
+                                    <div style="color: #7f8c8d; font-size: 11px;">90 min</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wednesday -->
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 15px;">
+                        <div style="font-weight: 700; color: #2c3e50; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-calendar-day" style="color: #43e97b; margin-right: 5px;"></i> Wednesday, Dec 24</div>
+                        <div style="display: grid; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #43e97b;">
+                                <div>
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Data Structures</div>
+                                    <div style="color: #7f8c8d; font-size: 12px;">Dr. Emily Parker • Room C-110</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: #43e97b; font-size: 14px;">02:00 PM</div>
+                                    <div style="color: #7f8c8d; font-size: 11px;">60 min</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #fa709a;">
+                                <div>
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Machine Learning</div>
+                                    <div style="color: #7f8c8d; font-size: 12px;">Prof. David Miller • Lab D-102</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: #fa709a; font-size: 14px;">04:00 PM</div>
+                                    <div style="color: #7f8c8d; font-size: 11px;">120 min</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Friday -->
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 15px;">
+                        <div style="font-weight: 700; color: #2c3e50; margin-bottom: 10px; font-size: 14px;"><i class="fas fa-calendar-day" style="color: #ff6a00; margin-right: 5px;"></i> Friday, Dec 26</div>
+                        <div style="display: grid; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #ff6a00;">
+                                <div>
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Mobile App Dev</div>
+                                    <div style="color: #7f8c8d; font-size: 12px;">Prof. Lisa Anderson • Lab E-201</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: #ff6a00; font-size: 14px;">09:00 AM</div>
+                                    <div style="color: #7f8c8d; font-size: 11px;">90 min</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #a8edea;">
+                                <div>
+                                    <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Cloud Computing</div>
+                                    <div style="color: #7f8c8d; font-size: 12px;">Prof. James Wilson • Online</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 700; color: #5ed5d2; font-size: 14px;">11:00 AM</div>
+                                    <div style="color: #7f8c8d; font-size: 11px;">60 min</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Resources -->
+            <div style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700; color: #2c3e50;"><i class="fas fa-book-open" style="margin-right: 10px; color: #43e97b;"></i>Course Resources</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+                    <!-- Resource 1 -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-video" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700;">Video Lectures</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 13px; line-height: 1.4;">Access recorded lectures and tutorials</p>
+                    </div>
+
+                    <!-- Resource 2 -->
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-file-pdf" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700;">Course Materials</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 13px; line-height: 1.4;">Download notes, slides, and readings</p>
+                    </div>
+
+                    <!-- Resource 3 -->
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-comments" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700;">Discussion Forums</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 13px; line-height: 1.4;">Join course discussions and Q&A</p>
+                    </div>
+
+                    <!-- Resource 4 -->
+                    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 12px; padding: 20px; color: white; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-chalkboard-teacher" style="font-size: 24px;"></i>
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700;">Office Hours</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 13px; line-height: 1.4;">Schedule meetings with instructors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End My Courses Dashboard Section -->
+
+        <!-- Settings Dashboard Section -->
+        <div id="settingsSection" style="display: none;">
+            <div class="section-header-main" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+                <div>
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700;"><i class="fas fa-cog" style="margin-right: 10px;"></i>Settings</h1>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Manage your account preferences and settings</p>
+                </div>
+            </div>
+
+            <!-- Settings Content Grid -->
+            <div style="display: grid; grid-template-columns: 250px 1fr; gap: 30px;">
+                <!-- Settings Sidebar -->
+                <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); height: fit-content;">
+                    <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 700; color: #2c3e50;">Categories</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button onclick="showSettingsTab('profile')" id="settingsTabProfile" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;">
+                            <i class="fas fa-user"></i> Profile
+                        </button>
+                        <button onclick="showSettingsTab('account')" id="settingsTabAccount" style="background: #f8f9fa; color: #2c3e50; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;">
+                            <i class="fas fa-user-cog"></i> Account
+                        </button>
+                        <button onclick="showSettingsTab('notifications')" id="settingsTabNotifications" style="background: #f8f9fa; color: #2c3e50; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;">
+                            <i class="fas fa-bell"></i> Notifications
+                        </button>
+                        <button onclick="showSettingsTab('privacy')" id="settingsTabPrivacy" style="background: #f8f9fa; color: #2c3e50; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;">
+                            <i class="fas fa-shield-alt"></i> Privacy
+                        </button>
+                        <button onclick="showSettingsTab('security')" id="settingsTabSecurity" style="background: #f8f9fa; color: #2c3e50; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;">
+                            <i class="fas fa-lock"></i> Security
+                        </button>
+                        <button onclick="showSettingsTab('appearance')" id="settingsTabAppearance" style="background: #f8f9fa; color: #2c3e50; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;">
+                            <i class="fas fa-palette"></i> Appearance
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Settings Content Area -->
+                <div>
+                    <!-- Profile Settings Tab -->
+                    <div id="profileSettingsTab" style="display: block;">
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <h2 style="margin: 0 0 25px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Profile Information</h2>
+                            
+                            <!-- Profile Photo -->
+                            <div style="margin-bottom: 30px;">
+                                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50; font-size: 14px;">Profile Photo</label>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: 700;">
+                                        JS
+                                    </div>
+                                    <div>
+                                        <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-right: 10px;">
+                                            <i class="fas fa-upload"></i> Upload Photo
+                                        </button>
+                                        <button style="background: #f8f9fa; color: #e74c3c; border: 1px solid #e74c3c; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Form -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">First Name</label>
+                                    <input type="text" value="John" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Last Name</label>
+                                    <input type="text" value="Smith" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Email Address</label>
+                                    <input type="email" value="john.smith@university.edu" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Phone Number</label>
+                                    <input type="tel" value="+1 (555) 123-4567" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Student ID</label>
+                                    <input type="text" value="STU2024001" disabled style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #f8f9fa; color: #7f8c8d;">
+                                </div>
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Bio</label>
+                                    <textarea rows="4" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; resize: vertical;">Computer Science student passionate about web development and machine learning.</textarea>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 25px; display: flex; justify-content: flex-end; gap: 10px;">
+                                <button style="background: #f8f9fa; color: #7f8c8d; border: 1px solid #ddd; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    Cancel
+                                </button>
+                                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings Tab -->
+                    <div id="accountSettingsTab" style="display: none;">
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                            <h2 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Change Password</h2>
+                            
+                            <div style="display: grid; gap: 20px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Current Password</label>
+                                    <input type="password" placeholder="Enter current password" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">New Password</label>
+                                    <input type="password" placeholder="Enter new password" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Confirm New Password</label>
+                                    <input type="password" placeholder="Confirm new password" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-key"></i> Update Password
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                            <h2 style="margin: 0 0 15px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Language & Region</h2>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Language</label>
+                                    <select style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                        <option>English (US)</option>
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <option>German</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px;">Timezone</label>
+                                    <select style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                        <option>GMT-5 (Eastern Time)</option>
+                                        <option>GMT-6 (Central Time)</option>
+                                        <option>GMT-7 (Mountain Time)</option>
+                                        <option>GMT-8 (Pacific Time)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-save"></i> Save Preferences
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 2px solid #fee;">
+                            <h2 style="margin: 0 0 15px 0; font-size: 22px; font-weight: 700; color: #e74c3c;">Danger Zone</h2>
+                            <p style="color: #7f8c8d; margin: 0 0 20px 0; font-size: 14px;">Once you delete your account, there is no going back. Please be certain.</p>
+                            <button style="background: #e74c3c; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-exclamation-triangle"></i> Delete Account
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Settings Tab -->
+                    <div id="notificationsSettingsTab" style="display: none;">
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <h2 style="margin: 0 0 25px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Notification Preferences</h2>
+                            
+                            <!-- Email Notifications -->
+                            <div style="margin-bottom: 30px;">
+                                <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Email Notifications</h3>
+                                <div style="display: grid; gap: 15px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Assignment Reminders</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">Get notified about upcoming assignment deadlines</div>
+                                        </div>
+                                        <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                            <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #667eea; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                            <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Exam Notifications</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">Receive alerts about upcoming exams</div>
+                                        </div>
+                                        <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                            <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #667eea; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                            <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Grade Updates</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">Get notified when grades are posted</div>
+                                        </div>
+                                        <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                            <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #667eea; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                            <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Push Notifications -->
+                            <div style="margin-bottom: 30px;">
+                                <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Push Notifications</h3>
+                                <div style="display: grid; gap: 15px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">New Messages</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">Get push notifications for new messages</div>
+                                        </div>
+                                        <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                            <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #667eea; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                            <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Class Reminders</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">Receive reminders 15 minutes before class</div>
+                                        </div>
+                                        <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                            <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                            <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end;">
+                                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-save"></i> Save Preferences
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Settings Tab -->
+                    <div id="privacySettingsTab" style="display: none;">
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <h2 style="margin: 0 0 25px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Privacy Settings</h2>
+                            
+                            <div style="display: grid; gap: 15px; margin-bottom: 30px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Profile Visibility</div>
+                                        <div style="font-size: 13px; color: #7f8c8d;">Make my profile visible to other students</div>
+                                    </div>
+                                    <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                        <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #667eea; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                        <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    </label>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Show Online Status</div>
+                                        <div style="font-size: 13px; color: #7f8c8d;">Let others see when you're online</div>
+                                    </div>
+                                    <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                        <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #667eea; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                        <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    </label>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Activity Status</div>
+                                        <div style="font-size: 13px; color: #7f8c8d;">Share your course activity with classmates</div>
+                                    </div>
+                                    <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                        <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                        <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Data & Privacy</h3>
+                            <div style="display: grid; gap: 10px; margin-bottom: 25px;">
+                                <button style="background: #f8f9fa; color: #2c3e50; border: 1px solid #ddd; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-download" style="color: #667eea;"></i> Download My Data
+                                </button>
+                                <button style="background: #f8f9fa; color: #2c3e50; border: 1px solid #ddd; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-file-alt" style="color: #667eea;"></i> View Privacy Policy
+                                </button>
+                                <button style="background: #f8f9fa; color: #2c3e50; border: 1px solid #ddd; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; text-align: left; display: flex; align-items: center; gap: 10px;">
+                                    <i class="fas fa-shield-alt" style="color: #667eea;"></i> Manage Cookie Preferences
+                                </button>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end;">
+                                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-save"></i> Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings Tab -->
+                    <div id="securitySettingsTab" style="display: none;">
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                            <h2 style="margin: 0 0 25px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Two-Factor Authentication</h2>
+                            
+                            <div style="background: #f0f9ff; border-left: 4px solid #667eea; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                    <i class="fas fa-shield-alt" style="color: #667eea; font-size: 20px;"></i>
+                                    <span style="font-weight: 700; color: #2c3e50;">Status: Disabled</span>
+                                </div>
+                                <p style="margin: 0; color: #7f8c8d; font-size: 14px;">Add an extra layer of security to your account by enabling two-factor authentication.</p>
+                            </div>
+
+                            <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-lock"></i> Enable 2FA
+                            </button>
+                        </div>
+
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                            <h2 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Active Sessions</h2>
+                            
+                            <div style="display: grid; gap: 12px;">
+                                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-desktop" style="font-size: 20px;"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px;">Windows PC - Chrome</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">New York, USA • Active now</div>
+                                        </div>
+                                    </div>
+                                    <span style="background: #43e97b; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">Current</span>
+                                </div>
+                                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-mobile-alt" style="font-size: 20px;"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 3px;">iPhone - Safari</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">New York, USA • 2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <button style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">
+                                        Revoke
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <h2 style="margin: 0 0 15px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Login History</h2>
+                            
+                            <div style="display: grid; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Successful login</div>
+                                        <div style="font-size: 13px; color: #7f8c8d;">Windows PC - Chrome • New York, USA</div>
+                                    </div>
+                                    <span style="color: #7f8c8d; font-size: 13px;">Today, 9:30 AM</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Successful login</div>
+                                        <div style="font-size: 13px; color: #7f8c8d;">iPhone - Safari • New York, USA</div>
+                                    </div>
+                                    <span style="color: #7f8c8d; font-size: 13px;">Yesterday, 2:15 PM</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #2c3e50; font-size: 14px;">Successful login</div>
+                                        <div style="font-size: 13px; color: #7f8c8d;">iPad - Safari • New York, USA</div>
+                                    </div>
+                                    <span style="color: #7f8c8d; font-size: 13px;">Dec 20, 11:00 AM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Settings Tab -->
+                    <div id="appearanceSettingsTab" style="display: none;">
+                        <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <h2 style="margin: 0 0 25px 0; font-size: 22px; font-weight: 700; color: #2c3e50;">Appearance Settings</h2>
+                            
+                            <!-- Theme Selection -->
+                            <div style="margin-bottom: 30px;">
+                                <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Theme</h3>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                                    <div style="border: 2px solid #667eea; background: white; padding: 20px; border-radius: 12px; cursor: pointer; text-align: center;">
+                                        <div style="width: 50px; height: 50px; margin: 0 auto 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;"></div>
+                                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Light</div>
+                                        <div style="font-size: 12px; color: #7f8c8d;">Default theme</div>
+                                    </div>
+                                    <div style="border: 2px solid #ddd; background: #2c3e50; padding: 20px; border-radius: 12px; cursor: pointer; text-align: center;">
+                                        <div style="width: 50px; height: 50px; margin: 0 auto 10px; background: #34495e; border-radius: 10px;"></div>
+                                        <div style="font-weight: 600; color: white; margin-bottom: 5px;">Dark</div>
+                                        <div style="font-size: 12px; color: #95a5a6;">Easy on the eyes</div>
+                                    </div>
+                                    <div style="border: 2px solid #ddd; background: white; padding: 20px; border-radius: 12px; cursor: pointer; text-align: center;">
+                                        <div style="width: 50px; height: 50px; margin: 0 auto 10px; background: linear-gradient(135deg, white 0%, white 50%, #2c3e50 50%, #2c3e50 100%); border-radius: 10px;"></div>
+                                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Auto</div>
+                                        <div style="font-size: 12px; color: #7f8c8d;">Match system</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Font Size -->
+                            <div style="margin-bottom: 30px;">
+                                <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Font Size</h3>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                                    <button style="background: #f8f9fa; color: #2c3e50; border: 2px solid #ddd; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 12px;">Small</button>
+                                    <button style="background: white; color: #2c3e50; border: 2px solid #667eea; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px;">Medium</button>
+                                    <button style="background: #f8f9fa; color: #2c3e50; border: 2px solid #ddd; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 16px;">Large</button>
+                                    <button style="background: #f8f9fa; color: #2c3e50; border: 2px solid #ddd; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 18px;">Extra Large</button>
+                                </div>
+                            </div>
+
+                            <!-- Sidebar Behavior -->
+                            <div style="margin-bottom: 25px;">
+                                <h3 style="margin: 0 0 15px 0; font-size: 18px; font-weight: 700; color: #2c3e50;">Sidebar</h3>
+                                <div style="display: grid; gap: 15px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                                        <div>
+                                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Compact Mode</div>
+                                            <div style="font-size: 13px; color: #7f8c8d;">Show icons only in sidebar</div>
+                                        </div>
+                                        <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                                            <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 26px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);"></span>
+                                            <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end;">
+                                <button style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-save"></i> Save Appearance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Settings Dashboard Section -->
+
     </main>
 
     <!-- All Notifications Modal -->
@@ -5454,6 +15801,3188 @@
         </div>
     </div>
 
+    <!-- Transcript Modal -->
+    <div class="transcript-modal" id="transcriptModal">
+        <div class="transcript-modal-content">
+            <div class="transcript-modal-header">
+                <h2>
+                    <i class="fas fa-scroll"></i>
+                    Academic Transcript
+                </h2>
+                <p class="transcript-modal-subtitle">Official Academic Record - Generated on <?php echo date('F j, Y'); ?></p>
+                <button class="transcript-modal-close" onclick="closeTranscriptModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="transcript-modal-body">
+                <!-- Student Information Header -->
+                <div class="transcript-header-section">
+                    <div class="transcript-header-grid">
+                        <div class="transcript-info-item">
+                            <div class="transcript-info-label">Student Name</div>
+                            <div class="transcript-info-value"><?php echo htmlspecialchars($_SESSION['username'] ?? 'Student Name'); ?></div>
+                        </div>
+                        <div class="transcript-info-item">
+                            <div class="transcript-info-label">Student ID</div>
+                            <div class="transcript-info-value"><?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?></div>
+                        </div>
+                        <div class="transcript-info-item">
+                            <div class="transcript-info-label">Program</div>
+                            <div class="transcript-info-value">Computer Science</div>
+                        </div>
+                        <div class="transcript-info-item">
+                            <div class="transcript-info-label">Enrollment Date</div>
+                            <div class="transcript-info-value">September 2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Summary -->
+                <div class="transcript-summary-cards">
+                    <div class="transcript-summary-card">
+                        <div class="transcript-summary-value">3.85</div>
+                        <div class="transcript-summary-label">Cumulative GPA</div>
+                    </div>
+                    <div class="transcript-summary-card blue">
+                        <div class="transcript-summary-value">128</div>
+                        <div class="transcript-summary-label">Total Credits</div>
+                    </div>
+                    <div class="transcript-summary-card green">
+                        <div class="transcript-summary-value">6</div>
+                        <div class="transcript-summary-label">Semesters</div>
+                    </div>
+                    <div class="transcript-summary-card orange">
+                        <div class="transcript-summary-value">48</div>
+                        <div class="transcript-summary-label">Courses Completed</div>
+                    </div>
+                </div>
+
+                <!-- Fall 2025 Semester -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Fall 2025 (Current)
+                        </div>
+                        <div class="semester-gpa">GPA: 3.90</div>
+                    </div>
+                    <table class="transcript-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th style="text-align: center;">Credits</th>
+                                <th style="text-align: center;">Grade</th>
+                                <th style="text-align: center;">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="course-code">CS401</td>
+                                <td class="course-name">Advanced Algorithms</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">CS402</td>
+                                <td class="course-name">Database Systems</td>
+                                <td style="text-align: center;">3</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A-</span></td>
+                                <td style="text-align: center; font-weight: 600;">3.70</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">CS403</td>
+                                <td class="course-name">Software Engineering</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">MATH301</td>
+                                <td class="course-name">Linear Algebra</td>
+                                <td style="text-align: center;">3</td>
+                                <td style="text-align: center;"><span class="grade-badge B">B+</span></td>
+                                <td style="text-align: center; font-weight: 600;">3.30</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">ENG301</td>
+                                <td class="course-name">Technical Writing</td>
+                                <td style="text-align: center;">2</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Spring 2025 Semester -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Spring 2025
+                        </div>
+                        <div class="semester-gpa">GPA: 3.75</div>
+                    </div>
+                    <table class="transcript-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th style="text-align: center;">Credits</th>
+                                <th style="text-align: center;">Grade</th>
+                                <th style="text-align: center;">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="course-code">CS301</td>
+                                <td class="course-name">Data Structures</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A-</span></td>
+                                <td style="text-align: center; font-weight: 600;">3.70</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">CS302</td>
+                                <td class="course-name">Operating Systems</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">CS303</td>
+                                <td class="course-name">Computer Networks</td>
+                                <td style="text-align: center;">3</td>
+                                <td style="text-align: center;"><span class="grade-badge B">B+</span></td>
+                                <td style="text-align: center; font-weight: 600;">3.30</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">STAT201</td>
+                                <td class="course-name">Probability & Statistics</td>
+                                <td style="text-align: center;">3</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">PHY201</td>
+                                <td class="course-name">Physics II</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge B">B</span></td>
+                                <td style="text-align: center; font-weight: 600;">3.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Fall 2024 Semester -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Fall 2024
+                        </div>
+                        <div class="semester-gpa">GPA: 3.92</div>
+                    </div>
+                    <table class="transcript-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th style="text-align: center;">Credits</th>
+                                <th style="text-align: center;">Grade</th>
+                                <th style="text-align: center;">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="course-code">CS201</td>
+                                <td class="course-name">Object-Oriented Programming</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">CS202</td>
+                                <td class="course-name">Discrete Mathematics</td>
+                                <td style="text-align: center;">3</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">MATH201</td>
+                                <td class="course-name">Calculus III</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A-</span></td>
+                                <td style="text-align: center; font-weight: 600;">3.70</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">ENG201</td>
+                                <td class="course-name">Communication Skills</td>
+                                <td style="text-align: center;">2</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                            <tr>
+                                <td class="course-code">PHY101</td>
+                                <td class="course-name">Physics I</td>
+                                <td style="text-align: center;">4</td>
+                                <td style="text-align: center;"><span class="grade-badge A">A</span></td>
+                                <td style="text-align: center; font-weight: 600;">4.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer with Actions -->
+                <div class="transcript-footer">
+                    <div style="color: #7f8c8d; font-size: 12px;">
+                        <i class="fas fa-info-circle"></i> This is an unofficial transcript for reference only. Official transcripts require registrar certification.
+                    </div>
+                    <div class="transcript-actions">
+                        <button class="transcript-btn secondary" onclick="printTranscript()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="transcript-btn primary" onclick="downloadTranscript()">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payments Modal -->
+    <div class="payments-modal" id="paymentsModal">
+        <div class="payments-modal-content">
+            <div class="payments-modal-header">
+                <h2>
+                    <i class="fas fa-credit-card"></i>
+                    Payments & Billing
+                </h2>
+                <p class="payments-modal-subtitle">Manage your tuition fees, payments, and billing history</p>
+                <button class="payments-modal-close" onclick="closePaymentsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="payments-modal-body">
+                <!-- Payment Summary Cards -->
+                <div class="payment-summary-grid">
+                    <div class="payment-summary-card green">
+                        <div class="payment-summary-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="payment-summary-label">Total Paid</div>
+                        <div class="payment-summary-value">$18,500</div>
+                    </div>
+                    <div class="payment-summary-card red">
+                        <div class="payment-summary-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="payment-summary-label">Outstanding</div>
+                        <div class="payment-summary-value">$2,350</div>
+                    </div>
+                    <div class="payment-summary-card orange">
+                        <div class="payment-summary-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="payment-summary-label">Due Soon</div>
+                        <div class="payment-summary-value">$1,200</div>
+                    </div>
+                    <div class="payment-summary-card">
+                        <div class="payment-summary-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="payment-summary-label">Next Due Date</div>
+                        <div class="payment-summary-value" style="font-size: 18px; margin-top: 5px;">Jan 15, 2026</div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="payment-tabs">
+                    <button class="payment-tab active" onclick="showPaymentTab('outstanding')">Outstanding Fees</button>
+                    <button class="payment-tab" onclick="showPaymentTab('history')">Payment History</button>
+                    <button class="payment-tab" onclick="showPaymentTab('make-payment')">Make Payment</button>
+                </div>
+
+                <!-- Outstanding Fees Tab -->
+                <div class="payment-tab-content active" id="outstanding-tab">
+                    <div class="outstanding-fees-section">
+                        <div class="outstanding-fees-header">
+                            <div class="outstanding-fees-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Unpaid Fees
+                            </div>
+                            <div class="outstanding-total">$2,350.00</div>
+                        </div>
+
+                        <div class="fee-item">
+                            <div class="fee-item-info">
+                                <div class="fee-item-name">Spring 2026 Tuition</div>
+                                <div class="fee-item-due">
+                                    <i class="fas fa-calendar"></i> Due: January 15, 2026
+                                </div>
+                            </div>
+                            <div class="fee-item-amount">$1,500.00</div>
+                            <button class="fee-pay-btn" onclick="payFee('Spring 2026 Tuition', 1500)">Pay Now</button>
+                        </div>
+
+                        <div class="fee-item">
+                            <div class="fee-item-info">
+                                <div class="fee-item-name">Library Fees</div>
+                                <div class="fee-item-due">
+                                    <i class="fas fa-calendar"></i> Due: December 31, 2025
+                                </div>
+                            </div>
+                            <div class="fee-item-amount">$150.00</div>
+                            <button class="fee-pay-btn" onclick="payFee('Library Fees', 150)">Pay Now</button>
+                        </div>
+
+                        <div class="fee-item">
+                            <div class="fee-item-info">
+                                <div class="fee-item-name">Lab Equipment Fee</div>
+                                <div class="fee-item-due">
+                                    <i class="fas fa-calendar"></i> Due: January 10, 2026
+                                </div>
+                            </div>
+                            <div class="fee-item-amount">$350.00</div>
+                            <button class="fee-pay-btn" onclick="payFee('Lab Equipment Fee', 350)">Pay Now</button>
+                        </div>
+
+                        <div class="fee-item">
+                            <div class="fee-item-info">
+                                <div class="fee-item-name">Student Activity Fee</div>
+                                <div class="fee-item-due">
+                                    <i class="fas fa-calendar"></i> Due: January 20, 2026
+                                </div>
+                            </div>
+                            <div class="fee-item-amount">$350.00</div>
+                            <button class="fee-pay-btn" onclick="payFee('Student Activity Fee', 350)">Pay Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Pay All Outstanding Fees Section -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin-top: 30px; color: white; position: relative; overflow: hidden;">
+                        <!-- Background Pattern -->
+                        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255, 255, 255, 0.1); border-radius: 50%;"></div>
+                        
+                        <div style="position: relative; z-index: 1;">
+                            <!-- Header -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid rgba(255, 255, 255, 0.2);">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                        <div style="width: 45px; height: 45px; background: rgba(255, 255, 255, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                                            <i class="fas fa-wallet"></i>
+                                        </div>
+                                        <h3 style="font-size: 24px; font-weight: 700; margin: 0;">Pay All at Once</h3>
+                                    </div>
+                                    <p style="opacity: 0.9; font-size: 14px; margin: 0;">Clear all outstanding fees in one transaction</p>
+                                </div>
+                                <div style="background: rgba(255, 255, 255, 0.2); padding: 12px 20px; border-radius: 12px; text-align: center;">
+                                    <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">Save</div>
+                                    <div style="font-size: 20px; font-weight: 700;">$25.00</div>
+                                </div>
+                            </div>
+
+                            <!-- Fee Breakdown Summary -->
+                            <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 20px; margin-bottom: 20px;">
+                                <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 15px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px;">
+                                    <i class="fas fa-list"></i> Included Fees
+                                </h4>
+                                <div style="display: grid; gap: 10px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <i class="fas fa-graduation-cap" style="opacity: 0.8;"></i>
+                                            <span style="font-size: 14px;">Spring 2026 Tuition</span>
+                                        </div>
+                                        <span style="font-weight: 600;">$1,500.00</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <i class="fas fa-book" style="opacity: 0.8;"></i>
+                                            <span style="font-size: 14px;">Library Fees</span>
+                                        </div>
+                                        <span style="font-weight: 600;">$150.00</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <i class="fas fa-flask" style="opacity: 0.8;"></i>
+                                            <span style="font-size: 14px;">Lab Equipment Fee</span>
+                                        </div>
+                                        <span style="font-weight: 600;">$350.00</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <i class="fas fa-users" style="opacity: 0.8;"></i>
+                                            <span style="font-size: 14px;">Student Activity Fee</span>
+                                        </div>
+                                        <span style="font-weight: 600;">$350.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Total Calculation -->
+                            <div style="background: rgba(0, 0, 0, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(255, 255, 255, 0.3);">
+                                    <span style="font-size: 14px; opacity: 0.9;">Subtotal (4 items)</span>
+                                    <span style="font-size: 16px; font-weight: 600;">$2,350.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(255, 255, 255, 0.3);">
+                                    <span style="font-size: 14px; opacity: 0.9;">Bundle Discount</span>
+                                    <span style="font-size: 16px; font-weight: 600; color: #43e97b;">-$25.00</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(255, 255, 255, 0.3);">
+                                    <span style="font-size: 14px; opacity: 0.9;">Processing Fee</span>
+                                    <span style="font-size: 16px; font-weight: 600;">$2.50</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 18px; font-weight: 700;">Total Amount</span>
+                                    <span style="font-size: 32px; font-weight: 700; color: #43e97b;">$2,327.50</span>
+                                </div>
+                            </div>
+
+                            <!-- Benefits List -->
+                            <div style="background: rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 18px; margin-bottom: 25px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 30px; height: 30px; background: rgba(67, 233, 123, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-check" style="color: #43e97b; font-size: 14px;"></i>
+                                        </div>
+                                        <span style="font-size: 13px; font-weight: 600;">Save $25 Bundle Discount</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 30px; height: 30px; background: rgba(67, 233, 123, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-check" style="color: #43e97b; font-size: 14px;"></i>
+                                        </div>
+                                        <span style="font-size: 13px; font-weight: 600;">One Transaction Fee</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 30px; height: 30px; background: rgba(67, 233, 123, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-check" style="color: #43e97b; font-size: 14px;"></i>
+                                        </div>
+                                        <span style="font-size: 13px; font-weight: 600;">Instant Receipt</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
+                                <button onclick="showPayAllBreakdown()" style="background: rgba(255, 255, 255, 0.2); color: white; border: 2px solid rgba(255, 255, 255, 0.3); padding: 18px 25px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px;" onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'; this.style.borderColor='rgba(255, 255, 255, 0.5)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Details</span>
+                                </button>
+                                <button onclick="payAllFees()" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border: none; padding: 18px 25px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 8px 25px rgba(67, 233, 123, 0.3);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 35px rgba(67, 233, 123, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(67, 233, 123, 0.3)'">
+                                    <i class="fas fa-lock"></i>
+                                    <span>Pay All Now - $2,327.50</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+
+                            <!-- Security Badge -->
+                            <div style="text-align: center; margin-top: 20px; opacity: 0.8;">
+                                <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px;">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Secured by 256-bit SSL Encryption</span>
+                                    <span>•</span>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>PCI DSS Compliant</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment History Tab -->
+                <div class="payment-tab-content" id="history-tab">
+                    <table class="payment-history-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Method</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600; color: #667eea;">#TXN-2025-1234</td>
+                                <td>Dec 1, 2025</td>
+                                <td>Fall 2025 Tuition</td>
+                                <td><i class="fas fa-credit-card"></i> Credit Card</td>
+                                <td style="font-weight: 700;">$3,500.00</td>
+                                <td><span class="payment-status-badge paid">Paid</span></td>
+                                <td><button style="border: none; background: none; color: #4facfe; cursor: pointer; font-weight: 600;"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: #667eea;">#TXN-2025-1156</td>
+                                <td>Nov 15, 2025</td>
+                                <td>Hostel Fees</td>
+                                <td><i class="fas fa-university"></i> Bank Transfer</td>
+                                <td style="font-weight: 700;">$800.00</td>
+                                <td><span class="payment-status-badge paid">Paid</span></td>
+                                <td><button style="border: none; background: none; color: #4facfe; cursor: pointer; font-weight: 600;"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: #667eea;">#TXN-2025-1089</td>
+                                <td>Oct 20, 2025</td>
+                                <td>Sports Fee</td>
+                                <td><i class="fas fa-wallet"></i> Debit Card</td>
+                                <td style="font-weight: 700;">$200.00</td>
+                                <td><span class="payment-status-badge paid">Paid</span></td>
+                                <td><button style="border: none; background: none; color: #4facfe; cursor: pointer; font-weight: 600;"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: #667eea;">#TXN-2025-0987</td>
+                                <td>Sep 5, 2025</td>
+                                <td>Examination Fee</td>
+                                <td><i class="fab fa-paypal"></i> PayPal</td>
+                                <td style="font-weight: 700;">$450.00</td>
+                                <td><span class="payment-status-badge paid">Paid</span></td>
+                                <td><button style="border: none; background: none; color: #4facfe; cursor: pointer; font-weight: 600;"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; color: #667eea;">#TXN-2025-0856</td>
+                                <td>Aug 15, 2025</td>
+                                <td>Summer 2025 Tuition</td>
+                                <td><i class="fas fa-credit-card"></i> Credit Card</td>
+                                <td style="font-weight: 700;">$2,800.00</td>
+                                <td><span class="payment-status-badge paid">Paid</span></td>
+                                <td><button style="border: none; background: none; color: #4facfe; cursor: pointer; font-weight: 600;"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Make Payment Tab -->
+                <div class="payment-tab-content" id="make-payment-tab">
+                    <div class="payment-amount-input-section">
+                        <div class="payment-amount-label">Enter Amount to Pay</div>
+                        <input type="number" class="payment-amount-input" id="paymentAmount" placeholder="$0.00" value="2350">
+                        <div class="quick-amount-buttons">
+                            <button class="quick-amount-btn" onclick="setPaymentAmount(500)">$500</button>
+                            <button class="quick-amount-btn" onclick="setPaymentAmount(1000)">$1,000</button>
+                            <button class="quick-amount-btn" onclick="setPaymentAmount(1500)">$1,500</button>
+                            <button class="quick-amount-btn" onclick="setPaymentAmount(2350)">Pay All ($2,350)</button>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 18px; font-weight: 700; color: #2c3e50; margin-bottom: 20px;">Select Payment Method</h3>
+                    <div class="payment-methods-grid">
+                        <div class="payment-method-card selected" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-method-name">Credit/Debit Card</div>
+                            <div class="payment-method-desc">Visa, Mastercard, Amex</div>
+                        </div>
+
+                        <div class="payment-method-card" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="payment-method-name">Bank Transfer</div>
+                            <div class="payment-method-desc">Direct bank payment</div>
+                        </div>
+
+                        <div class="payment-method-card" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">
+                                <i class="fab fa-paypal"></i>
+                            </div>
+                            <div class="payment-method-name">PayPal</div>
+                            <div class="payment-method-desc">Fast & secure</div>
+                        </div>
+
+                        <div class="payment-method-card" onclick="selectPaymentMethod(this)">
+                            <div class="payment-method-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="payment-method-name">Digital Wallet</div>
+                            <div class="payment-method-desc">Apple Pay, Google Pay</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button onclick="processPayment()" style="flex: 1; padding: 18px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(79,172,254,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            <i class="fas fa-lock"></i> Proceed to Secure Payment
+                        </button>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-top: 25px; border-left: 4px solid #4facfe;">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <i class="fas fa-shield-alt" style="color: #4facfe; font-size: 24px; margin-top: 2px;"></i>
+                            <div>
+                                <div style="font-weight: 700; color: #2c3e50; margin-bottom: 5px;">Secure Payment</div>
+                                <div style="font-size: 13px; color: #7f8c8d; line-height: 1.6;">Your payment information is encrypted and secured. We never store your card details. All transactions are processed through our certified payment gateway.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div class="payment-process-modal" id="paymentProcessModal">
+        <div class="payment-process-content">
+            <div class="payment-process-header">
+                <h3>
+                    <i class="fas fa-credit-card"></i>
+                    <span id="paymentProcessTitle">Complete Payment</span>
+                </h3>
+                <button class="payment-process-close" onclick="closePaymentProcessModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="payment-process-body">
+                <!-- Payment Details Summary -->
+                <div class="payment-detail-box">
+                    <div class="payment-detail-row">
+                        <span class="payment-detail-label">Item</span>
+                        <span class="payment-detail-value" id="paymentItemName">Spring 2026 Tuition</span>
+                    </div>
+                    <div class="payment-detail-row">
+                        <span class="payment-detail-label">Transaction Fee</span>
+                        <span class="payment-detail-value">$2.50</span>
+                    </div>
+                    <div class="payment-detail-row">
+                        <span class="payment-detail-label">Total Amount</span>
+                        <span class="payment-detail-value amount" id="paymentTotalAmount">$1,502.50</span>
+                    </div>
+                </div>
+
+                <!-- Payment Method Selection -->
+                <div class="payment-method-selector">
+                    <h4>
+                        <i class="fas fa-wallet"></i>
+                        Select Payment Method
+                    </h4>
+                    <div class="payment-method-options">
+                        <div class="payment-method-option selected" onclick="selectProcessPaymentMethod(this, 'card')">
+                            <div class="payment-method-option-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-method-option-info">
+                                <div class="payment-method-option-name">Card</div>
+                                <div class="payment-method-option-desc">Debit/Credit</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method-option" onclick="selectProcessPaymentMethod(this, 'paypal')">
+                            <div class="payment-method-option-icon">
+                                <i class="fab fa-paypal"></i>
+                            </div>
+                            <div class="payment-method-option-info">
+                                <div class="payment-method-option-name">PayPal</div>
+                                <div class="payment-method-option-desc">Quick & Easy</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method-option" onclick="selectProcessPaymentMethod(this, 'bank')">
+                            <div class="payment-method-option-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="payment-method-option-info">
+                                <div class="payment-method-option-name">Bank</div>
+                                <div class="payment-method-option-desc">Direct Transfer</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method-option" onclick="selectProcessPaymentMethod(this, 'wallet')">
+                            <div class="payment-method-option-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="payment-method-option-info">
+                                <div class="payment-method-option-name">Wallet</div>
+                                <div class="payment-method-option-desc">Apple/Google</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Details Form -->
+                <div class="card-details-form active" id="cardDetailsForm">
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-input" placeholder="John Doe" id="cardholderName">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <div class="card-input-wrapper">
+                            <input type="text" class="form-input" placeholder="1234 5678 9012 3456" id="cardNumber" maxlength="19" onkeyup="formatCardNumber(this)">
+                            <i class="fas fa-credit-card card-input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" placeholder="MM/YY" id="expiryDate" maxlength="5" onkeyup="formatExpiryDate(this)">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-input" placeholder="123" id="cvv" maxlength="3" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')">
+                        </div>
+                    </div>
+
+                    <!-- Security Notice -->
+                    <div class="security-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="security-notice-text">
+                            <div class="security-notice-title">256-bit SSL Encryption</div>
+                            <div class="security-notice-desc">Your payment information is secure and encrypted. We use industry-standard security measures.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PayPal Notice (Hidden by default) -->
+                <div class="card-details-form" id="paypalNotice" style="display: none;">
+                    <div style="background: #f8f9fa; padding: 30px; text-align: center; border-radius: 12px;">
+                        <i class="fab fa-paypal" style="font-size: 48px; color: #003087; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 18px; margin-bottom: 10px; color: #2c3e50;">PayPal Payment</h4>
+                        <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 20px;">You will be redirected to PayPal to complete your payment securely.</p>
+                    </div>
+                </div>
+
+                <!-- Bank Transfer Notice (Hidden by default) -->
+                <div class="card-details-form" id="bankNotice" style="display: none;">
+                    <div style="background: #f8f9fa; padding: 30px; text-align: center; border-radius: 12px;">
+                        <i class="fas fa-university" style="font-size: 48px; color: #667eea; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 18px; margin-bottom: 10px; color: #2c3e50;">Bank Transfer</h4>
+                        <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 20px;">Transfer details will be sent to your email. Please complete the transfer within 24 hours.</p>
+                    </div>
+                </div>
+
+                <!-- Digital Wallet Notice (Hidden by default) -->
+                <div class="card-details-form" id="walletNotice" style="display: none;">
+                    <div style="background: #f8f9fa; padding: 30px; text-align: center; border-radius: 12px;">
+                        <i class="fas fa-mobile-alt" style="font-size: 48px; color: #43e97b; margin-bottom: 15px;"></i>
+                        <h4 style="font-size: 18px; margin-bottom: 10px; color: #2c3e50;">Digital Wallet</h4>
+                        <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 20px;">You will be redirected to complete payment via Apple Pay or Google Pay.</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="payment-process-actions">
+                    <button class="payment-process-btn secondary" onclick="closePaymentProcessModal()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button class="payment-process-btn primary" onclick="submitPayment()">
+                        <i class="fas fa-lock"></i> Pay Securely
+                    </button>
+                </div>
+            </div>
+
+            <!-- Processing Overlay -->
+            <div class="processing-overlay" id="processingOverlay">
+                <div class="processing-spinner"></div>
+                <div class="processing-text">Processing Payment...</div>
+            </div>
+
+            <!-- Success Overlay -->
+            <div class="processing-overlay" id="successOverlay" style="display: none;">
+                <div class="success-checkmark">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="processing-text" style="color: #43e97b;">Payment Successful!</div>
+                <div style="font-size: 14px; color: #7f8c8d; margin-top: 10px;">Receipt sent to your email</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div class="schedule-modal" id="scheduleModal">
+        <div class="schedule-modal-content">
+            <div class="schedule-modal-header">
+                <h2>
+                    <i class="fas fa-calendar-alt"></i>
+                    My Class Schedule
+                </h2>
+                <p class="schedule-modal-subtitle">Fall 2025 - Week of December 19, 2025</p>
+                <button class="schedule-modal-close" onclick="closeScheduleModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="schedule-modal-body">
+                <!-- Tabs -->
+                <div class="schedule-tabs">
+                    <button class="schedule-tab active" onclick="showScheduleTab('today')">Today's Classes</button>
+                    <button class="schedule-tab" onclick="showScheduleTab('week')">Week View</button>
+                    <button class="schedule-tab" onclick="showScheduleTab('calendar')">Calendar</button>
+                </div>
+
+                <!-- Today's Classes Tab -->
+                <div class="schedule-tab-content active" id="today-tab">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-calendar-day" style="font-size: 24px; color: #43e97b;"></i>
+                        <div>
+                            <div style="font-size: 18px; font-weight: 700; color: #2c3e50;">Thursday, December 19, 2025</div>
+                            <div style="font-size: 13px; color: #7f8c8d;">You have 4 classes scheduled today</div>
+                        </div>
+                    </div>
+
+                    <div class="today-classes-list">
+                        <div class="today-class-card">
+                            <div class="today-class-time-badge">
+                                <div class="today-class-time">09:00</div>
+                                <div class="today-class-duration">1h 30m</div>
+                            </div>
+                            <div class="today-class-info">
+                                <div class="today-class-name">Advanced Algorithms</div>
+                                <div class="today-class-meta">
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        <span>Dr. Sarah Johnson</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-door-open"></i>
+                                        <span>Room 304</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-code"></i>
+                                        <span>CS401</span>
+                                    </div>
+                                </div>
+                                <span class="today-class-status now">In Progress</span>
+                            </div>
+                        </div>
+
+                        <div class="today-class-card">
+                            <div class="today-class-time-badge upcoming">
+                                <div class="today-class-time">11:00</div>
+                                <div class="today-class-duration">1h 30m</div>
+                            </div>
+                            <div class="today-class-info">
+                                <div class="today-class-name">Database Systems</div>
+                                <div class="today-class-meta">
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        <span>Prof. Michael Chen</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-door-open"></i>
+                                        <span>Lab 201</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-database"></i>
+                                        <span>CS402</span>
+                                    </div>
+                                </div>
+                                <span class="today-class-status upcoming">Starting in 1h 15m</span>
+                            </div>
+                        </div>
+
+                        <div class="today-class-card">
+                            <div class="today-class-time-badge upcoming">
+                                <div class="today-class-time">14:00</div>
+                                <div class="today-class-duration">2h</div>
+                            </div>
+                            <div class="today-class-info">
+                                <div class="today-class-name">Software Engineering</div>
+                                <div class="today-class-meta">
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        <span>Dr. Emily Parker</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-door-open"></i>
+                                        <span>Hall A</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-project-diagram"></i>
+                                        <span>CS403</span>
+                                    </div>
+                                </div>
+                                <span class="today-class-status upcoming">Starting in 4h 15m</span>
+                            </div>
+                        </div>
+
+                        <div class="today-class-card">
+                            <div class="today-class-time-badge upcoming">
+                                <div class="today-class-time">16:30</div>
+                                <div class="today-class-duration">1h 30m</div>
+                            </div>
+                            <div class="today-class-info">
+                                <div class="today-class-name">Linear Algebra</div>
+                                <div class="today-class-meta">
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        <span>Prof. David Lee</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-door-open"></i>
+                                        <span>Room 205</span>
+                                    </div>
+                                    <div class="today-class-meta-item">
+                                        <i class="fas fa-calculator"></i>
+                                        <span>MATH301</span>
+                                    </div>
+                                </div>
+                                <span class="today-class-status upcoming">Starting in 6h 45m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Week View Tab -->
+                <div class="schedule-tab-content" id="week-tab">
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 15px 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="font-size: 16px; font-weight: 700; color: #2c3e50; margin-bottom: 5px;">Weekly Schedule</div>
+                        <div style="font-size: 13px; color: #7f8c8d;">December 16 - December 20, 2025</div>
+                    </div>
+
+                    <div class="week-schedule-grid">
+                        <!-- Time Column -->
+                        <div class="time-slot"></div>
+                        <div class="day-header">Monday</div>
+                        <div class="day-header">Tuesday</div>
+                        <div class="day-header">Wednesday</div>
+                        <div class="day-header today">Thursday</div>
+                        <div class="day-header">Friday</div>
+
+                        <!-- 9:00 AM -->
+                        <div class="time-slot">9:00 AM</div>
+                        <div class="schedule-cell">
+                            <div class="class-block">
+                                <div class="class-name">Algorithms</div>
+                                <div class="class-time">9:00 - 10:30</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Rm 304</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+                        <div class="schedule-cell">
+                            <div class="class-block">
+                                <div class="class-name">Algorithms</div>
+                                <div class="class-time">9:00 - 10:30</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Rm 304</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell">
+                            <div class="class-block">
+                                <div class="class-name">Algorithms</div>
+                                <div class="class-time">9:00 - 10:30</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Rm 304</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+
+                        <!-- 11:00 AM -->
+                        <div class="time-slot">11:00 AM</div>
+                        <div class="schedule-cell"></div>
+                        <div class="schedule-cell">
+                            <div class="class-block blue">
+                                <div class="class-name">Database</div>
+                                <div class="class-time">11:00 - 12:30</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Lab 201</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+                        <div class="schedule-cell">
+                            <div class="class-block blue">
+                                <div class="class-name">Database</div>
+                                <div class="class-time">11:00 - 12:30</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Lab 201</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell">
+                            <div class="class-block blue">
+                                <div class="class-name">Database</div>
+                                <div class="class-time">11:00 - 12:30</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Lab 201</div>
+                            </div>
+                        </div>
+
+                        <!-- 2:00 PM -->
+                        <div class="time-slot">2:00 PM</div>
+                        <div class="schedule-cell">
+                            <div class="class-block green">
+                                <div class="class-name">Software Eng</div>
+                                <div class="class-time">14:00 - 16:00</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Hall A</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+                        <div class="schedule-cell">
+                            <div class="class-block green">
+                                <div class="class-name">Software Eng</div>
+                                <div class="class-time">14:00 - 16:00</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Hall A</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell">
+                            <div class="class-block green">
+                                <div class="class-name">Software Eng</div>
+                                <div class="class-time">14:00 - 16:00</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Hall A</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+
+                        <!-- 4:30 PM -->
+                        <div class="time-slot">4:30 PM</div>
+                        <div class="schedule-cell"></div>
+                        <div class="schedule-cell">
+                            <div class="class-block orange">
+                                <div class="class-name">Linear Algebra</div>
+                                <div class="class-time">16:30 - 18:00</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Rm 205</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+                        <div class="schedule-cell">
+                            <div class="class-block orange">
+                                <div class="class-name">Linear Algebra</div>
+                                <div class="class-time">16:30 - 18:00</div>
+                                <div class="class-room"><i class="fas fa-map-marker-alt"></i> Rm 205</div>
+                            </div>
+                        </div>
+                        <div class="schedule-cell"></div>
+                    </div>
+                </div>
+
+                <!-- Calendar Tab -->
+                <div class="schedule-tab-content" id="calendar-tab">
+                    <div class="calendar-view">
+                        <div class="calendar-header">
+                            <div class="calendar-month" id="calendarMonthYear">December 2025</div>
+                            <div class="calendar-nav">
+                                <button class="calendar-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                                <button class="calendar-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="calendar-grid" id="calendarGrid">
+                            <div class="calendar-day-header">Sun</div>
+                            <div class="calendar-day-header">Mon</div>
+                            <div class="calendar-day-header">Tue</div>
+                            <div class="calendar-day-header">Wed</div>
+                            <div class="calendar-day-header">Thu</div>
+                            <div class="calendar-day-header">Fri</div>
+                            <div class="calendar-day-header">Sat</div>
+                            <!-- Calendar days will be generated dynamically -->
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 12px; margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <div style="width: 12px; height: 12px; background: #43e97b; border-radius: 50%;"></div>
+                            <span style="font-size: 13px; color: #7f8c8d;">Days with scheduled classes</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 12px; height: 12px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 50%;"></div>
+                            <span style="font-size: 13px; color: #7f8c8d;">Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ID Card Modal -->
+    <div class="idcard-modal" id="idcardModal">
+        <div class="idcard-modal-content">
+            <div class="idcard-modal-header">
+                <h2>
+                    <i class="fas fa-id-card"></i>
+                    Student ID Card
+                </h2>
+                <button class="idcard-modal-close" onclick="closeIDCardModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="idcard-modal-body">
+                <!-- View Tabs -->
+                <div class="idcard-view-tabs">
+                    <button class="idcard-tab active" onclick="showIDCardView('digital')">
+                        <i class="fas fa-mobile-alt"></i> Digital Card
+                    </button>
+                    <button class="idcard-tab" onclick="showIDCardView('physical')">
+                        <i class="fas fa-credit-card"></i> Physical Card
+                    </button>
+                </div>
+
+                <!-- Digital Card View -->
+                <div class="idcard-tab-content active" id="digital-view">
+                    <div class="digital-idcard">
+                        <div class="idcard-container">
+                            <div class="idcard-university">
+                                <div class="idcard-university-name">UNIVERSITY NAME</div>
+                                <div class="idcard-subtitle">Student Identification Card</div>
+                            </div>
+
+                            <div class="idcard-photo-section">
+                                <div class="idcard-photo">
+                                    <?php echo strtoupper(substr($_SESSION['username'] ?? 'S', 0, 1)); ?>
+                                </div>
+                                <div class="idcard-details">
+                                    <div class="idcard-name"><?php echo htmlspecialchars($_SESSION['username'] ?? 'Student Name'); ?></div>
+                                    <div class="idcard-id">ID: <?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?></div>
+                                    <div class="idcard-program">Computer Science</div>
+                                </div>
+                            </div>
+
+                            <div class="idcard-info-grid">
+                                <div class="idcard-info-item">
+                                    <div class="idcard-info-label">Date of Birth</div>
+                                    <div class="idcard-info-value">Jan 15, 2003</div>
+                                </div>
+                                <div class="idcard-info-item">
+                                    <div class="idcard-info-label">Blood Type</div>
+                                    <div class="idcard-info-value">O+</div>
+                                </div>
+                                <div class="idcard-info-item">
+                                    <div class="idcard-info-label">Enrollment</div>
+                                    <div class="idcard-info-value">Sept 2023</div>
+                                </div>
+                                <div class="idcard-info-item">
+                                    <div class="idcard-info-label">Academic Year</div>
+                                    <div class="idcard-info-value">3rd Year</div>
+                                </div>
+                            </div>
+
+                            <div class="idcard-qr-section">
+                                <div class="idcard-qr">
+                                    <i class="fas fa-qrcode" style="font-size: 60px;"></i>
+                                </div>
+                                <div class="idcard-validity">
+                                    <div class="idcard-validity-label">Valid Until</div>
+                                    <div class="idcard-validity-date">May 2027</div>
+                                    <div style="font-size: 12px; margin-top: 8px; opacity: 0.85;">
+                                        <i class="fas fa-check-circle"></i> Active Status
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px;">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; color: #667eea; margin-bottom: 10px;">
+                                <i class="fas fa-info-circle"></i>
+                                <span style="font-weight: 600; font-size: 14px;">Digital ID Card</span>
+                            </div>
+                            <p style="font-size: 13px; color: #7f8c8d; margin: 0; line-height: 1.6;">
+                                This digital ID card can be used for online verification and campus services.
+                                Keep your Student ID confidential and report any loss immediately.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Physical Card View -->
+                <div class="idcard-tab-content" id="physical-view">
+                    <div class="physical-idcard">
+                        <div class="idcard-physical-container">
+                            <div class="idcard-flip" id="idcardFlip">
+                                <!-- Front of Card -->
+                                <div class="idcard-side idcard-front">
+                                    <div class="idcard-front-header">
+                                        <div class="idcard-front-logo">
+                                            <div style="font-size: 22px; margin-bottom: 3px;">🎓</div>
+                                            <div style="font-size: 12px; opacity: 0.9;">UNIVERSITY</div>
+                                        </div>
+                                        <div class="idcard-front-photo">
+                                            <?php echo strtoupper(substr($_SESSION['username'] ?? 'S', 0, 1)); ?>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="idcard-front-body">
+                                        <div class="idcard-front-name"><?php echo htmlspecialchars($_SESSION['username'] ?? 'Student Name'); ?></div>
+                                        <div class="idcard-front-id">ID: <?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?></div>
+                                        
+                                        <div class="idcard-front-details">
+                                            <div class="idcard-front-detail">
+                                                <span class="idcard-front-label">Program:</span>
+                                                <span class="idcard-front-value">Computer Science</span>
+                                            </div>
+                                            <div class="idcard-front-detail">
+                                                <span class="idcard-front-label">Year Level:</span>
+                                                <span class="idcard-front-value">3rd Year</span>
+                                            </div>
+                                            <div class="idcard-front-detail">
+                                                <span class="idcard-front-label">Valid Until:</span>
+                                                <span class="idcard-front-value">May 2027</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Back of Card -->
+                                <div class="idcard-side idcard-back">
+                                    <div class="idcard-back-content">
+                                        <div class="idcard-barcode">
+                                            <div class="barcode-lines">
+                                                <div class="barcode-line" style="height: 50px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                                <div class="barcode-line" style="height: 45px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                                <div class="barcode-line" style="height: 55px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                                <div class="barcode-line" style="height: 40px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                                <div class="barcode-line" style="height: 50px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                                <div class="barcode-line" style="height: 55px;"></div>
+                                                <div class="barcode-line" style="height: 45px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                                <div class="barcode-line" style="height: 50px;"></div>
+                                                <div class="barcode-line" style="height: 60px;"></div>
+                                            </div>
+                                            <div class="barcode-number">*<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>*</div>
+                                        </div>
+
+                                        <div class="idcard-back-info">
+                                            <div class="idcard-back-section">
+                                                <div class="idcard-back-title">Emergency Contact</div>
+                                                <div class="idcard-back-text">
+                                                    📞 +1 (555) 123-4567<br>
+                                                    📧 emergency@university.edu
+                                                </div>
+                                            </div>
+
+                                            <div class="idcard-back-section">
+                                                <div class="idcard-back-title">Important Notice</div>
+                                                <div class="idcard-back-text">
+                                                    This card is property of the University and must be returned upon request.
+                                                    If found, please return to Student Services.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="idcard-signature">
+                                            <div>
+                                                <div style="border-top: 1px solid rgba(255,255,255,0.4); padding-top: 5px; font-size: 11px; opacity: 0.8;">Student Signature</div>
+                                            </div>
+                                            <div>
+                                                <div style="border-top: 1px solid rgba(255,255,255,0.4); padding-top: 5px; font-size: 11px; opacity: 0.8;">Registrar</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flip-instruction">
+                            <button class="flip-btn" onclick="flipIDCard()">
+                                <i class="fas fa-sync-alt"></i> Flip Card to See Back
+                            </button>
+                            <p style="font-size: 12px; color: #7f8c8d; margin: 10px 0 0 0;">
+                                Click to view the other side of your physical ID card
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="idcard-actions">
+                    <button class="idcard-action-btn" onclick="downloadIDCard()">
+                        <i class="fas fa-download"></i> Download Digital Card
+                    </button>
+                    <button class="idcard-action-btn" onclick="printIDCard()">
+                        <i class="fas fa-print"></i> Print Card
+                    </button>
+                    <button class="idcard-action-btn" onclick="shareIDCard()">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <button class="idcard-action-btn" onclick="requestNewIDCard()">
+                        <i class="fas fa-id-badge"></i> Request New Card
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request New ID Card Modal -->
+    <div class="request-card-modal" id="requestNewCardModal">
+        <div class="request-card-modal-content">
+            <div class="request-card-modal-header">
+                <h3><i class="fas fa-id-badge"></i> Request New ID Card</h3>
+                <button class="request-card-modal-close" onclick="closeRequestCardModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="request-card-modal-body">
+                <form id="requestCardForm" onsubmit="submitCardRequest(event)">
+                    <!-- Reason Section -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="fas fa-question-circle"></i> Reason for Request
+                        </h4>
+                        <div class="reason-options">
+                            <label class="reason-option">
+                                <input type="radio" name="reason" value="lost" required>
+                                <div class="reason-card">
+                                    <i class="fas fa-search-minus"></i>
+                                    <span>Lost Card</span>
+                                </div>
+                            </label>
+                            <label class="reason-option">
+                                <input type="radio" name="reason" value="stolen" required>
+                                <div class="reason-card">
+                                    <i class="fas fa-user-secret"></i>
+                                    <span>Stolen Card</span>
+                                </div>
+                            </label>
+                            <label class="reason-option">
+                                <input type="radio" name="reason" value="damaged" required>
+                                <div class="reason-card">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Damaged Card</span>
+                                </div>
+                            </label>
+                            <label class="reason-option">
+                                <input type="radio" name="reason" value="update" required>
+                                <div class="reason-card">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Info Update</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Additional Details -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="fas fa-file-alt"></i> Additional Details
+                        </h4>
+                        <div class="form-group">
+                            <label for="cardDetails">Please describe the situation (optional)</label>
+                            <textarea id="cardDetails" name="details" rows="3" placeholder="Provide any additional information that might help us process your request..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Options -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="fas fa-shipping-fast"></i> Delivery Preference
+                        </h4>
+                        <div class="delivery-options">
+                            <label class="delivery-option">
+                                <input type="radio" name="delivery" value="pickup" checked>
+                                <div class="delivery-card">
+                                    <div class="delivery-icon">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <div class="delivery-info">
+                                        <div class="delivery-title">Campus Pickup</div>
+                                        <div class="delivery-subtitle">Student Services Office</div>
+                                        <div class="delivery-time">Ready in 3-5 days</div>
+                                        <div class="delivery-price">Free</div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="delivery-option">
+                                <input type="radio" name="delivery" value="mail">
+                                <div class="delivery-card">
+                                    <div class="delivery-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="delivery-info">
+                                        <div class="delivery-title">Mail Delivery</div>
+                                        <div class="delivery-subtitle">Registered Address</div>
+                                        <div class="delivery-time">Delivered in 7-10 days</div>
+                                        <div class="delivery-price">$5.00</div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="delivery-option">
+                                <input type="radio" name="delivery" value="express">
+                                <div class="delivery-card">
+                                    <div class="delivery-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="delivery-info">
+                                        <div class="delivery-title">Express Delivery</div>
+                                        <div class="delivery-subtitle">Next Day Delivery</div>
+                                        <div class="delivery-time">1-2 business days</div>
+                                        <div class="delivery-price">$15.00</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="fas fa-phone"></i> Contact Information
+                        </h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactEmail">Email Address *</label>
+                                <input type="email" id="contactEmail" name="email" value="student@university.edu" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Phone Number *</label>
+                                <input type="tel" id="contactPhone" name="phone" placeholder="+1 (555) 123-4567" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fee Summary -->
+                    <div class="fee-summary">
+                        <div class="fee-row">
+                            <span>Replacement Card Fee:</span>
+                            <span class="fee-amount">$15.00</span>
+                        </div>
+                        <div class="fee-row" id="deliveryFeeRow" style="display: none;">
+                            <span>Delivery Fee:</span>
+                            <span class="fee-amount" id="deliveryFee">$0.00</span>
+                        </div>
+                        <div class="fee-row total">
+                            <span>Total Amount:</span>
+                            <span class="fee-amount" id="totalFee">$15.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Important Notice -->
+                    <div class="important-notice">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Important:</strong> Processing time may vary depending on the reason for replacement. 
+                            You will receive email updates on your request status. Please bring government-issued ID when picking up your new card.
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" onclick="closeRequestCardModal()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Success Modal -->
+    <div class="request-success-modal" id="requestSuccessModal">
+        <div class="request-success-content">
+            <div class="success-animation">
+                <div class="success-checkmark">
+                    <div class="check-icon">
+                        <span class="icon-line line-tip"></span>
+                        <span class="icon-line line-long"></span>
+                        <div class="icon-circle"></div>
+                        <div class="icon-fix"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="success-title">Request Submitted Successfully!</h2>
+            <p class="success-subtitle">Your ID card replacement request has been received</p>
+            
+            <div class="request-tracking-info">
+                <div class="tracking-number">
+                    <div class="tracking-label">Request ID</div>
+                    <div class="tracking-value" id="requestTrackingNumber">#REQ00000</div>
+                </div>
+            </div>
+            
+            <div class="request-details-grid">
+                <div class="detail-item">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <div class="detail-label">Reason</div>
+                        <div class="detail-value" id="successReason">-</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <div class="detail-label">Delivery</div>
+                        <div class="detail-value" id="successDelivery">-</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div>
+                        <div class="detail-label">Total Fee</div>
+                        <div class="detail-value" id="successFee">-</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <div class="detail-label">Processing Time</div>
+                        <div class="detail-value" id="successTime">-</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="next-steps-section">
+                <h4><i class="fas fa-list-check"></i> Next Steps</h4>
+                <div class="steps-timeline">
+                    <div class="step-item completed">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Request Submitted</div>
+                            <div class="step-desc">Your request has been received</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Payment Required</div>
+                            <div class="step-desc" id="paymentStepDesc">Check your email for payment link</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Card Processing</div>
+                            <div class="step-desc">Card will be prepared after payment</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Ready for Pickup/Delivery</div>
+                            <div class="step-desc">Notification will be sent</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="confirmation-notice">
+                <i class="fas fa-envelope-circle-check"></i>
+                <p>A confirmation email with payment details has been sent to <strong id="confirmEmail">-</strong></p>
+                <p>SMS notification sent to <strong id="confirmPhone">-</strong></p>
+            </div>
+            
+            <div class="success-actions">
+                <button class="btn-view-payment" onclick="viewPaymentDetails()">
+                    <i class="fas fa-credit-card"></i> View Payment Details
+                </button>
+                <button class="btn-track-request" onclick="trackRequest()">
+                    <i class="fas fa-map-marker-alt"></i> Track Request
+                </button>
+                <button class="btn-done" onclick="closeSuccessModal()">
+                    <i class="fas fa-check"></i> Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share ID Card Modal -->
+    <div class="share-modal" id="shareIDCardModal">
+        <div class="share-modal-content">
+            <div class="share-modal-header">
+                <h3><i class="fas fa-share-alt"></i> Share ID Card</h3>
+                <button class="share-modal-close" onclick="closeShareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="share-modal-body">
+                <div class="share-options-grid">
+                    <button class="share-option" onclick="shareViaEmail()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="share-label">Email</div>
+                    </button>
+                    <button class="share-option" onclick="shareViaSMS()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-sms"></i>
+                        </div>
+                        <div class="share-label">SMS</div>
+                    </button>
+                    <button class="share-option" onclick="shareViaWhatsApp()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="share-label">WhatsApp</div>
+                    </button>
+                    <button class="share-option" onclick="shareViaFacebook()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #1877F2 0%, #0C63D4 100%);">
+                            <i class="fab fa-facebook-f"></i>
+                        </div>
+                        <div class="share-label">Facebook</div>
+                    </button>
+                    <button class="share-option" onclick="shareViaTwitter()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #1DA1F2 0%, #0C85D0 100%);">
+                            <i class="fab fa-twitter"></i>
+                        </div>
+                        <div class="share-label">Twitter</div>
+                    </button>
+                    <button class="share-option" onclick="copyIDCardLink()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="share-label">Copy Link</div>
+                    </button>
+                    <button class="share-option" onclick="generateQRCode()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="share-label">QR Code</div>
+                    </button>
+                    <button class="share-option" onclick="downloadForSharing()">
+                        <div class="share-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="share-label">Save Image</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View All Assignments Modal -->
+    <div class="view-all-assignments-modal" id="viewAllAssignmentsModal">
+        <div class="assignments-modal-content">
+            <!-- Header -->
+            <div class="assignments-modal-header">
+                <h2>
+                    <i class="fas fa-tasks"></i>
+                    All Assignments
+                </h2>
+                <button class="assignments-modal-close" onclick="closeAllAssignmentsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Stats Summary Bar -->
+            <div class="assignments-stats-bar">
+                <div class="assignment-stat-box total active" onclick="filterAllAssignments('all')">
+                    <div class="assignment-stat-icon">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    <div class="assignment-stat-info">
+                        <div class="assignment-stat-value">24</div>
+                        <div class="assignment-stat-label">Total</div>
+                    </div>
+                </div>
+                <div class="assignment-stat-box pending" onclick="filterAllAssignments('pending')">
+                    <div class="assignment-stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="assignment-stat-info">
+                        <div class="assignment-stat-value">8</div>
+                        <div class="assignment-stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="assignment-stat-box submitted" onclick="filterAllAssignments('submitted')">
+                    <div class="assignment-stat-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="assignment-stat-info">
+                        <div class="assignment-stat-value">10</div>
+                        <div class="assignment-stat-label">Submitted</div>
+                    </div>
+                </div>
+                <div class="assignment-stat-box graded" onclick="filterAllAssignments('graded')">
+                    <div class="assignment-stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="assignment-stat-info">
+                        <div class="assignment-stat-value">5</div>
+                        <div class="assignment-stat-label">Graded</div>
+                    </div>
+                </div>
+                <div class="assignment-stat-box overdue" onclick="filterAllAssignments('overdue')">
+                    <div class="assignment-stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="assignment-stat-info">
+                        <div class="assignment-stat-value">1</div>
+                        <div class="assignment-stat-label">Overdue</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="assignments-filters-section">
+                <div class="assignments-search-filter-row">
+                    <div class="assignments-search-box">
+                        <input type="text" placeholder="Search assignments..." id="assignmentsSearchInput" oninput="searchAssignments()">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="assignments-filter-dropdowns">
+                        <div class="assignments-filter-dropdown">
+                            <select id="courseFilter" onchange="filterAssignmentsByCourse()">
+                                <option value="all">All Courses</option>
+                                <option value="CSC301">CSC 301 - Web Development</option>
+                                <option value="CSC302">CSC 302 - Database Systems</option>
+                                <option value="CSC205">CSC 205 - Data Structures</option>
+                                <option value="CSC401">CSC 401 - Machine Learning</option>
+                                <option value="CSC350">CSC 350 - Mobile Computing</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="assignments-filter-dropdown">
+                            <select id="sortFilter" onchange="sortAssignments()">
+                                <option value="dueDate">Sort by Due Date</option>
+                                <option value="course">Sort by Course</option>
+                                <option value="status">Sort by Status</option>
+                                <option value="title">Sort by Title</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignments Grid -->
+            <div class="assignments-modal-body">
+                <div class="assignments-grid" id="assignmentsGrid">
+                    <!-- Pending Assignment 1 -->
+                    <div class="assignment-card pending" data-status="pending" data-course="CSC301" data-title="Web Development Project">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">Web Development Project</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 301
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Pending</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <p class="assignment-card-description">
+                                Create a responsive e-commerce website using HTML, CSS, JavaScript, and integrate with a backend API for product management.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Due Date</div>
+                                        <div class="assignment-meta-value">Dec 22, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Total Points</div>
+                                        <div class="assignment-meta-value">100 pts</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-progress">
+                                <div class="assignment-progress-label">
+                                    <span>Progress</span>
+                                    <span>30%</span>
+                                </div>
+                                <div class="assignment-progress-bar">
+                                    <div class="assignment-progress-fill" style="width: 30%;"></div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action primary">
+                                    <i class="fas fa-upload"></i> Submit Work
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Assignment 2 -->
+                    <div class="assignment-card pending" data-status="pending" data-course="CSC302" data-title="Database Design Schema">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">Database Design Schema</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 302
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Pending</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <p class="assignment-card-description">
+                                Design a comprehensive database schema for an online library management system including ER diagrams and normalization.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Due Date</div>
+                                        <div class="assignment-meta-value">Dec 25, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Total Points</div>
+                                        <div class="assignment-meta-value">80 pts</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-progress">
+                                <div class="assignment-progress-label">
+                                    <span>Progress</span>
+                                    <span>60%</span>
+                                </div>
+                                <div class="assignment-progress-bar">
+                                    <div class="assignment-progress-fill" style="width: 60%;"></div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action primary">
+                                    <i class="fas fa-upload"></i> Submit Work
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submitted Assignment 1 -->
+                    <div class="assignment-card submitted" data-status="submitted" data-course="CSC205" data-title="Data Structures Lab">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">Data Structures Lab</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 205
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Submitted</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <p class="assignment-card-description">
+                                Implement various sorting algorithms and analyze their time complexity with practical examples and benchmarks.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Submitted On</div>
+                                        <div class="assignment-meta-value">Dec 15, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Total Points</div>
+                                        <div class="assignment-meta-value">90 pts</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-progress">
+                                <div class="assignment-progress-label">
+                                    <span>Status</span>
+                                    <span>Under Review</span>
+                                </div>
+                                <div class="assignment-progress-bar">
+                                    <div class="assignment-progress-fill" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-file-download"></i> Download Submission
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Graded Assignment 1 -->
+                    <div class="assignment-card graded" data-status="graded" data-course="CSC401" data-title="ML Algorithm Analysis">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">ML Algorithm Analysis</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 401
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Graded</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <div class="assignment-card-grade-display">
+                                <div class="assignment-grade-score">92/100</div>
+                                <div class="assignment-grade-label">Excellent Work!</div>
+                            </div>
+                            <p class="assignment-card-description">
+                                Analyze and compare different machine learning algorithms for classification tasks including decision trees and neural networks.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Graded On</div>
+                                        <div class="assignment-meta-value">Dec 10, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Feedback</div>
+                                        <div class="assignment-meta-value">Available</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action primary">
+                                    <i class="fas fa-comments"></i> View Feedback
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-file-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Overdue Assignment -->
+                    <div class="assignment-card overdue" data-status="overdue" data-course="CSC350" data-title="Mobile App Wireframes">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">Mobile App Wireframes</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 350
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Overdue</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <p class="assignment-card-description">
+                                Design complete UI/UX wireframes for a mobile fitness tracking application with detailed user flow documentation.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar-times"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Was Due</div>
+                                        <div class="assignment-meta-value">Dec 18, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Late Penalty</div>
+                                        <div class="assignment-meta-value">-10% per day</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-progress">
+                                <div class="assignment-progress-label">
+                                    <span>Progress</span>
+                                    <span>45%</span>
+                                </div>
+                                <div class="assignment-progress-bar">
+                                    <div class="assignment-progress-fill" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action primary">
+                                    <i class="fas fa-exclamation-circle"></i> Submit Now
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- More assignments... (duplicating patterns with variations) -->
+                    <div class="assignment-card submitted" data-status="submitted" data-course="CSC301" data-title="REST API Implementation">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">REST API Implementation</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 301
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Submitted</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <p class="assignment-card-description">
+                                Build a RESTful API with authentication, CRUD operations, and proper error handling using Node.js and Express.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Submitted On</div>
+                                        <div class="assignment-meta-value">Dec 12, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Total Points</div>
+                                        <div class="assignment-meta-value">120 pts</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-progress">
+                                <div class="assignment-progress-label">
+                                    <span>Status</span>
+                                    <span>Under Review</span>
+                                </div>
+                                <div class="assignment-progress-bar">
+                                    <div class="assignment-progress-fill" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-file-download"></i> Download
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card graded" data-status="graded" data-course="CSC302" data-title="SQL Query Optimization">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">SQL Query Optimization</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 302
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Graded</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <div class="assignment-card-grade-display">
+                                <div class="assignment-grade-score">88/100</div>
+                                <div class="assignment-grade-label">Very Good!</div>
+                            </div>
+                            <p class="assignment-card-description">
+                                Optimize complex SQL queries for a large dataset, including indexing strategies and query execution plans.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Graded On</div>
+                                        <div class="assignment-meta-value">Dec 8, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Feedback</div>
+                                        <div class="assignment-meta-value">Available</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action primary">
+                                    <i class="fas fa-comments"></i> View Feedback
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-file-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assignment-card pending" data-status="pending" data-course="CSC205" data-title="Binary Tree Traversal">
+                        <div class="assignment-card-header">
+                            <div class="assignment-card-icon">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <div class="assignment-card-title-section">
+                                <div class="assignment-card-title">Binary Tree Traversal</div>
+                                <div class="assignment-card-course">
+                                    <i class="fas fa-book"></i>
+                                    CSC 205
+                                </div>
+                            </div>
+                            <span class="assignment-card-status-badge">Pending</span>
+                        </div>
+                        <div class="assignment-card-body">
+                            <p class="assignment-card-description">
+                                Implement all tree traversal algorithms (in-order, pre-order, post-order) with recursive and iterative approaches.
+                            </p>
+                            <div class="assignment-card-meta">
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Due Date</div>
+                                        <div class="assignment-meta-value">Dec 28, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="assignment-meta-item">
+                                    <div class="assignment-meta-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="assignment-meta-info">
+                                        <div class="assignment-meta-label">Total Points</div>
+                                        <div class="assignment-meta-value">75 pts</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-progress">
+                                <div class="assignment-progress-label">
+                                    <span>Progress</span>
+                                    <span>0%</span>
+                                </div>
+                                <div class="assignment-progress-bar">
+                                    <div class="assignment-progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="assignment-card-footer">
+                                <button class="assignment-card-action primary">
+                                    <i class="fas fa-play"></i> Start Work
+                                </button>
+                                <button class="assignment-card-action secondary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Submission Modal -->
+    <div class="download-submission-modal" id="downloadSubmissionModal">
+        <div class="download-modal-content">
+            <!-- Header -->
+            <div class="download-modal-header">
+                <div class="download-modal-title">
+                    <h3>
+                        <i class="fas fa-download"></i>
+                        <span id="downloadAssignmentTitle">Download Submission</span>
+                    </h3>
+                    <p id="downloadAssignmentInfo">Your submitted files and documents</p>
+                </div>
+                <button class="download-modal-close" onclick="closeDownloadModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="download-modal-body">
+                <!-- Submission Info -->
+                <div class="submission-info-box">
+                    <div class="submission-info-row">
+                        <span class="submission-info-label">
+                            <i class="fas fa-calendar-check"></i> Submitted On
+                        </span>
+                        <span class="submission-info-value" id="downloadSubmittedDate">Dec 15, 2025 - 3:45 PM</span>
+                    </div>
+                    <div class="submission-info-row">
+                        <span class="submission-info-label">
+                            <i class="fas fa-file-alt"></i> Total Files
+                        </span>
+                        <span class="submission-info-value" id="downloadTotalFiles">3 files</span>
+                    </div>
+                    <div class="submission-info-row">
+                        <span class="submission-info-label">
+                            <i class="fas fa-database"></i> Total Size
+                        </span>
+                        <span class="submission-info-value" id="downloadTotalSize">12.5 MB</span>
+                    </div>
+                    <div class="submission-info-row">
+                        <span class="submission-info-label">
+                            <i class="fas fa-info-circle"></i> Status
+                        </span>
+                        <span class="submission-info-badge" id="downloadStatus">Under Review</span>
+                    </div>
+                </div>
+
+                <!-- Download Options -->
+                <div class="download-options-title">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    Quick Download Options
+                </div>
+                <div class="download-options-grid">
+                    <div class="download-option-card" onclick="downloadAllAsZip()">
+                        <div class="download-option-icon">
+                            <i class="fas fa-file-archive"></i>
+                        </div>
+                        <div class="download-option-title">Download as ZIP</div>
+                        <div class="download-option-desc">Download all files in a single compressed archive</div>
+                    </div>
+                    <div class="download-option-card" onclick="downloadAllAsPDF()">
+                        <div class="download-option-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="download-option-title">Download as PDF</div>
+                        <div class="download-option-desc">Convert and merge all files into one PDF document</div>
+                    </div>
+                </div>
+
+                <!-- Individual Files -->
+                <div class="download-files-section">
+                    <div class="download-files-title">
+                        <i class="fas fa-list"></i>
+                        Individual Files
+                    </div>
+                    <div class="download-files-list" id="downloadFilesList">
+                        <!-- File 1 -->
+                        <div class="download-file-item">
+                            <input type="checkbox" class="download-file-checkbox" checked data-file-index="0">
+                            <div class="download-file-icon-small pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="download-file-info">
+                                <div class="download-file-name">Project_Report.pdf</div>
+                                <div class="download-file-meta">4.2 MB • Uploaded 3 days ago</div>
+                            </div>
+                            <button class="download-individual-btn" onclick="downloadSingleFile(0)">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+
+                        <!-- File 2 -->
+                        <div class="download-file-item">
+                            <input type="checkbox" class="download-file-checkbox" checked data-file-index="1">
+                            <div class="download-file-icon-small doc">
+                                <i class="fas fa-file-word"></i>
+                            </div>
+                            <div class="download-file-info">
+                                <div class="download-file-name">Documentation.docx</div>
+                                <div class="download-file-meta">2.8 MB • Uploaded 3 days ago</div>
+                            </div>
+                            <button class="download-individual-btn" onclick="downloadSingleFile(1)">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+
+                        <!-- File 3 -->
+                        <div class="download-file-item">
+                            <input type="checkbox" class="download-file-checkbox" checked data-file-index="2">
+                            <div class="download-file-icon-small zip">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="download-file-info">
+                                <div class="download-file-name">Source_Code.zip</div>
+                                <div class="download-file-meta">5.5 MB • Uploaded 3 days ago</div>
+                            </div>
+                            <button class="download-individual-btn" onclick="downloadSingleFile(2)">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Progress -->
+                <div class="download-progress-section" id="downloadProgressSection">
+                    <div class="download-progress-bar-container">
+                        <div class="download-progress-bar-fill" id="downloadProgressBar"></div>
+                    </div>
+                    <div class="download-progress-text" id="downloadProgressText">Preparing download...</div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="download-modal-footer">
+                <div class="download-select-options">
+                    <a class="download-select-link" onclick="selectAllFiles()">Select All</a>
+                    <span>•</span>
+                    <a class="download-select-link" onclick="deselectAllFiles()">Deselect All</a>
+                </div>
+                <div class="download-actions">
+                    <button class="download-btn secondary" onclick="closeDownloadModal()">
+                        <i class="fas fa-times"></i>
+                        Close
+                    </button>
+                    <button class="download-btn primary" onclick="downloadSelectedFiles()">
+                        <i class="fas fa-download"></i>
+                        Download Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Assignment Details Modal -->
+    <div class="view-details-modal" id="viewDetailsModal">
+        <div class="view-details-content">
+            <!-- Header -->
+            <div class="view-details-header">
+                <div class="view-details-title">
+                    <h3>
+                        <i class="fas fa-file-alt"></i>
+                        Assignment Details
+                    </h3>
+                    <p>Complete information and requirements</p>
+                </div>
+                <button class="view-details-close" onclick="closeViewDetailsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="view-details-body">
+                <!-- Assignment Overview -->
+                <div class="assignment-overview">
+                    <div class="assignment-overview-title" id="detailAssignmentTitle">
+                        <i class="fas fa-code"></i>
+                        Web Development Project
+                    </div>
+                    <div class="assignment-overview-course" id="detailAssignmentCourse">
+                        <i class="fas fa-book"></i>
+                        CSC 301 - Web Development
+                    </div>
+                    
+                    <!-- Details Grid -->
+                    <div class="assignment-details-grid">
+                        <div class="assignment-detail-item">
+                            <div class="assignment-detail-icon blue">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="assignment-detail-label">Due Date</div>
+                            <div class="assignment-detail-value" id="detailDueDate">Dec 22, 2025</div>
+                        </div>
+                        <div class="assignment-detail-item">
+                            <div class="assignment-detail-icon green">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="assignment-detail-label">Total Points</div>
+                            <div class="assignment-detail-value" id="detailPoints">100 pts</div>
+                        </div>
+                        <div class="assignment-detail-item">
+                            <div class="assignment-detail-icon purple">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="assignment-detail-label">Assigned Date</div>
+                            <div class="assignment-detail-value" id="detailAssignedDate">Dec 1, 2025</div>
+                        </div>
+                        <div class="assignment-detail-item">
+                            <div class="assignment-detail-icon orange">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="assignment-detail-label">Instructor</div>
+                            <div class="assignment-detail-value" id="detailInstructor">Dr. Smith</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="assignment-section">
+                    <div class="assignment-section-title">
+                        <i class="fas fa-align-left"></i>
+                        Description
+                    </div>
+                    <div class="assignment-description" id="detailDescription">
+                        Create a fully responsive e-commerce website using modern web development technologies. 
+                        The project should demonstrate proficiency in HTML5, CSS3, JavaScript ES6+, and integration 
+                        with a RESTful backend API for product management, user authentication, and shopping cart functionality. 
+                        The application should follow best practices for responsive design, accessibility, and performance optimization.
+                    </div>
+                </div>
+
+                <!-- Learning Objectives -->
+                <div class="assignment-section">
+                    <div class="assignment-section-title">
+                        <i class="fas fa-bullseye"></i>
+                        Learning Objectives
+                    </div>
+                    <ul class="assignment-objectives-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Demonstrate proficiency in modern HTML5 and semantic markup
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Apply advanced CSS3 techniques including Flexbox and Grid layouts
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Implement JavaScript ES6+ features and asynchronous programming
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Integrate with RESTful APIs for backend communication
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Follow responsive design principles and mobile-first approach
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Requirements -->
+                <div class="assignment-section">
+                    <div class="assignment-section-title">
+                        <i class="fas fa-tasks"></i>
+                        Requirements & Deliverables
+                    </div>
+                    <ul class="assignment-requirements-list">
+                        <li>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Source code hosted on GitHub with proper version control
+                        </li>
+                        <li>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Responsive design that works on desktop, tablet, and mobile devices
+                        </li>
+                        <li>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Comprehensive README.md documentation with setup instructions
+                        </li>
+                        <li>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Clean, well-commented code following industry standards
+                        </li>
+                        <li>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Working demo deployed on a hosting platform (Netlify, Vercel, etc.)
+                        </li>
+                        <li>
+                            <i class="fas fa-exclamation-circle"></i>
+                            Written report (2-3 pages) documenting your development process
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Attachments -->
+                <div class="assignment-section">
+                    <div class="assignment-section-title">
+                        <i class="fas fa-paperclip"></i>
+                        Attachments & Resources
+                    </div>
+                    <div class="assignment-attachments-grid">
+                        <div class="assignment-attachment-card" onclick="downloadAttachment('instructions')">
+                            <div class="assignment-attachment-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="assignment-attachment-name">Project_Instructions.pdf</div>
+                            <div class="assignment-attachment-size">2.4 MB</div>
+                        </div>
+                        <div class="assignment-attachment-card" onclick="downloadAttachment('template')">
+                            <div class="assignment-attachment-icon doc">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <div class="assignment-attachment-name">Starter_Template.zip</div>
+                            <div class="assignment-attachment-size">1.2 MB</div>
+                        </div>
+                        <div class="assignment-attachment-card" onclick="downloadAttachment('reference')">
+                            <div class="assignment-attachment-icon image">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="assignment-attachment-name">Design_Reference.png</div>
+                            <div class="assignment-attachment-size">856 KB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grading Rubric -->
+                <div class="assignment-section">
+                    <div class="assignment-section-title">
+                        <i class="fas fa-clipboard-check"></i>
+                        Grading Rubric
+                    </div>
+                    <table class="grading-rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Criteria</th>
+                                <th>Points</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Code Quality & Organization</td>
+                                <td><strong>25 pts</strong></td>
+                                <td>Clean, well-structured, and properly commented code</td>
+                            </tr>
+                            <tr>
+                                <td>Functionality & Features</td>
+                                <td><strong>30 pts</strong></td>
+                                <td>All required features implemented and working correctly</td>
+                            </tr>
+                            <tr>
+                                <td>Responsive Design</td>
+                                <td><strong>20 pts</strong></td>
+                                <td>Works seamlessly across different screen sizes</td>
+                            </tr>
+                            <tr>
+                                <td>API Integration</td>
+                                <td><strong>15 pts</strong></td>
+                                <td>Proper implementation of backend API communication</td>
+                            </tr>
+                            <tr>
+                                <td>Documentation</td>
+                                <td><strong>10 pts</strong></td>
+                                <td>Comprehensive README and written report</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Submission Status -->
+                <div class="assignment-section">
+                    <div class="assignment-section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Your Submission Status
+                    </div>
+                    <div class="submission-status-card">
+                        <div class="submission-status-header">
+                            <h4 style="margin: 0; font-size: 16px; color: #2c3e50;">Current Status</h4>
+                            <span class="submission-status-badge pending" id="detailStatusBadge">Pending</span>
+                        </div>
+                        <div class="submission-status-info">
+                            <div class="submission-status-item">
+                                <div class="submission-status-label">Submitted On</div>
+                                <div class="submission-status-value" id="detailSubmittedDate">Not yet submitted</div>
+                            </div>
+                            <div class="submission-status-item">
+                                <div class="submission-status-label">Grade</div>
+                                <div class="submission-status-value" id="detailGrade">--</div>
+                            </div>
+                            <div class="submission-status-item">
+                                <div class="submission-status-label">Feedback</div>
+                                <div class="submission-status-value" id="detailFeedback">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="view-details-footer">
+                <button class="view-details-action-btn print-assignment-btn" onclick="printAssignment()">
+                    <i class="fas fa-print"></i>
+                    Print
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="view-details-action-btn outline" onclick="downloadAssignmentPDF()">
+                        <i class="fas fa-download"></i>
+                        Download PDF
+                    </button>
+                    <button class="view-details-action-btn success" onclick="openSubmitModalFromDetails()">
+                        <i class="fas fa-upload"></i>
+                        Submit Assignment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Feedback Modal -->
+    <div class="view-feedback-modal" id="viewFeedbackModal">
+        <div class="view-feedback-content">
+            <!-- Header -->
+            <div class="view-feedback-header">
+                <div class="view-feedback-title">
+                    <h3>
+                        <i class="fas fa-comments"></i>
+                        Assignment Feedback
+                    </h3>
+                    <p id="feedbackAssignmentTitle">Web Development Project - CSC 301</p>
+                </div>
+                <button class="view-feedback-close" onclick="closeViewFeedbackModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="view-feedback-body">
+                <!-- Grade Summary -->
+                <div class="feedback-grade-summary">
+                    <div class="feedback-score-display">
+                        <div class="feedback-score-circle">
+                            <div class="feedback-score-value" id="feedbackScore">95</div>
+                            <div class="feedback-score-total">out of 100</div>
+                        </div>
+                        <div class="feedback-grade-info">
+                            <div class="feedback-grade-label">Your Grade</div>
+                            <div class="feedback-grade-value" id="feedbackLetterGrade">A</div>
+                            <div class="feedback-percentage" id="feedbackPercentage">95%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="feedback-grade-stats">
+                        <div class="feedback-stat-item">
+                            <div class="feedback-stat-value" id="feedbackSubmittedDate">Dec 21, 2025</div>
+                            <div class="feedback-stat-label">Submitted</div>
+                        </div>
+                        <div class="feedback-stat-item">
+                            <div class="feedback-stat-value" id="feedbackGradedDate">Dec 23, 2025</div>
+                            <div class="feedback-stat-label">Graded</div>
+                        </div>
+                        <div class="feedback-stat-item">
+                            <div class="feedback-stat-value" id="feedbackAttempt">1st Attempt</div>
+                            <div class="feedback-stat-label">Submission</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rubric Breakdown -->
+                <div class="feedback-section">
+                    <div class="feedback-section-title">
+                        <i class="fas fa-clipboard-check"></i>
+                        Grading Rubric Breakdown
+                    </div>
+                    <table class="feedback-rubric-table">
+                        <thead>
+                            <tr>
+                                <th>Criteria</th>
+                                <th style="width: 100px;">Points</th>
+                                <th style="width: 150px;">Score</th>
+                                <th style="width: 120px;">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Code Quality & Organization</strong></td>
+                                <td>25 pts</td>
+                                <td><strong>24 pts</strong></td>
+                                <td><span class="feedback-score-badge excellent">Excellent</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Functionality & Features</strong></td>
+                                <td>30 pts</td>
+                                <td><strong>29 pts</strong></td>
+                                <td><span class="feedback-score-badge excellent">Excellent</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Responsive Design</strong></td>
+                                <td>20 pts</td>
+                                <td><strong>19 pts</strong></td>
+                                <td><span class="feedback-score-badge excellent">Excellent</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>API Integration</strong></td>
+                                <td>15 pts</td>
+                                <td><strong>14 pts</strong></td>
+                                <td><span class="feedback-score-badge good">Good</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Documentation</strong></td>
+                                <td>10 pts</td>
+                                <td><strong>9 pts</strong></td>
+                                <td><span class="feedback-score-badge good">Good</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Instructor Comments -->
+                <div class="feedback-section">
+                    <div class="feedback-section-title">
+                        <i class="fas fa-comment-dots"></i>
+                        Instructor Comments
+                    </div>
+                    <div class="feedback-comments-box">
+                        <div class="feedback-instructor-info">
+                            <div class="feedback-instructor-avatar">DS</div>
+                            <div class="feedback-instructor-details">
+                                <h4>Dr. Smith</h4>
+                                <p>Graded on December 23, 2025 at 2:30 PM</p>
+                            </div>
+                        </div>
+                        <div class="feedback-comment-text" id="feedbackInstructorComment">Excellent work on this project! Your implementation demonstrates a strong understanding of modern web development principles. The code is well-structured, properly commented, and follows best practices.
+
+Your e-commerce website is fully functional with all required features implemented correctly. The responsive design works seamlessly across different devices, and the user interface is clean and intuitive.
+
+The API integration is solid, though there's room for improvement in error handling. Consider implementing more robust error messages for failed API calls and adding loading states for better user experience.
+
+Overall, this is an outstanding submission that meets and exceeds the assignment requirements. Keep up the great work!</div>
+                    </div>
+                </div>
+
+                <!-- Strengths and Areas for Improvement -->
+                <div class="feedback-section">
+                    <div class="feedback-section-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Detailed Analysis
+                    </div>
+                    <div class="feedback-highlights-grid">
+                        <div class="feedback-highlight-box strengths">
+                            <div class="feedback-highlight-title">
+                                <i class="fas fa-check-circle"></i>
+                                Strengths
+                            </div>
+                            <ul class="feedback-highlight-list strengths">
+                                <li>
+                                    <i class="fas fa-star"></i>
+                                    <span>Clean and maintainable code structure</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star"></i>
+                                    <span>Excellent responsive design implementation</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star"></i>
+                                    <span>Proper use of semantic HTML5 elements</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star"></i>
+                                    <span>Well-documented code with clear comments</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star"></i>
+                                    <span>Effective use of CSS Grid and Flexbox</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="feedback-highlight-box improvements">
+                            <div class="feedback-highlight-title">
+                                <i class="fas fa-lightbulb"></i>
+                                Areas for Improvement
+                            </div>
+                            <ul class="feedback-highlight-list improvements">
+                                <li>
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>Enhance error handling for API failures</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>Add loading states during data fetching</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>Implement input validation on forms</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>Consider adding unit tests</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Resources -->
+                <div class="feedback-section">
+                    <div class="feedback-section-title">
+                        <i class="fas fa-book-reader"></i>
+                        Recommended Resources
+                    </div>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">
+                        <p style="margin: 0 0 10px 0; font-size: 14px; color: #2c3e50;">Based on your performance, here are some resources to help you improve:</p>
+                        <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #2c3e50; line-height: 1.8;">
+                            <li><strong>Error Handling in JavaScript:</strong> MDN Web Docs - Try/Catch Guide</li>
+                            <li><strong>Form Validation:</strong> HTML5 Form Validation Best Practices</li>
+                            <li><strong>Testing:</strong> Introduction to Jest for Unit Testing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="view-feedback-footer">
+                <button class="view-feedback-action-btn outline" onclick="printFeedback()">
+                    <i class="fas fa-print"></i>
+                    Print Feedback
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="view-feedback-action-btn outline" onclick="downloadFeedbackPDF()">
+                        <i class="fas fa-download"></i>
+                        Download PDF
+                    </button>
+                    <button class="view-feedback-action-btn primary" onclick="closeViewFeedbackModal()">
+                        <i class="fas fa-check"></i>
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Assignment Modal -->
+    <div class="download-assignment-modal" id="downloadAssignmentModal">
+        <div class="download-assignment-content">
+            <!-- Header -->
+            <div class="download-assignment-header">
+                <div class="download-assignment-title">
+                    <h3>
+                        <i class="fas fa-download"></i>
+                        Download Assignment Files
+                    </h3>
+                    <p id="downloadAssignmentInfo">Algorithm Analysis - CSC 205</p>
+                </div>
+                <button class="download-assignment-close" onclick="closeDownloadAssignmentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="download-assignment-body">
+                <!-- Quick Actions -->
+                <div class="download-quick-actions">
+                    <div class="download-quick-action" onclick="downloadAllFiles()">
+                        <i class="fas fa-folder-open"></i>
+                        <div class="download-quick-action-title">Download All</div>
+                        <div class="download-quick-action-desc">Get everything in ZIP</div>
+                    </div>
+                    <div class="download-quick-action" onclick="downloadGradeReport()">
+                        <i class="fas fa-file-invoice"></i>
+                        <div class="download-quick-action-title">Grade Report</div>
+                        <div class="download-quick-action-desc">PDF with feedback</div>
+                    </div>
+                    <div class="download-quick-action" onclick="downloadSubmissionOnly()">
+                        <i class="fas fa-file-upload"></i>
+                        <div class="download-quick-action-title">My Submission</div>
+                        <div class="download-quick-action-desc">Files you submitted</div>
+                    </div>
+                </div>
+
+                <!-- Assignment Instructions -->
+                <div class="download-category">
+                    <div class="download-category-title">
+                        <i class="fas fa-file-alt"></i>
+                        Assignment Instructions
+                    </div>
+                    <div class="download-items-grid">
+                        <div class="download-item-card" onclick="downloadFile('instructions-pdf')">
+                            <div class="download-item-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Assignment_Instructions.pdf</div>
+                                <div class="download-item-meta">2.4 MB • PDF Document</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <div class="download-item-card" onclick="downloadFile('starter-template')">
+                            <div class="download-item-icon zip">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Starter_Template.zip</div>
+                                <div class="download-item-meta">1.2 MB • ZIP Archive</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your Submission Files -->
+                <div class="download-category">
+                    <div class="download-category-title">
+                        <i class="fas fa-upload"></i>
+                        Your Submission Files
+                    </div>
+                    <div class="download-items-grid">
+                        <div class="download-item-card" onclick="downloadFile('submission-report')">
+                            <div class="download-item-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Analysis_Report.pdf</div>
+                                <div class="download-item-meta">4.2 MB • Submitted Dec 9</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <div class="download-item-card" onclick="downloadFile('submission-code')">
+                            <div class="download-item-icon zip">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Source_Code.zip</div>
+                                <div class="download-item-meta">3.8 MB • Submitted Dec 9</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <div class="download-item-card" onclick="downloadFile('submission-charts')">
+                            <div class="download-item-icon image">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Performance_Charts.png</div>
+                                <div class="download-item-meta">856 KB • Submitted Dec 9</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graded Files & Feedback -->
+                <div class="download-category">
+                    <div class="download-category-title">
+                        <i class="fas fa-check-circle"></i>
+                        Graded Files & Feedback
+                    </div>
+                    <div class="download-items-grid">
+                        <div class="download-item-card" onclick="downloadFile('annotated-submission')">
+                            <div class="download-item-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Annotated_Report.pdf</div>
+                                <div class="download-item-meta">4.5 MB • With instructor notes</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <div class="download-item-card" onclick="downloadFile('grade-report')">
+                            <div class="download-item-icon report">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Grade_Report.pdf</div>
+                                <div class="download-item-meta">1.1 MB • Score: 56/60</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <div class="download-item-card" onclick="downloadFile('rubric-breakdown')">
+                            <div class="download-item-icon doc">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="download-item-info">
+                                <div class="download-item-name">Rubric_Breakdown.pdf</div>
+                                <div class="download-item-meta">856 KB • Detailed evaluation</div>
+                            </div>
+                            <button class="download-item-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Progress -->
+                <div class="download-assignment-progress" id="downloadAssignmentProgress">
+                    <div class="download-assignment-progress-bar">
+                        <div class="download-assignment-progress-fill" id="downloadAssignmentProgressFill"></div>
+                    </div>
+                    <div class="download-assignment-progress-text" id="downloadAssignmentProgressText">Preparing download...</div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="download-assignment-footer">
+                <div style="font-size: 13px; color: #7f8c8d;">
+                    <i class="fas fa-info-circle"></i> Total size: ~19.2 MB
+                </div>
+                <button class="download-assignment-footer-btn outline" onclick="closeDownloadAssignmentModal()">
+                    <i class="fas fa-times"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Assignment Modal -->
+    <div class="submit-assignment-modal" id="submitAssignmentModal">
+        <div class="submit-modal-content">
+            <!-- Header -->
+            <div class="submit-modal-header">
+                <div class="submit-modal-title">
+                    <h3>
+                        <i class="fas fa-upload"></i>
+                        <span id="submitAssignmentTitle">Submit Assignment</span>
+                    </h3>
+                    <p id="submitAssignmentCourse">Course: CSC 301 - Web Development</p>
+                </div>
+                <button class="submit-modal-close" onclick="closeSubmitModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="submit-modal-body" id="submitModalBody">
+                <!-- Assignment Details -->
+                <div class="assignment-details-box">
+                    <div class="assignment-detail-row">
+                        <span class="assignment-detail-label">
+                            <i class="fas fa-calendar-alt"></i> Due Date
+                        </span>
+                        <span class="assignment-detail-value due-soon" id="submitDueDate">Dec 22, 2025 - 11:59 PM</span>
+                    </div>
+                    <div class="assignment-detail-row">
+                        <span class="assignment-detail-label">
+                            <i class="fas fa-star"></i> Total Points
+                        </span>
+                        <span class="assignment-detail-value" id="submitTotalPoints">100 pts</span>
+                    </div>
+                    <div class="assignment-detail-row">
+                        <span class="assignment-detail-label">
+                            <i class="fas fa-clock"></i> Time Remaining
+                        </span>
+                        <span class="assignment-detail-value" id="submitTimeRemaining">2 days, 14 hours</span>
+                    </div>
+                    <div class="assignment-detail-row">
+                        <span class="assignment-detail-label">
+                            <i class="fas fa-redo"></i> Attempts Allowed
+                        </span>
+                        <span class="assignment-detail-value" id="submitAttemptsAllowed">Unlimited</span>
+                    </div>
+                </div>
+
+                <!-- File Upload Section -->
+                <div class="submit-section">
+                    <div class="submit-section-title">
+                        <i class="fas fa-file-upload"></i>
+                        Upload Files
+                    </div>
+                    <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('fileInput').click()">
+                        <div class="file-upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="file-upload-text">Click to browse or drag and drop files here</div>
+                        <div class="file-upload-hint">Supported formats: PDF, DOC, DOCX, ZIP, Images (Max 50MB each)</div>
+                        <input type="file" id="fileInput" class="file-upload-input" multiple accept=".pdf,.doc,.docx,.zip,.jpg,.jpeg,.png,.gif" onchange="handleFileSelect(event)">
+                    </div>
+                    
+                    <div class="uploaded-files-list" id="uploadedFilesList"></div>
+                </div>
+
+                <!-- Text Submission Section -->
+                <div class="submit-section">
+                    <div class="submit-section-title">
+                        <i class="fas fa-align-left"></i>
+                        Additional Comments (Optional)
+                    </div>
+                    <div class="text-submission-area">
+                        <textarea 
+                            class="text-submission-textarea" 
+                            id="submissionComments" 
+                            placeholder="Add any notes or comments about your submission..."
+                            maxlength="1000"
+                            oninput="updateCharacterCount()"></textarea>
+                        <div class="character-count">
+                            <span id="charCount">0</span> / 1000 characters
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Options -->
+                <div class="submit-section">
+                    <div class="submit-section-title">
+                        <i class="fas fa-cog"></i>
+                        Submission Options
+                    </div>
+                    <div class="submission-options">
+                        <div class="submission-option">
+                            <input type="checkbox" id="saveAsDraft" checked>
+                            <label for="saveAsDraft" class="submission-option-label">Save as draft</label>
+                        </div>
+                        <div class="submission-option">
+                            <input type="checkbox" id="notifyOnGrade" checked>
+                            <label for="notifyOnGrade" class="submission-option-label">Notify when graded</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Notes -->
+                <div class="submission-notes">
+                    <h4>
+                        <i class="fas fa-info-circle"></i>
+                        Important Notes
+                    </h4>
+                    <ul>
+                        <li>Make sure all required files are attached before submitting</li>
+                        <li>Once submitted, you cannot edit your submission until the instructor returns it</li>
+                        <li>Late submissions may receive a penalty as per course policy</li>
+                        <li>You will receive a confirmation email once your submission is successful</li>
+                    </ul>
+                </div>
+
+                <!-- Success Animation (Hidden by default) -->
+                <div class="submit-success-animation" id="submitSuccessAnimation">
+                    <div class="success-checkmark-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="submit-success-title">Assignment Submitted Successfully!</div>
+                    <div class="submit-success-message">
+                        Your assignment has been submitted and a confirmation email has been sent to your registered email address.
+                        You can view your submission status in the assignments section.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="submit-modal-footer">
+                <div class="submit-stats">
+                    <div class="submit-stat-item">
+                        <i class="fas fa-paperclip"></i>
+                        <span id="fileCountStat">0 files</span>
+                    </div>
+                    <div class="submit-stat-item">
+                        <i class="fas fa-database"></i>
+                        <span id="fileSizeStat">0 MB</span>
+                    </div>
+                </div>
+                <div class="submit-actions">
+                    <button class="submit-btn secondary" onclick="closeSubmitModal()">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                    <button class="submit-btn primary" id="submitAssignmentBtn" onclick="submitAssignment()" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Assignment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Toggle Courses Dropdown
         function toggleCoursesDropdown(event) {
@@ -5476,10 +19005,216 @@
             }
         }
 
+        // Toggle Assignments Dropdown
+        function toggleAssignmentsDropdown(event) {
+            event.preventDefault();
+            const navItem = document.getElementById('assignmentsNavItem');
+            const sidebar = document.getElementById('sidebar');
+            
+            // If sidebar is collapsed, expand it first
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                document.getElementById('mainContent').classList.remove('expanded');
+                
+                // Then open the dropdown after animation
+                setTimeout(() => {
+                    navItem.classList.toggle('open');
+                }, 300);
+            } else {
+                navItem.classList.toggle('open');
+            }
+        }
+
+        // Toggle Exams Dropdown
+        function toggleExamsDropdown(event) {
+            if (event) event.preventDefault();
+            const navItem = document.querySelector('.exams-dropdown-item');
+            const sidebar = document.getElementById('sidebar');
+            
+            // If sidebar is collapsed, expand it first
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                document.getElementById('mainContent').classList.remove('expanded');
+                
+                // Then open the dropdown after animation
+                setTimeout(() => {
+                    navItem.classList.toggle('open');
+                }, 300);
+            } else {
+                navItem.classList.toggle('open');
+            }
+        }
+
+        function toggleGradesDropdown(event) {
+            if (event) event.preventDefault();
+            const navItem = document.querySelector('.grades-dropdown-item');
+            const sidebar = document.getElementById('sidebar');
+            
+            // If sidebar is collapsed, expand it first
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                document.getElementById('mainContent').classList.remove('expanded');
+                
+                // Then open the dropdown after animation
+                setTimeout(() => {
+                    navItem.classList.toggle('open');
+                }, 300);
+            } else {
+                navItem.classList.toggle('open');
+            }
+        }
+
+        function showSettingsTab(tabName) {
+            // Get all tab buttons
+            const profileBtn = document.getElementById('settingsTabProfile');
+            const accountBtn = document.getElementById('settingsTabAccount');
+            const notificationsBtn = document.getElementById('settingsTabNotifications');
+            const privacyBtn = document.getElementById('settingsTabPrivacy');
+            const securityBtn = document.getElementById('settingsTabSecurity');
+            const appearanceBtn = document.getElementById('settingsTabAppearance');
+
+            // Get all tab contents
+            const profileTab = document.getElementById('profileSettingsTab');
+            const accountTab = document.getElementById('accountSettingsTab');
+            const notificationsTab = document.getElementById('notificationsSettingsTab');
+            const privacyTab = document.getElementById('privacySettingsTab');
+            const securityTab = document.getElementById('securitySettingsTab');
+            const appearanceTab = document.getElementById('appearanceSettingsTab');
+
+            // Reset all button styles
+            const inactiveStyle = 'background: #f8f9fa; color: #2c3e50; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;';
+            const activeStyle = 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; text-align: left; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px;';
+
+            profileBtn.style.cssText = inactiveStyle;
+            accountBtn.style.cssText = inactiveStyle;
+            notificationsBtn.style.cssText = inactiveStyle;
+            privacyBtn.style.cssText = inactiveStyle;
+            securityBtn.style.cssText = inactiveStyle;
+            appearanceBtn.style.cssText = inactiveStyle;
+
+            // Hide all tabs
+            profileTab.style.display = 'none';
+            accountTab.style.display = 'none';
+            notificationsTab.style.display = 'none';
+            privacyTab.style.display = 'none';
+            securityTab.style.display = 'none';
+            appearanceTab.style.display = 'none';
+
+            // Show selected tab and activate button
+            if (tabName === 'profile') {
+                profileTab.style.display = 'block';
+                profileBtn.style.cssText = activeStyle;
+            } else if (tabName === 'account') {
+                accountTab.style.display = 'block';
+                accountBtn.style.cssText = activeStyle;
+            } else if (tabName === 'notifications') {
+                notificationsTab.style.display = 'block';
+                notificationsBtn.style.cssText = activeStyle;
+            } else if (tabName === 'privacy') {
+                privacyTab.style.display = 'block';
+                privacyBtn.style.cssText = activeStyle;
+            } else if (tabName === 'security') {
+                securityTab.style.display = 'block';
+                securityBtn.style.cssText = activeStyle;
+            } else if (tabName === 'appearance') {
+                appearanceTab.style.display = 'block';
+                appearanceBtn.style.cssText = activeStyle;
+            }
+        }
+
+        function showSection(sectionName) {
+            // Get main dashboard content and all section dashboards
+            const mainDashboard = document.getElementById('mainDashboardContent');
+            const gradesSection = document.getElementById('gradesSection');
+            const scheduleSection = document.getElementById('scheduleSection');
+            const librarySection = document.getElementById('librarySection');
+            const paymentsSection = document.getElementById('paymentsSection');
+            const messagesSection = document.getElementById('messagesSection');
+            const examsSection = document.getElementById('examsSection');
+            const assignmentsSection = document.getElementById('assignmentsSection');
+            const coursesSection = document.getElementById('coursesSection');
+            const settingsSection = document.getElementById('settingsSection');
+
+            // Hide all sections first
+            if (mainDashboard) mainDashboard.style.display = 'none';
+            if (gradesSection) gradesSection.style.display = 'none';
+            if (scheduleSection) scheduleSection.style.display = 'none';
+            if (librarySection) librarySection.style.display = 'none';
+            if (paymentsSection) paymentsSection.style.display = 'none';
+            if (messagesSection) messagesSection.style.display = 'none';
+            if (examsSection) examsSection.style.display = 'none';
+            if (assignmentsSection) assignmentsSection.style.display = 'none';
+            if (coursesSection) coursesSection.style.display = 'none';
+            if (settingsSection) settingsSection.style.display = 'none';
+
+            // Show the requested section
+            if (sectionName === 'grades') {
+                if (gradesSection) {
+                    gradesSection.style.display = 'block';
+                }
+            } else if (sectionName === 'schedule') {
+                if (scheduleSection) {
+                    scheduleSection.style.display = 'block';
+                }
+            } else if (sectionName === 'library') {
+                if (librarySection) {
+                    librarySection.style.display = 'block';
+                }
+            } else if (sectionName === 'payments') {
+                if (paymentsSection) {
+                    paymentsSection.style.display = 'block';
+                }
+            } else if (sectionName === 'messages') {
+                if (messagesSection) {
+                    messagesSection.style.display = 'block';
+                }
+            } else if (sectionName === 'exams') {
+                if (examsSection) {
+                    examsSection.style.display = 'block';
+                }
+            } else if (sectionName === 'assignments') {
+                if (assignmentsSection) {
+                    assignmentsSection.style.display = 'block';
+                }
+            } else if (sectionName === 'courses') {
+                if (coursesSection) {
+                    coursesSection.style.display = 'block';
+                }
+            } else if (sectionName === 'settings') {
+                if (settingsSection) {
+                    settingsSection.style.display = 'block';
+                }
+            } else if (sectionName === 'dashboard' || sectionName === 'home') {
+                if (mainDashboard) {
+                    mainDashboard.style.display = 'block';
+                }
+            } else {
+                // For other sections (assignments, exams, etc.), show main dashboard
+                if (mainDashboard) {
+                    mainDashboard.style.display = 'block';
+                }
+            }
+
+            // Update active navigation link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate the clicked nav link
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                const linkText = link.textContent.trim().toLowerCase();
+                if (linkText.includes(sectionName.toLowerCase())) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
             const coursesNavItem = document.getElementById('coursesNavItem');
+            const assignmentsNavItem = document.getElementById('assignmentsNavItem');
             
             if (window.innerWidth <= 768) {
                 // Mobile: Toggle sidebar visibility
@@ -5498,6 +19233,11 @@
             
                 if (sidebar.classList.contains('collapsed')) {
                     coursesNavItem.classList.remove('open');
+                    assignmentsNavItem.classList.remove('open');
+                    
+                    // Close exams dropdown if open
+                    const examsNavItem = document.querySelector('.exams-dropdown-item');
+                    if (examsNavItem) examsNavItem.classList.remove('open');
                 }
             }
         }
@@ -6232,11 +19972,2152 @@ For questions or discrepancies please contact the course instructor.`;
             document.body.style.overflow = 'auto';
         }
 
+        // Transcript Modal Functions
+        function openTranscriptModal() {
+            document.getElementById('transcriptModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTranscriptModal() {
+            document.getElementById('transcriptModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function printTranscript() {
+            window.print();
+        }
+
+        function downloadTranscript() {
+            // You can implement PDF generation here
+            alert('Downloading transcript as PDF...\n\nThis feature will generate an official PDF transcript.');
+            // In production, you would call a backend API to generate the PDF
+        }
+
+        // Payments Modal Functions
+        function openPaymentsModal() {
+            document.getElementById('paymentsModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentsModal() {
+            document.getElementById('paymentsModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showPaymentTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.payment-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.payment-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function selectPaymentMethod(card) {
+            document.querySelectorAll('.payment-method-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            card.classList.add('selected');
+        }
+
+        function setPaymentAmount(amount) {
+            document.getElementById('paymentAmount').value = amount;
+        }
+
+        let currentPaymentFee = { name: '', amount: 0 };
+
+        function payFee(feeName, amount) {
+            currentPaymentFee = { name: feeName, amount: amount };
+            openPaymentProcessModal(feeName, amount);
+        }
+
+        function openPaymentProcessModal(feeName, amount) {
+            const modal = document.getElementById('paymentProcessModal');
+            const transactionFee = 2.50;
+            const totalAmount = amount + transactionFee;
+            
+            // Update modal content
+            document.getElementById('paymentItemName').textContent = feeName;
+            document.getElementById('paymentTotalAmount').textContent = '$' + totalAmount.toFixed(2);
+            
+            // Show modal
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentProcessModal() {
+            const modal = document.getElementById('paymentProcessModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            
+            // Reset form
+            document.getElementById('cardholderName').value = '';
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('cvv').value = '';
+        }
+
+        function selectProcessPaymentMethod(element, method) {
+            // Remove selected class from all options
+            document.querySelectorAll('.payment-method-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Hide all payment forms
+            document.getElementById('cardDetailsForm').style.display = 'none';
+            document.getElementById('paypalNotice').style.display = 'none';
+            document.getElementById('bankNotice').style.display = 'none';
+            document.getElementById('walletNotice').style.display = 'none';
+            
+            // Show appropriate form
+            switch(method) {
+                case 'card':
+                    document.getElementById('cardDetailsForm').style.display = 'block';
+                    break;
+                case 'paypal':
+                    document.getElementById('paypalNotice').style.display = 'block';
+                    break;
+                case 'bank':
+                    document.getElementById('bankNotice').style.display = 'block';
+                    break;
+                case 'wallet':
+                    document.getElementById('walletNotice').style.display = 'block';
+                    break;
+            }
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '');
+            value = value.replace(/[^0-9]/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formattedValue;
+        }
+
+        function formatExpiryDate(input) {
+            let value = input.value.replace(/\//g, '');
+            value = value.replace(/[^0-9]/g, '');
+            if (value.length >= 2) {
+                input.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            } else {
+                input.value = value;
+            }
+        }
+
+        function submitPayment() {
+            const selectedMethod = document.querySelector('.payment-method-option.selected .payment-method-option-name').textContent;
+            
+            // Validate card details if card payment is selected
+            if (selectedMethod === 'Card') {
+                const cardholderName = document.getElementById('cardholderName').value;
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+                
+                if (!cardholderName || !cardNumber || !expiryDate || !cvv) {
+                    alert('Please fill in all card details');
+                    return;
+                }
+                
+                if (cardNumber.length < 13) {
+                    alert('Please enter a valid card number');
+                    return;
+                }
+                
+                if (cvv.length < 3) {
+                    alert('Please enter a valid CVV');
+                    return;
+                }
+            }
+            
+            // Show processing overlay
+            document.getElementById('processingOverlay').classList.add('active');
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                document.getElementById('processingOverlay').classList.remove('active');
+                document.getElementById('successOverlay').style.display = 'flex';
+                
+                // Close modal after 2 seconds and refresh
+                setTimeout(() => {
+                    closePaymentProcessModal();
+                    document.getElementById('successOverlay').style.display = 'none';
+                    
+                    // Show success notification
+                    alert('Payment Successful!\\n\\nTransaction ID: #TXN-' + Date.now() + '\\nAmount: $' + (currentPaymentFee.amount + 2.50).toFixed(2) + '\\n\\nReceipt has been sent to your email.');
+                    
+                    // In production, you would refresh the payment data or redirect
+                }, 2000);
+            }, 3000);
+        }
+
+        function payAllFees() {
+            // Updated amount with bundle discount: $2,350 - $25 = $2,325 (before processing fee)
+            currentPaymentFee = { name: 'All Outstanding Fees (4 items with $25 Bundle Discount)', amount: 2325 };
+            openPaymentProcessModal('All Outstanding Fees (4 items with $25 Bundle Discount)', 2325);
+        }
+
+        // Schedule Modal Functions
+        function openScheduleModal() {
+            document.getElementById('scheduleModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showScheduleTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.schedule-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.schedule-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            // Initialize calendar when calendar tab is shown
+            if (tabName === 'calendar') {
+                generateCalendar();
+            }
+        }
+
+        // Calendar state
+        let currentCalendarMonth = new Date().getMonth(); // 0-11
+        let currentCalendarYear = new Date().getFullYear();
+
+        function changeMonth(direction) {
+            currentCalendarMonth += direction;
+            
+            if (currentCalendarMonth > 11) {
+                currentCalendarMonth = 0;
+                currentCalendarYear++;
+            } else if (currentCalendarMonth < 0) {
+                currentCalendarMonth = 11;
+                currentCalendarYear--;
+            }
+            
+            generateCalendar();
+        }
+
+        function generateCalendar() {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            // Update month/year display
+            document.getElementById('calendarMonthYear').textContent = 
+                monthNames[currentCalendarMonth] + ' ' + currentCalendarYear;
+            
+            // Get first day of month (0-6, Sunday-Saturday)
+            const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1).getDay();
+            
+            // Get number of days in month
+            const daysInMonth = new Date(currentCalendarYear, currentCalendarMonth + 1, 0).getDate();
+            
+            // Get today's date for highlighting
+            const today = new Date();
+            const isCurrentMonth = (currentCalendarMonth === today.getMonth() && 
+                                   currentCalendarYear === today.getFullYear());
+            const todayDate = today.getDate();
+            
+            // Sample class schedule data - in real app, this would come from database
+            const classSchedule = {
+                '2025-12-15': ['CS 101', 'MATH 201'],
+                '2025-12-16': ['ENG 101'],
+                '2025-12-17': ['CS 101', 'MATH 201', 'PHY 101'],
+                '2025-12-18': ['MATH 201'],
+                '2025-12-19': ['CS 101', 'ENG 101'],
+                '2025-12-22': ['CS 101', 'MATH 201'],
+                '2025-12-23': ['ENG 101', 'PHY 101'],
+                '2025-12-24': ['CS 101']
+            };
+            
+            // Generate calendar HTML
+            let calendarHTML = '';
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                calendarHTML += '<div class="calendar-day empty"></div>';
+            }
+            
+            // Add days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentCalendarYear}-${String(currentCalendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const hasClasses = classSchedule[dateStr];
+                const isToday = isCurrentMonth && day === todayDate;
+                
+                let dayClass = 'calendar-day';
+                if (isToday) dayClass += ' today';
+                if (hasClasses) dayClass += ' has-class';
+                
+                calendarHTML += `
+                    <div class="${dayClass}">
+                        <div class="day-number">${day}</div>
+                        ${hasClasses ? `<div class="class-indicator">${hasClasses.length} class${hasClasses.length > 1 ? 'es' : ''}</div>` : ''}
+                    </div>
+                `;
+            }
+            
+            // Update calendar grid
+            document.getElementById('calendarGrid').innerHTML = calendarHTML;
+        }
+
+        // ID Card Modal Functions
+        function openIDCardModal() {
+            document.getElementById('idcardModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeIDCardModal() {
+            document.getElementById('idcardModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showIDCardView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.idcard-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.idcard-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected view
+            document.getElementById(viewName + '-view').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function flipIDCard() {
+            const card = document.getElementById('idcardFlip');
+            card.classList.toggle('flipped');
+        }
+
+        function downloadIDCard() {
+            // Show loading indicator
+            const originalText = event.target.innerHTML;
+            event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            event.target.disabled = true;
+            
+            // Get the digital ID card element
+            const cardElement = document.querySelector('.idcard-container');
+            
+            // Use html2canvas if available, otherwise fallback to manual download
+            if (typeof html2canvas !== 'undefined') {
+                html2canvas(cardElement, {
+                    backgroundColor: null,
+                    scale: 2,
+                    logging: false,
+                    useCORS: true
+                }).then(canvas => {
+                    // Convert to blob and download
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+                        const timestamp = new Date().toISOString().split('T')[0];
+                        link.download = `ID_Card_${studentId}_${timestamp}.png`;
+                        link.href = url;
+                        link.click();
+                        URL.revokeObjectURL(url);
+                        
+                        // Reset button
+                        event.target.innerHTML = originalText;
+                        event.target.disabled = false;
+                        
+                        // Show success message
+                        showNotification('✅ ID Card downloaded successfully!', 'success');
+                    });
+                }).catch(error => {
+                    console.error('Download error:', error);
+                    event.target.innerHTML = originalText;
+                    event.target.disabled = false;
+                    showNotification('❌ Download failed. Please try again.', 'error');
+                });
+            } else {
+                // Fallback: Create a simple download
+                setTimeout(() => {
+                    event.target.innerHTML = originalText;
+                    event.target.disabled = false;
+                    
+                    // Show info about installing html2canvas
+                    alert('📥 Download Feature\\n\\nTo enable high-quality image downloads, please include html2canvas library.\\n\\nFor now, please use Print > Save as PDF option.');
+                }, 1000);
+            }
+        }
+
+        function printIDCard() {
+            // Prepare for printing
+            const currentView = document.querySelector('.idcard-tab-content.active').id;
+            
+            // Show confirmation
+            if (confirm('🖨️ Print ID Card\n\nThis will print your ' + (currentView === 'digital-view' ? 'digital' : 'physical') + ' ID card.\n\nMake sure your printer is ready.\n\nClick OK to continue.')) {
+                // Add print class to optimize layout
+                document.body.classList.add('printing');
+                
+                // Trigger print dialog
+                window.print();
+                
+                // Remove print class after printing
+                setTimeout(() => {
+                    document.body.classList.remove('printing');
+                    showNotification('✅ Print dialog opened successfully!', 'success');
+                }, 500);
+            }
+        }
+
+        function shareIDCard() {
+            // Open share modal
+            document.getElementById('shareIDCardModal').classList.add('show');
+        }
+        
+        function closeShareModal() {
+            document.getElementById('shareIDCardModal').classList.remove('show');
+        }
+        
+        function shareViaEmail() {
+            const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+            const studentName = '<?php echo htmlspecialchars($_SESSION['username'] ?? 'Student'); ?>';
+            const subject = encodeURIComponent(`Student ID Card - ${studentName}`);
+            const body = encodeURIComponent(`Hello,\n\nPlease find my student ID card details:\n\nStudent ID: ${studentId}\nName: ${studentName}\nProgram: Computer Science\nStatus: Active\n\nBest regards,\n${studentName}`);
+            
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+            closeShareModal();
+            showNotification('📧 Email client opened!', 'info');
+        }
+        
+        function shareViaSMS() {
+            const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+            const message = encodeURIComponent(`My Student ID: ${studentId}`);
+            
+            window.location.href = `sms:?body=${message}`;
+            closeShareModal();
+            showNotification('💬 SMS app opened!', 'info');
+        }
+        
+        function shareViaWhatsApp() {
+            const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+            const studentName = '<?php echo htmlspecialchars($_SESSION['username'] ?? 'Student'); ?>';
+            const message = encodeURIComponent(`Student ID Card\n\nID: ${studentId}\nName: ${studentName}\nProgram: Computer Science\nStatus: Active`);
+            
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+            closeShareModal();
+            showNotification('✅ WhatsApp opened!', 'success');
+        }
+        
+        function shareViaFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+            closeShareModal();
+            showNotification('✅ Facebook opened!', 'success');
+        }
+        
+        function shareViaTwitter() {
+            const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+            const text = encodeURIComponent(`My Student ID: ${studentId}`);
+            const url = encodeURIComponent(window.location.href);
+            
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=600,height=400');
+            closeShareModal();
+            showNotification('✅ Twitter opened!', 'success');
+        }
+        
+        function copyIDCardLink() {
+            const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+            const link = `${window.location.origin}/id-card/${studentId}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(link).then(() => {
+                closeShareModal();
+                showNotification('✅ Link copied to clipboard!', 'success');
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = link;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                closeShareModal();
+                showNotification('✅ Link copied to clipboard!', 'success');
+            });
+        }
+        
+        function generateQRCode() {
+            const studentId = '<?php echo htmlspecialchars($_SESSION['student_id'] ?? 'STU001'); ?>';
+            alert(`📱 QR Code Generator\n\nYour Student ID: ${studentId}\n\nQR Code will be generated and displayed.\nYou can scan it with any QR code reader app.\n\n[In production, this would show an actual QR code]`);
+            closeShareModal();
+        }
+        
+        function downloadForSharing() {
+            closeShareModal();
+            // Trigger the download function
+            setTimeout(() => {
+                downloadIDCard();
+            }, 300);
+        }
+
+        // ============================================
+        // VIEW ALL ASSIGNMENTS MODAL FUNCTIONS
+        // ============================================
+        
+        function openAllAssignmentsModal() {
+            document.getElementById('viewAllAssignmentsModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAllAssignmentsModal() {
+            document.getElementById('viewAllAssignmentsModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function filterAllAssignments(status) {
+            // Update active state
+            const statBoxes = document.querySelectorAll('.assignment-stat-box');
+            statBoxes.forEach(box => box.classList.remove('active'));
+            
+            // Add active to clicked box
+            event.target.closest('.assignment-stat-box').classList.add('active');
+            
+            // Filter assignments
+            const cards = document.querySelectorAll('.assignment-card');
+            const grid = document.getElementById('assignmentsGrid');
+            
+            if (status === 'all') {
+                cards.forEach(card => card.style.display = 'block');
+            } else {
+                cards.forEach(card => {
+                    if (card.dataset.status === status) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Check if no assignments found
+            checkEmptyState();
+        }
+
+        function searchAssignments() {
+            const searchTerm = document.getElementById('assignmentsSearchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.assignment-card');
+            
+            cards.forEach(card => {
+                const title = card.dataset.title.toLowerCase();
+                const course = card.dataset.course.toLowerCase();
+                
+                if (title.includes(searchTerm) || course.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            checkEmptyState();
+        }
+
+        function filterAssignmentsByCourse() {
+            const courseFilter = document.getElementById('courseFilter').value;
+            const cards = document.querySelectorAll('.assignment-card');
+            
+            if (courseFilter === 'all') {
+                cards.forEach(card => card.style.display = 'block');
+            } else {
+                cards.forEach(card => {
+                    if (card.dataset.course === courseFilter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            
+            checkEmptyState();
+        }
+
+        function sortAssignments() {
+            const sortBy = document.getElementById('sortFilter').value;
+            const grid = document.getElementById('assignmentsGrid');
+            const cards = Array.from(document.querySelectorAll('.assignment-card'));
+            
+            cards.sort((a, b) => {
+                switch(sortBy) {
+                    case 'title':
+                        return a.dataset.title.localeCompare(b.dataset.title);
+                    case 'course':
+                        return a.dataset.course.localeCompare(b.dataset.course);
+                    case 'status':
+                        return a.dataset.status.localeCompare(b.dataset.status);
+                    case 'dueDate':
+                    default:
+                        // For demo purposes, keep original order
+                        return 0;
+                }
+            });
+            
+            // Re-append sorted cards
+            cards.forEach(card => grid.appendChild(card));
+        }
+
+        function checkEmptyState() {
+            const grid = document.getElementById('assignmentsGrid');
+            const visibleCards = document.querySelectorAll('.assignment-card[style*="display: block"], .assignment-card:not([style*="display: none"])');
+            
+            // Remove existing empty state if any
+            const existingEmpty = grid.querySelector('.assignments-empty-state');
+            if (existingEmpty) {
+                existingEmpty.remove();
+            }
+            
+            // Add empty state if no visible cards
+            if (visibleCards.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.className = 'assignments-empty-state';
+                emptyState.innerHTML = `
+                    <div class="assignments-empty-icon">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <div class="assignments-empty-title">No Assignments Found</div>
+                    <div class="assignments-empty-desc">Try adjusting your filters or search terms</div>
+                `;
+                grid.appendChild(emptyState);
+            }
+        }
+
+        // Update the view all assignments link in sidebar to open modal
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewAllLink = document.querySelector('.view-all-assignments');
+            if (viewAllLink) {
+                viewAllLink.onclick = function(e) {
+                    e.preventDefault();
+                    openAllAssignmentsModal();
+                };
+            }
+
+            // Attach all button handlers
+            attachSubmitButtonHandlers();
+            attachViewDetailsButtonHandlers();
+            attachDownloadButtonHandlers();
+
+            // Setup drag and drop for file upload
+            setupDragAndDrop();
+        });
+
+        function attachSubmitButtonHandlers() {
+            const submitButtons = document.querySelectorAll('.assignment-card-action.primary');
+            submitButtons.forEach(button => {
+                if (button.textContent.includes('Submit')) {
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        const card = this.closest('.assignment-card');
+                        openSubmitModal(card);
+                    };
+                }
+            });
+        }
+
+        function attachViewDetailsButtonHandlers() {
+            const viewDetailsButtons = document.querySelectorAll('.assignment-card-action.secondary');
+            viewDetailsButtons.forEach(button => {
+                if (button.textContent.includes('View Details')) {
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        openViewDetailsModal(this);
+                    };
+                }
+            });
+        }
+
+        function attachDownloadButtonHandlers() {
+            const downloadButtons = document.querySelectorAll('.assignment-card-action.secondary');
+            downloadButtons.forEach(button => {
+                if (button.textContent.includes('Download Submission')) {
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        openDownloadModal(this);
+                    };
+                }
+            });
+        }
+
+        // ============================================
+        // SUBMIT ASSIGNMENT MODAL FUNCTIONS
+        // ============================================
+        
+        let uploadedFiles = [];
+        let currentAssignment = null;
+
+        function openSubmitModal(assignmentCard) {
+            // Get assignment details from card
+            const title = assignmentCard.querySelector('.assignment-card-title').textContent;
+            const course = assignmentCard.querySelector('.assignment-card-course').textContent.trim();
+            const dueDate = assignmentCard.querySelector('.assignment-meta-value').textContent;
+            const points = assignmentCard.querySelectorAll('.assignment-meta-value')[1].textContent;
+            
+            // Update modal with assignment details
+            document.getElementById('submitAssignmentTitle').textContent = title;
+            document.getElementById('submitAssignmentCourse').textContent = course;
+            document.getElementById('submitDueDate').textContent = dueDate;
+            document.getElementById('submitTotalPoints').textContent = points;
+            
+            // Store current assignment
+            currentAssignment = {
+                title: title,
+                course: course,
+                dueDate: dueDate,
+                points: points
+            };
+            
+            // Reset form
+            uploadedFiles = [];
+            updateFilesList();
+            document.getElementById('submissionComments').value = '';
+            updateCharacterCount();
+            
+            // Show modal
+            document.getElementById('submitAssignmentModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Hide success animation
+            document.getElementById('submitSuccessAnimation').classList.remove('show');
+            document.getElementById('submitModalBody').style.display = 'block';
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('submitAssignmentModal').classList.remove('show');
+            document.body.style.overflow = '';
+            uploadedFiles = [];
+            currentAssignment = null;
+        }
+
+        function setupDragAndDrop() {
+            const dropArea = document.getElementById('fileUploadArea');
+            
+            if (!dropArea) return;
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.add('drag-over');
+                }, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.remove('drag-over');
+                }, false);
+            });
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            const maxFileSize = 50 * 1024 * 1024; // 50MB
+            const maxTotalSize = 200 * 1024 * 1024; // 200MB total
+            let rejectedFiles = [];
+            let acceptedFiles = [];
+            
+            [...files].forEach(file => {
+                // Validate file size
+                if (file.size > maxFileSize) {
+                    rejectedFiles.push({name: file.name, reason: 'File exceeds 50MB limit'});
+                    return;
+                }
+                
+                // Check file type
+                const allowedTypes = ['pdf', 'doc', 'docx', 'zip', 'rar', 'jpg', 'jpeg', 'png', 'gif', 'txt', 'ppt', 'pptx', 'xlsx', 'xls'];
+                const fileExt = file.name.split('.').pop().toLowerCase();
+                if (!allowedTypes.includes(fileExt)) {
+                    rejectedFiles.push({name: file.name, reason: 'Unsupported file type'});
+                    return;
+                }
+                
+                // Check for duplicate files
+                const isDuplicate = uploadedFiles.some(f => f.name === file.name && f.size === file.size);
+                if (isDuplicate) {
+                    rejectedFiles.push({name: file.name, reason: 'File already uploaded'});
+                    return;
+                }
+                
+                acceptedFiles.push(file);
+            });
+            
+            // Check total size
+            const currentTotalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+            const newTotalSize = acceptedFiles.reduce((sum, file) => sum + file.size, 0);
+            
+            if (currentTotalSize + newTotalSize > maxTotalSize) {
+                showSubmitNotification('⚠️ Total file size exceeds 200MB limit', 'warning');
+                return;
+            }
+            
+            // Add accepted files
+            uploadedFiles.push(...acceptedFiles);
+            
+            // Show rejection messages
+            if (rejectedFiles.length > 0) {
+                let message = 'Some files were rejected:\\n\\n';
+                rejectedFiles.forEach(f => {
+                    message += `• ${f.name}: ${f.reason}\\n`;
+                });
+                showSubmitNotification(message, 'warning');
+            }
+            
+            // Show success for accepted files
+            if (acceptedFiles.length > 0) {
+                showSubmitNotification(`✅ ${acceptedFiles.length} file(s) added successfully`, 'success');
+            }
+            
+            updateFilesList();
+            updateSubmitButton();
+        }
+
+        function updateFilesList() {
+            const filesList = document.getElementById('uploadedFilesList');
+            filesList.innerHTML = '';
+            
+            uploadedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'uploaded-file-item';
+                
+                const fileType = getFileType(file.name);
+                const fileSize = formatFileSize(file.size);
+                
+                fileItem.innerHTML = `
+                    <div class="file-icon ${fileType}">
+                        <i class="fas ${getFileIcon(fileType)}"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${fileSize}</div>
+                    </div>
+                    <button class="file-remove" onclick="removeFile(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                filesList.appendChild(fileItem);
+            });
+            
+            // Update stats
+            const totalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+            document.getElementById('fileCountStat').textContent = `${uploadedFiles.length} file${uploadedFiles.length !== 1 ? 's' : ''}`;
+            document.getElementById('fileSizeStat').textContent = formatFileSize(totalSize);
+        }
+
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['pdf'].includes(ext)) return 'pdf';
+            if (['doc', 'docx'].includes(ext)) return 'doc';
+            if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) return 'image';
+            if (['zip', 'rar', '7z'].includes(ext)) return 'zip';
+            return 'other';
+        }
+
+        function getFileIcon(type) {
+            const icons = {
+                'pdf': 'fa-file-pdf',
+                'doc': 'fa-file-word',
+                'image': 'fa-file-image',
+                'zip': 'fa-file-archive',
+                'other': 'fa-file'
+            };
+            return icons[type] || 'fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateFilesList();
+            updateSubmitButton();
+        }
+
+        function updateCharacterCount() {
+            const textarea = document.getElementById('submissionComments');
+            const charCount = document.getElementById('charCount');
+            charCount.textContent = textarea.value.length;
+        }
+
+        function updateSubmitButton() {
+            const submitBtn = document.getElementById('submitAssignmentBtn');
+            
+            // Enable submit button if at least one file is uploaded
+            if (uploadedFiles.length > 0) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        function submitAssignment() {
+            // Validate submission
+            if (uploadedFiles.length === 0) {
+                showNotification('⚠️ Please upload at least one file before submitting', 'warning');
+                return;
+            }
+            
+            // Get form data
+            const comments = document.getElementById('submissionComments').value;
+            const saveAsDraft = document.getElementById('saveAsDraft').checked;
+            const notifyOnGrade = document.getElementById('notifyOnGrade').checked;
+            
+            // Show confirmation dialog
+            if (!saveAsDraft) {
+                const confirmSubmit = confirm('Are you sure you want to submit this assignment? You won\'t be able to edit it after submission.');
+                if (!confirmSubmit) return;
+            }
+            
+            // Disable submit button and show progress
+            const submitBtn = document.getElementById('submitAssignmentBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+            
+            // Simulate upload progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 90) progress = 90;
+                
+                const percentage = Math.round(progress);
+                submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Uploading ${percentage}%...`;
+            }, 200);
+            
+            
+            setTimeout(() => {
+                clearInterval(progressInterval);
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Processing...';
+                
+                // Final processing
+                setTimeout(() => {
+                    // Hide form
+                    document.getElementById('submitModalBody').style.display = 'none';
+                    
+                
+                    document.getElementById('submitSuccessAnimation').classList.add('show');
+                    
+                    
+                    if (currentAssignment) {
+                        updateAssignmentCardStatus(currentAssignment.title, 'submitted');
+                    }
+                    
+                    // Reset button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Assignment';
+                    
+                    // Show notification
+                    showNotification('✅ Assignment submitted successfully!', 'success');
+                    
+                    // Auto close after 3 seconds
+                    setTimeout(() => {
+                        closeSubmitModal();
+                    }, 3000);
+                }, 1000);
+            }, 2500);
+        }
+
+        function updateAssignmentCardStatus(title, status) {
+            const cards = document.querySelectorAll('.assignment-card');
+            cards.forEach(card => {
+                const cardTitle = card.querySelector('.assignment-card-title').textContent;
+                if (cardTitle === title) {
+                    // Remove old status classes
+                    card.classList.remove('pending', 'submitted', 'graded', 'overdue');
+                    // Add new status
+                    card.classList.add(status);
+                    // Update badge
+                    const badge = card.querySelector('.assignment-card-status-badge');
+                    badge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                    // Update progress
+                    const progressFill = card.querySelector('.assignment-progress-fill');
+                    progressFill.style.width = '100%';
+                    const progressLabel = card.querySelector('.assignment-progress-label span:last-child');
+                    progressLabel.textContent = '100%';
+                    // Update buttons
+                    const footer = card.querySelector('.assignment-card-footer');
+                    footer.innerHTML = `
+                        <button class="assignment-card-action secondary" onclick="openDownloadModal(this)">
+                            <i class="fas fa-file-download"></i> Download Submission
+                        </button>
+                        <button class="assignment-card-action secondary" onclick="openViewDetailsModal(this)">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                    `;
+                }
+            });
+        }
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Check if notification container exists, if not create it
+            let notificationContainer = document.getElementById('notificationContainer');
+            if (!notificationContainer) {
+                notificationContainer = document.createElement('div');
+                notificationContainer.id = 'notificationContainer';
+                notificationContainer.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px;';
+                document.body.appendChild(notificationContainer);
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                background: ${type === 'success' ? 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' : 
+                             type === 'warning' ? 'linear-gradient(135deg, #ffa726 0%, #fb8c00 100%)' : 
+                             type === 'error' ? 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)' : 
+                             'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+                font-size: 14px;
+                font-weight: 600;
+                min-width: 300px;
+                max-width: 400px;
+                animation: slideInRight 0.3s ease;
+                cursor: pointer;
+                white-space: pre-line;
+            `;
+            notification.textContent = message;
+            
+            // Add to container
+            notificationContainer.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
+            
+            // Click to dismiss
+            notification.onclick = () => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            };
+        }
+        
+        // Add notification animations (only once)
+        if (!document.getElementById('notificationStyles')) {
+            const notificationStyle = document.createElement('style');
+            notificationStyle.id = 'notificationStyles';
+            notificationStyle.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(notificationStyle);
+        }
+        
+        // Alias for submit notifications
+        function showSubmitNotification(message, type = 'info') {
+            showNotification(message, type);
+        }
+
+        // DOWNLOAD SUBMISSION MODAL FUNCTIONS
+        
+        
+        let submissionFiles = [
+            {name: 'Project_Report.pdf', size: 4.2 * 1024 * 1024, type: 'pdf', uploaded: '3 days ago'},
+            {name: 'Documentation.docx', size: 2.8 * 1024 * 1024, type: 'doc', uploaded: '3 days ago'},
+            {name: 'Source_Code.zip', size: 5.5 * 1024 * 1024, type: 'zip', uploaded: '3 days ago'}
+        ];
+
+        function openDownloadModal(button) {
+            // Get assignment details from card
+            const card = button.closest('.assignment-card');
+            const title = card.querySelector('.assignment-card-title').textContent;
+            const course = card.querySelector('.assignment-card-course').textContent.trim();
+            const submittedDate = card.querySelector('.assignment-meta-value').textContent;
+            
+            // Update modal with assignment details
+            document.getElementById('downloadAssignmentTitle').textContent = title;
+            document.getElementById('downloadAssignmentInfo').textContent = course;
+            document.getElementById('downloadSubmittedDate').textContent = submittedDate;
+            
+            // Calculate total files and size
+            const totalFiles = submissionFiles.length;
+            const totalSize = submissionFiles.reduce((sum, file) => sum + file.size, 0);
+            
+            document.getElementById('downloadTotalFiles').textContent = `${totalFiles} file${totalFiles !== 1 ? 's' : ''}`;
+            document.getElementById('downloadTotalSize').textContent = formatFileSize(totalSize);
+            
+            // Show modal
+            document.getElementById('downloadSubmissionModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset checkboxes
+            selectAllFiles();
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('downloadSubmissionModal').classList.remove('show');
+            document.body.style.overflow = '';
+            
+            // Hide progress section
+            document.getElementById('downloadProgressSection').classList.remove('show');
+            document.getElementById('downloadProgressBar').style.width = '0%';
+        }
+
+        // ============================================
+        // VIEW ASSIGNMENT DETAILS MODAL FUNCTIONS
+        // ============================================
+        
+        // Assignment details data
+        const assignmentDetailsData = {
+            'Web Development Project': {
+                course: 'CSC 301 - Web Development',
+                dueDate: 'Dec 22, 2025',
+                points: '100 pts',
+                assignedDate: 'Dec 1, 2025',
+                instructor: 'Dr. Smith',
+                description: 'Create a fully responsive e-commerce website using modern web development technologies. The project should demonstrate proficiency in HTML5, CSS3, JavaScript ES6+, and integration with a RESTful backend API for product management, user authentication, and shopping cart functionality.',
+                status: 'pending',
+                submittedDate: 'Not yet submitted',
+                grade: '--',
+                feedback: 'Pending'
+            },
+            'Database Design Schema': {
+                course: 'CSC 302 - Database Systems',
+                dueDate: 'Dec 25, 2025',
+                points: '80 pts',
+                assignedDate: 'Dec 3, 2025',
+                instructor: 'Prof. Johnson',
+                description: 'Design a comprehensive database schema for an online library management system including ER diagrams, normalization up to 3NF, and SQL implementation scripts for table creation and relationships.',
+                status: 'pending',
+                submittedDate: 'Not yet submitted',
+                grade: '--',
+                feedback: 'Pending'
+            },
+            'Data Structures Lab': {
+                course: 'CSC 205 - Data Structures',
+                dueDate: 'Dec 15, 2025',
+                points: '50 pts',
+                assignedDate: 'Nov 25, 2025',
+                instructor: 'Dr. Williams',
+                description: 'Implement various data structures including linked lists, stacks, queues, and binary search trees in Java. Include comprehensive unit tests and performance analysis.',
+                status: 'submitted',
+                submittedDate: 'Dec 14, 2025',
+                grade: '--',
+                feedback: 'Under review'
+            },
+            'Machine Learning Model': {
+                course: 'CSC 401 - Machine Learning',
+                dueDate: 'Dec 28, 2025',
+                points: '120 pts',
+                assignedDate: 'Dec 5, 2025',
+                instructor: 'Dr. Martinez',
+                description: 'Develop a machine learning model for image classification using convolutional neural networks. Include data preprocessing, model training, evaluation metrics, and detailed analysis of results.',
+                status: 'pending',
+                submittedDate: 'Not yet submitted',
+                grade: '--',
+                feedback: 'Pending'
+            },
+            'Algorithm Analysis': {
+                course: 'CSC 205 - Data Structures',
+                dueDate: 'Dec 10, 2025',
+                points: '60 pts',
+                assignedDate: 'Nov 20, 2025',
+                instructor: 'Dr. Williams',
+                description: 'Analyze the time and space complexity of various sorting and searching algorithms. Provide theoretical analysis, empirical testing results, and comprehensive comparisons.',
+                status: 'graded',
+                submittedDate: 'Dec 9, 2025',
+                grade: '56/60 (93%)',
+                feedback: 'Excellent work!'
+            },
+            'Mobile App Prototype': {
+                course: 'CSC 350 - Mobile Computing',
+                dueDate: 'Dec 30, 2025',
+                points: '100 pts',
+                assignedDate: 'Dec 8, 2025',
+                instructor: 'Prof. Anderson',
+                description: 'Create a functional mobile application prototype using Flutter or React Native. The app should include user authentication, data persistence, API integration, and a polished user interface.',
+                status: 'pending',
+                submittedDate: 'Not yet submitted',
+                grade: '--',
+                feedback: 'Pending'
+            },
+            'Research Paper': {
+                course: 'CSC 401 - Machine Learning',
+                dueDate: 'Dec 12, 2025',
+                points: '40 pts',
+                assignedDate: 'Nov 28, 2025',
+                instructor: 'Dr. Martinez',
+                description: 'Write a comprehensive research paper on recent advances in deep learning. Include literature review, methodology analysis, and critical evaluation of current trends.',
+                status: 'graded',
+                submittedDate: 'Dec 11, 2025',
+                grade: '38/40 (95%)',
+                feedback: 'Outstanding research!'
+            },
+            'SQL Queries Lab': {
+                course: 'CSC 302 - Database Systems',
+                dueDate: 'Dec 5, 2025',
+                points: '30 pts',
+                assignedDate: 'Nov 18, 2025',
+                instructor: 'Prof. Johnson',
+                description: 'Complete a series of advanced SQL queries including complex joins, subqueries, aggregate functions, and stored procedures. Optimize queries for performance.',
+                status: 'overdue',
+                submittedDate: 'Not yet submitted',
+                grade: '--',
+                feedback: 'Overdue - submit ASAP'
+            }
+        };
+
+        function openViewDetailsModal(button) {
+            // Get assignment details from card
+            const card = button.closest('.assignment-card');
+            const title = card.querySelector('.assignment-card-title').textContent;
+            
+            // Get details from data object
+            const details = assignmentDetailsData[title];
+            
+            if (details) {
+                // Update modal content
+                document.getElementById('detailAssignmentTitle').innerHTML = `
+                    <i class="fas fa-code"></i>
+                    ${title}
+                `;
+                document.getElementById('detailAssignmentCourse').innerHTML = `
+                    <i class="fas fa-book"></i>
+                    ${details.course}
+                `;
+                document.getElementById('detailDueDate').textContent = details.dueDate;
+                document.getElementById('detailPoints').textContent = details.points;
+                document.getElementById('detailAssignedDate').textContent = details.assignedDate;
+                document.getElementById('detailInstructor').textContent = details.instructor;
+                document.getElementById('detailDescription').textContent = details.description;
+                
+                // Update submission status
+                const statusBadge = document.getElementById('detailStatusBadge');
+                statusBadge.textContent = details.status.charAt(0).toUpperCase() + details.status.slice(1);
+                statusBadge.className = 'submission-status-badge ' + details.status;
+                
+                document.getElementById('detailSubmittedDate').textContent = details.submittedDate;
+                document.getElementById('detailGrade').textContent = details.grade;
+                document.getElementById('detailFeedback').textContent = details.feedback;
+            }
+            
+            // Show modal
+            document.getElementById('viewDetailsModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeViewDetailsModal() {
+            document.getElementById('viewDetailsModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function downloadAttachment(type) {
+            // Simulate file download
+            const fileNames = {
+                'instructions': 'Project_Instructions.pdf',
+                'template': 'Starter_Template.zip',
+                'reference': 'Design_Reference.png'
+            };
+            
+            const fileName = fileNames[type] || 'attachment.pdf';
+            
+            // Show download notification
+            alert(`Downloading ${fileName}...`);
+            
+            // In production, this would trigger actual file download
+            // window.location.href = '/download/' + fileName;
+        }
+
+        function printAssignment() {
+            // In production, this would open a print-friendly view
+            window.print();
+        }
+
+        function downloadAssignmentPDF() {
+            alert('Downloading assignment details as PDF...');
+            // In production, this would generate and download a PDF
+        }
+
+        function openSubmitModalFromDetails() {
+            // Close view details modal
+            closeViewDetailsModal();
+            
+            // Wait a moment for animation
+            setTimeout(() => {
+                // Open submit assignment modal
+                document.getElementById('submitAssignmentModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }, 300);
+        }
+
+        // Add click handlers to all "View Details" buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update all View Details buttons
+            const viewDetailsButtons = document.querySelectorAll('.assignment-card-action.secondary');
+            viewDetailsButtons.forEach(button => {
+                if (button.textContent.includes('View Details')) {
+                    button.setAttribute('onclick', 'openViewDetailsModal(this)');
+                }
+            });
+        });
+
+        // ============================================
+        // END VIEW ASSIGNMENT DETAILS MODAL FUNCTIONS
+        // ============================================
+
+        // ============================================
+        // VIEW FEEDBACK MODAL FUNCTIONS
+        // ============================================
+        
+        // Feedback data for different assignments
+        const feedbackData = {
+            'Algorithm Analysis': {
+                course: 'CSC 205 - Data Structures',
+                score: 56,
+                total: 60,
+                letterGrade: 'A',
+                percentage: 93,
+                submittedDate: 'Dec 9, 2025',
+                gradedDate: 'Dec 11, 2025',
+                attempt: '1st Attempt',
+                instructor: 'Dr. Williams',
+                instructorInitials: 'DW',
+                gradedTime: 'December 11, 2025 at 3:15 PM',
+                comment: 'Excellent analysis of sorting and searching algorithms! Your theoretical analysis is thorough and well-reasoned. The empirical testing results are comprehensive and clearly presented.\n\nYour comparison of different algorithms shows a deep understanding of time and space complexity. The charts and graphs effectively illustrate your findings.\n\nMinor suggestion: Consider adding more discussion on the practical implications of your findings in real-world scenarios.\n\nOverall, outstanding work! This demonstrates mastery of algorithm analysis.',
+                rubric: [
+                    {criteria: 'Theoretical Analysis', points: 20, score: 19, rating: 'excellent'},
+                    {criteria: 'Empirical Testing', points: 20, score: 19, rating: 'excellent'},
+                    {criteria: 'Comparisons & Insights', points: 15, score: 14, rating: 'excellent'},
+                    {criteria: 'Presentation & Clarity', points: 5, score: 4, rating: 'good'}
+                ],
+                strengths: [
+                    'Thorough theoretical analysis',
+                    'Comprehensive empirical testing',
+                    'Clear and effective visualizations',
+                    'Well-organized presentation'
+                ],
+                improvements: [
+                    'Add real-world application examples',
+                    'Discuss edge cases more thoroughly'
+                ]
+            },
+            'Research Paper': {
+                course: 'CSC 401 - Machine Learning',
+                score: 38,
+                total: 40,
+                letterGrade: 'A',
+                percentage: 95,
+                submittedDate: 'Dec 11, 2025',
+                gradedDate: 'Dec 14, 2025',
+                attempt: '1st Attempt',
+                instructor: 'Dr. Martinez',
+                instructorInitials: 'DM',
+                gradedTime: 'December 14, 2025 at 4:45 PM',
+                comment: 'Outstanding research paper on recent advances in deep learning! Your literature review is comprehensive and well-structured, covering key developments in the field.\n\nThe methodology analysis shows critical thinking and deep understanding. You effectively evaluate current trends and identify future research directions.\n\nYour citations are thorough and properly formatted. The writing is clear, concise, and academic in tone.\n\nExcellent work overall!',
+                rubric: [
+                    {criteria: 'Literature Review', points: 15, score: 15, rating: 'excellent'},
+                    {criteria: 'Methodology Analysis', points: 12, score: 11, rating: 'excellent'},
+                    {criteria: 'Critical Evaluation', points: 8, score: 8, rating: 'excellent'},
+                    {criteria: 'Writing Quality', points: 5, score: 4, rating: 'good'}
+                ],
+                strengths: [
+                    'Comprehensive literature coverage',
+                    'Critical analysis of methodologies',
+                    'Well-structured arguments',
+                    'Proper academic citations',
+                    'Clear and concise writing'
+                ],
+                improvements: [
+                    'Include more recent 2025 publications',
+                    'Expand discussion on limitations'
+                ]
+            }
+        };
+
+        function openViewFeedbackModal(button) {
+            // Get assignment details from card
+            const card = button.closest('.assignment-card');
+            const title = card.querySelector('.assignment-card-title').textContent;
+            
+            // Get feedback from data object
+            const feedback = feedbackData[title];
+            
+            if (feedback) {
+                // Update modal title
+                document.getElementById('feedbackAssignmentTitle').textContent = `${title} - ${feedback.course}`;
+                
+                // Update grade summary
+                document.getElementById('feedbackScore').textContent = feedback.score;
+                document.querySelector('.feedback-score-total').textContent = `out of ${feedback.total}`;
+                document.getElementById('feedbackLetterGrade').textContent = feedback.letterGrade;
+                document.getElementById('feedbackPercentage').textContent = `${feedback.percentage}%`;
+                
+                // Update stats
+                document.getElementById('feedbackSubmittedDate').textContent = feedback.submittedDate;
+                document.getElementById('feedbackGradedDate').textContent = feedback.gradedDate;
+                document.getElementById('feedbackAttempt').textContent = feedback.attempt;
+                
+                // Update rubric table
+                const rubricTable = document.querySelector('.feedback-rubric-table tbody');
+                rubricTable.innerHTML = '';
+                feedback.rubric.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${item.criteria}</strong></td>
+                        <td>${item.points} pts</td>
+                        <td><strong>${item.score} pts</strong></td>
+                        <td><span class="feedback-score-badge ${item.rating}">${item.rating.charAt(0).toUpperCase() + item.rating.slice(1)}</span></td>
+                    `;
+                    rubricTable.appendChild(row);
+                });
+                
+                // Update instructor info
+                document.querySelector('.feedback-instructor-avatar').textContent = feedback.instructorInitials;
+                document.querySelector('.feedback-instructor-details h4').textContent = feedback.instructor;
+                document.querySelector('.feedback-instructor-details p').textContent = `Graded on ${feedback.gradedTime}`;
+                document.getElementById('feedbackInstructorComment').textContent = feedback.comment;
+                
+                // Update strengths
+                const strengthsList = document.querySelector('.feedback-highlight-list.strengths');
+                strengthsList.innerHTML = '';
+                feedback.strengths.forEach(strength => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-star"></i><span>${strength}</span>`;
+                    strengthsList.appendChild(li);
+                });
+                
+                // Update improvements
+                const improvementsList = document.querySelector('.feedback-highlight-list.improvements');
+                improvementsList.innerHTML = '';
+                feedback.improvements.forEach(improvement => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-arrow-up"></i><span>${improvement}</span>`;
+                    improvementsList.appendChild(li);
+                });
+                
+                // Update score circle color based on grade
+                const scoreCircle = document.querySelector('.feedback-score-circle');
+                if (feedback.percentage >= 90) {
+                    scoreCircle.style.background = 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)';
+                } else if (feedback.percentage >= 80) {
+                    scoreCircle.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+                } else if (feedback.percentage >= 70) {
+                    scoreCircle.style.background = 'linear-gradient(135deg, #ffa726 0%, #fb8c00 100%)';
+                } else {
+                    scoreCircle.style.background = 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)';
+                }
+            }
+            
+            // Show modal
+            document.getElementById('viewFeedbackModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeViewFeedbackModal() {
+            document.getElementById('viewFeedbackModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function printFeedback() {
+            window.print();
+        }
+
+        function downloadFeedbackPDF() {
+            showNotification('📥 Downloading feedback as PDF...', 'info');
+            // In production, this would generate and download a PDF
+        }
+
+        // Add click handlers to all "View Feedback" buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // This will run after the DOM is loaded
+            setTimeout(() => {
+                attachFeedbackButtonHandlers();
+            }, 500);
+        });
+
+        function attachFeedbackButtonHandlers() {
+            const feedbackButtons = document.querySelectorAll('.assignment-card-action.primary');
+            feedbackButtons.forEach(button => {
+                if (button.textContent.includes('View Feedback')) {
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        openViewFeedbackModal(this);
+                    };
+                }
+            });
+        }
+
+        // ============================================
+        // END VIEW FEEDBACK MODAL FUNCTIONS
+        // ============================================
+
+        // ============================================
+        // DOWNLOAD ASSIGNMENT MODAL FUNCTIONS
+        // ============================================
+        
+        function openDownloadAssignmentModal(button) {
+            // Get assignment details from card
+            const card = button.closest('.assignment-card');
+            const title = card.querySelector('.assignment-card-title').textContent;
+            const course = card.querySelector('.assignment-card-course').textContent.trim();
+            
+            // Update modal title
+            document.getElementById('downloadAssignmentInfo').textContent = `${title} - ${course}`;
+            
+            // Show modal
+            document.getElementById('downloadAssignmentModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Hide progress
+            document.getElementById('downloadAssignmentProgress').classList.remove('show');
+        }
+
+        function closeDownloadAssignmentModal() {
+            document.getElementById('downloadAssignmentModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function downloadFile(fileType) {
+            // Show progress
+            const progressSection = document.getElementById('downloadAssignmentProgress');
+            const progressFill = document.getElementById('downloadAssignmentProgressFill');
+            const progressText = document.getElementById('downloadAssignmentProgressText');
+            
+            progressSection.classList.add('show');
+            progressFill.style.width = '0%';
+            progressText.textContent = 'Preparing download...';
+            
+            // Simulate download progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Downloading... ${Math.round(progress)}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    progressText.textContent = 'Download complete!';
+                    
+                    // Show notification
+                    showNotification('✅ File downloaded successfully!', 'success');
+                    
+                    // Hide progress after 2 seconds
+                    setTimeout(() => {
+                        progressSection.classList.remove('show');
+                    }, 2000);
+                }
+            }, 200);
+            
+            // In production, this would trigger actual file download
+            // window.location.href = '/download/' + fileType;
+        }
+
+        function downloadAllFiles() {
+            downloadFile('all-files');
+        }
+
+        function downloadGradeReport() {
+            downloadFile('grade-report');
+        }
+
+        function downloadSubmissionOnly() {
+            downloadFile('submission-files');
+        }
+
+        // Add click handlers to all "Download" buttons in graded assignments
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                attachDownloadAssignmentButtonHandlers();
+            }, 500);
+        });
+
+        function attachDownloadAssignmentButtonHandlers() {
+            const downloadButtons = document.querySelectorAll('.assignment-card.graded .assignment-card-action.secondary');
+            downloadButtons.forEach(button => {
+                if (button.textContent.includes('Download')) {
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        openDownloadAssignmentModal(this);
+                    };
+                }
+            });
+        }
+
+        // ============================================
+        // END DOWNLOAD ASSIGNMENT MODAL FUNCTIONS
+        // ============================================
+
+
+        function selectAllFiles() {
+            const checkboxes = document.querySelectorAll('.download-file-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        }
+
+        function deselectAllFiles() {
+            const checkboxes = document.querySelectorAll('.download-file-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+
+        function downloadAllAsZip() {
+            const progressSection = document.getElementById('downloadProgressSection');
+            const progressBar = document.getElementById('downloadProgressBar');
+            const progressText = document.getElementById('downloadProgressText');
+            
+            // Show progress
+            progressSection.classList.add('show');
+            progressText.textContent = 'Creating ZIP archive...';
+            
+            // Simulate download progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 50) {
+                    progressText.textContent = 'Compressing files...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    progressText.textContent = 'Download complete!';
+                    
+                    // Simulate file download
+                    const link = document.createElement('a');
+                    link.href = '#'; // In production, this would be the actual file URL
+                    link.download = 'submission_files.zip';
+                    
+                    showNotification('✅ All files downloaded as ZIP!', 'success');
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        progressSection.classList.remove('show');
+                        progressBar.style.width = '0%';
+                    }, 2000);
+                }
+            }, 200);
+        }
+
+        function downloadAllAsPDF() {
+            const progressSection = document.getElementById('downloadProgressSection');
+            const progressBar = document.getElementById('downloadProgressBar');
+            const progressText = document.getElementById('downloadProgressText');
+            
+            // Show progress
+            progressSection.classList.add('show');
+            progressText.textContent = 'Converting files to PDF...';
+            
+            // Simulate download progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 8;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 50) {
+                    progressText.textContent = 'Merging PDF documents...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    progressText.textContent = 'Download complete!';
+                    
+                    showNotification('✅ All files converted and downloaded as PDF!', 'success');
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        progressSection.classList.remove('show');
+                        progressBar.style.width = '0%';
+                    }, 2000);
+                }
+            }, 200);
+        }
+
+        function downloadSingleFile(fileIndex) {
+            const file = submissionFiles[fileIndex];
+            
+            if (!file) return;
+            
+            const progressSection = document.getElementById('downloadProgressSection');
+            const progressBar = document.getElementById('downloadProgressBar');
+            const progressText = document.getElementById('downloadProgressText');
+            
+            // Show progress
+            progressSection.classList.add('show');
+            progressText.textContent = `Downloading ${file.name}...`;
+            
+            // Simulate download progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 15;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    progressText.textContent = 'Download complete!';
+                    
+                    // In production, trigger actual download
+                    showNotification(`✅ ${file.name} downloaded successfully!`, 'success');
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        progressSection.classList.remove('show');
+                        progressBar.style.width = '0%';
+                    }, 1500);
+                }
+            }, 150);
+        }
+
+        function downloadSelectedFiles() {
+            const checkboxes = document.querySelectorAll('.download-file-checkbox:checked');
+            
+            if (checkboxes.length === 0) {
+                alert('Please select at least one file to download.');
+                return;
+            }
+            
+            const selectedFiles = [];
+            checkboxes.forEach(checkbox => {
+                const fileIndex = parseInt(checkbox.dataset.fileIndex);
+                selectedFiles.push(submissionFiles[fileIndex]);
+            });
+            
+            const progressSection = document.getElementById('downloadProgressSection');
+            const progressBar = document.getElementById('downloadProgressBar');
+            const progressText = document.getElementById('downloadProgressText');
+            
+            // Show progress
+            progressSection.classList.add('show');
+            progressText.textContent = `Preparing ${selectedFiles.length} file${selectedFiles.length !== 1 ? 's' : ''}...`;
+            
+            // Simulate download progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 12;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 50) {
+                    progressText.textContent = 'Creating package...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    progressText.textContent = 'Download complete!';
+                    
+                    showNotification(`✅ ${selectedFiles.length} file${selectedFiles.length !== 1 ? 's' : ''} downloaded successfully!`, 'success');
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        progressSection.classList.remove('show');
+                        progressBar.style.width = '0%';
+                    }, 2000);
+                }
+            }, 180);
+        }
+
+        // Update download submission buttons in existing cards
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach handlers to existing download buttons
+            setTimeout(() => {
+                const downloadButtons = document.querySelectorAll('.assignment-card-action.secondary');
+                downloadButtons.forEach(button => {
+                    if (button.textContent.includes('Download Submission')) {
+                        button.onclick = function(e) {
+                            e.preventDefault();
+                            openDownloadModal(this);
+                        };
+                    }
+                });
+            }, 500);
+        });
+
+        
+        function requestNewIDCard() {
+            document.getElementById('requestNewCardModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeRequestCardModal() {
+            document.getElementById('requestNewCardModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+            // Reset form
+            document.getElementById('requestCardForm').reset();
+            updateTotalFee();
+        }
+        
+        function updateTotalFee() {
+            const deliveryOptions = document.getElementsByName('delivery');
+            let deliveryFee = 0;
+            
+            deliveryOptions.forEach(option => {
+                if (option.checked) {
+                    if (option.value === 'mail') {
+                        deliveryFee = 5;
+                    } else if (option.value === 'express') {
+                        deliveryFee = 15;
+                    }
+                }
+            });
+            
+            const replacementFee = 15;
+            const total = replacementFee + deliveryFee;
+            
+            // Update display
+            if (deliveryFee > 0) {
+                document.getElementById('deliveryFeeRow').style.display = 'flex';
+                document.getElementById('deliveryFee').textContent = '$' + deliveryFee.toFixed(2);
+            } else {
+                document.getElementById('deliveryFeeRow').style.display = 'none';
+            }
+            
+            document.getElementById('totalFee').textContent = '$' + total.toFixed(2);
+        }
+        
+        // Add event listeners for delivery options
+        document.addEventListener('DOMContentLoaded', function() {
+            const deliveryOptions = document.getElementsByName('delivery');
+            deliveryOptions.forEach(option => {
+                option.addEventListener('change', updateTotalFee);
+            });
+        });
+        
+        function submitCardRequest(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const reason = formData.get('reason');
+            const delivery = formData.get('delivery');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            const details = formData.get('details');
+            
+            // Enhanced validation
+            if (!reason) {
+                showNotification('❌ Please select a reason for the request', 'error');
+                return;
+            }
+            
+            if (!email || !email.includes('@')) {
+                showNotification('❌ Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Validate phone number (more comprehensive)
+            const phoneRegex = /^[\d\s\(\)\-\+]{10,}$/;
+            if (!phone || !phoneRegex.test(phone)) {
+                showNotification('❌ Please enter a valid phone number (minimum 10 digits)', 'error');
+                document.getElementById('contactPhone').focus();
+                return;
+            }
+            
+            // Show loading state with progress
+            const submitBtn = event.target.querySelector('.btn-submit');
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.disabled = true;
+            
+            // Show processing notification
+            showNotification('📤 Submitting your request...', 'info');
+            
+            // Simulate API call with realistic timing
+            setTimeout(() => {
+                // Generate unique request ID
+                const requestId = 'REQ' + Date.now().toString().slice(-5);
+                
+                // Get selected values for display
+                const reasonTexts = {
+                    'lost': 'Lost Card',
+                    'stolen': 'Stolen Card',
+                    'damaged': 'Damaged Card',
+                    'update': 'Information Update'
+                };
+                
+                const deliveryTexts = {
+                    'pickup': 'Campus Pickup',
+                    'mail': 'Mail Delivery',
+                    'express': 'Express Delivery'
+                };
+                
+                const processingTimes = {
+                    'pickup': '3-5 business days',
+                    'mail': '7-10 business days',
+                    'express': '1-2 business days'
+                };
+                
+                // Get total fee
+                const totalFee = document.getElementById('totalFee').textContent;
+                
+                // Close request modal
+                closeRequestCardModal();
+                
+                // Reset button
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.disabled = false;
+                
+                // Show success modal after a brief delay
+                setTimeout(() => {
+                    // Populate success modal with data
+                    document.getElementById('requestTrackingNumber').textContent = '#' + requestId;
+                    document.getElementById('successReason').textContent = reasonTexts[reason];
+                    document.getElementById('successDelivery').textContent = deliveryTexts[delivery];
+                    document.getElementById('successFee').textContent = totalFee;
+                    document.getElementById('successTime').textContent = processingTimes[delivery];
+                    document.getElementById('confirmEmail').textContent = email;
+                    document.getElementById('confirmPhone').textContent = phone;
+                    
+                    // Update payment step description
+                    document.getElementById('paymentStepDesc').textContent = 
+                        delivery === 'pickup' ? 'Payment required before pickup' : 'Pay before processing starts';
+                    
+                    // Show success modal
+                    document.getElementById('requestSuccessModal').classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Show success notification
+                    showNotification('✅ Request submitted successfully! Request ID: #' + requestId, 'success');
+                    
+                    // Store request data in localStorage for tracking
+                    const requestData = {
+                        id: requestId,
+                        reason: reasonTexts[reason],
+                        delivery: deliveryTexts[delivery],
+                        fee: totalFee,
+                        email: email,
+                        phone: phone,
+                        date: new Date().toISOString(),
+                        status: 'pending_payment'
+                    };
+                    
+                    localStorage.setItem('latestCardRequest', JSON.stringify(requestData));
+                }, 300);
+            }, 2000);
+        }
+        
+        function closeSuccessModal() {
+            document.getElementById('requestSuccessModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function viewPaymentDetails() {
+            closeSuccessModal();
+            setTimeout(() => {
+                const requestData = JSON.parse(localStorage.getItem('latestCardRequest') || '{}');
+                alert(`💳 PAYMENT DETAILS\n━━━━━━━━━━━━━━━━━━━━━━\n\n📋 Request ID: #${requestData.id}\n💰 Amount Due: ${requestData.fee}\n\n🔗 PAYMENT OPTIONS:\n━━━━━━━━━━━━━━━━━━━━━━\n\n1. Online Payment Portal\n   Visit: portal.university.edu/pay\n   Use Request ID as reference\n\n2. Email Payment Link\n   Check email: ${requestData.email}\n   Click secure payment link\n\n3. Campus Payment\n   Visit: Student Services Office\n   Bring Request ID\n\n⚠️ Note: Card processing begins after payment is confirmed.`);
+            }, 300);
+        }
+        
+        function trackRequest() {
+            closeSuccessModal();
+            setTimeout(() => {
+                const requestData = JSON.parse(localStorage.getItem('latestCardRequest') || '{}');
+                alert(`📍 REQUEST TRACKING\n━━━━━━━━━━━━━━━━━━━━━━\n\n🔖 Request ID: #${requestData.id}\n📅 Submitted: ${new Date(requestData.date).toLocaleDateString()}\n📊 Status: Pending Payment\n\n📋 TRACKING STATUS:\n━━━━━━━━━━━━━━━━━━━━━━\n\n✅ Request Submitted\n🔄 Awaiting Payment\n⏳ Processing (after payment)\n🚚 Ready for ${requestData.delivery}\n\n💡 TIP: You will receive email and SMS updates at each stage.\n\n🔗 Track online at:\nportal.university.edu/track/${requestData.id}`);
+            }, 300);
+        }
+        
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' : 
+                              type === 'error' ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' : 
+                              'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+                z-index: 10002;
+                font-weight: 600;
+                font-size: 14px;
+                animation: slideInRight 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Add slide in/out animations (only once)
+        if (!document.getElementById('slideAnimationStyles')) {
+            const slideAnimationStyle = document.createElement('style');
+            slideAnimationStyle.id = 'slideAnimationStyles';
+            slideAnimationStyle.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(slideAnimationStyle);
+        }
+
+        function showPayAllBreakdown() {
+            const breakdownMessage = `
+📊 PAYMENT BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 INCLUDED FEES:
+├─ Spring 2026 Tuition .......... $1,500.00
+├─ Library Fees ................. $150.00
+├─ Lab Equipment Fee ............ $350.00
+└─ Student Activity Fee ......... $350.00
+                                 ─────────
+   Subtotal (4 items) ........... $2,350.00
+
+💰 DISCOUNTS & FEES:
+├─ Bundle Discount .............. -$25.00
+└─ Processing Fee ............... $2.50
+                                 ─────────
+   TOTAL AMOUNT ................. $2,327.50
+
+✨ BENEFITS:
+✓ Save $25 with bundle payment
+✓ Only one processing fee ($2.50 vs $10 individually)
+✓ All fees cleared at once
+✓ Instant consolidated receipt
+✓ No late payment penalties
+
+🔒 Secure payment via encrypted gateway
+            `;
+            
+            alert(breakdownMessage);
+        }
+
+        function processPayment() {
+            const amount = document.getElementById('paymentAmount').value;
+            const selectedMethod = document.querySelector('.payment-method-card.selected .payment-method-name');
+            
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            if (confirm(`Process payment of $${parseFloat(amount).toFixed(2)} via ${selectedMethod.textContent}?`)) {
+                alert('Redirecting to secure payment gateway...\n\nAmount: $' + parseFloat(amount).toFixed(2) + '\nMethod: ' + selectedMethod.textContent);
+                // In production, process payment through backend
+            }
+        }
+
         // Close modal when clicking outside
         document.addEventListener('click', function(event) {
             const modal = document.getElementById('allCoursesModal');
             if (event.target === modal) {
                 closeAllCoursesModal();
+            }
+            
+            const transcriptModal = document.getElementById('transcriptModal');
+            if (event.target === transcriptModal) {
+                closeTranscriptModal();
+            }
+            
+            const paymentsModal = document.getElementById('paymentsModal');
+            if (event.target === paymentsModal) {
+                closePaymentsModal();
+            }
+            
+            const paymentProcessModal = document.getElementById('paymentProcessModal');
+            if (event.target === paymentProcessModal) {
+                closePaymentProcessModal();
+            }
+            
+            const scheduleModal = document.getElementById('scheduleModal');
+            if (event.target === scheduleModal) {
+                closeScheduleModal();
+            }
+            
+            const idcardModal = document.getElementById('idcardModal');
+            if (event.target === idcardModal) {
+                closeIDCardModal();
+            }
+            
+            const shareIDCardModal = document.getElementById('shareIDCardModal');
+            if (event.target === shareIDCardModal) {
+                closeShareModal();
+            }
+            
+            const requestNewCardModal = document.getElementById('requestNewCardModal');
+            if (event.target === requestNewCardModal) {
+                closeRequestCardModal();
             }
         });
 
@@ -6524,7 +22405,7 @@ For questions or discrepancies please contact the course instructor.`;
             // Load curriculum
             loadCurriculum(course.curriculum);
             
-            // Load assignments
+    
             loadAssignments(course.assignments);
             
             // Update main action button
@@ -6540,7 +22421,7 @@ For questions or discrepancies please contact the course instructor.`;
             document.body.style.overflow = 'hidden';
         }
 
-        // Close Course Detail Modal
+        
         function closeCourseDetail() {
             document.getElementById('courseDetailModal').classList.remove('show');
             document.body.style.overflow = 'auto';
@@ -6556,11 +22437,11 @@ For questions or discrepancies please contact the course instructor.`;
 
         // Switch Course Tabs
         function switchCourseTab(tabName) {
-            // Remove active class from all tabs and contents
+        
             document.querySelectorAll('.course-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.course-tab-content').forEach(content => content.classList.remove('active'));
             
-            // Add active class to selected tab and content
+
             event.target.classList.add('active');
             document.getElementById(tabName + '-tab').classList.add('active');
         }
@@ -7022,31 +22903,34 @@ Document ID: TR-${Date.now()}
                 max-width: 400px;
             `;
             
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideInUp {
-                    from {
-                        transform: translateY(100px);
-                        opacity: 0;
+            // Add animation styles if not already added
+            if (!document.getElementById('toastAnimationStyles')) {
+                const toastStyle = document.createElement('style');
+                toastStyle.id = 'toastAnimationStyles';
+                toastStyle.textContent = `
+                    @keyframes slideInUp {
+                        from {
+                            transform: translateY(100px);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateY(0);
+                            opacity: 1;
+                        }
                     }
-                    to {
-                        transform: translateY(0);
-                        opacity: 1;
+                    @keyframes slideOutDown {
+                        from {
+                            transform: translateY(0);
+                            opacity: 1;
+                        }
+                        to {
+                            transform: translateY(100px);
+                            opacity: 0;
+                        }
                     }
-                }
-                @keyframes slideOutDown {
-                    from {
-                        transform: translateY(0);
-                        opacity: 1;
-                    }
-                    to {
-                        transform: translateY(100px);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+                `;
+                document.head.appendChild(toastStyle);
+            }
             
             // Add icon based on type
             const icon = type === 'success' ? '✓' : type === 'info' ? 'ℹ' : '!';
@@ -9107,6 +24991,70 @@ Document ID: TR-${Date.now()}
             </div>
         </div>
     </div>
+
+    <script>
+        // Global keyboard handler for ESC key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                // Close any open modals
+                const modals = [
+                    'viewAllAssignmentsModal',
+                    'submitAssignmentModal',
+                    'downloadSubmissionModal',
+                    'viewDetailsModal',
+                    'viewFeedbackModal',
+                    'downloadAssignmentModal'
+                ];
+                
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (modal && modal.classList.contains('show')) {
+                        modal.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        });
+
+        // Click outside modal to close
+        document.addEventListener('click', function(e) {
+            // View All Assignments Modal
+            const viewAllModal = document.getElementById('viewAllAssignmentsModal');
+            if (viewAllModal && e.target === viewAllModal) {
+                closeAllAssignmentsModal();
+            }
+            
+            // Submit Assignment Modal
+            const submitModal = document.getElementById('submitAssignmentModal');
+            if (submitModal && e.target === submitModal) {
+                closeSubmitModal();
+            }
+            
+            // Download Submission Modal
+            const downloadModal = document.getElementById('downloadSubmissionModal');
+            if (downloadModal && e.target === downloadModal) {
+                closeDownloadModal();
+            }
+            
+            // View Details Modal
+            const detailsModal = document.getElementById('viewDetailsModal');
+            if (detailsModal && e.target === detailsModal) {
+                closeViewDetailsModal();
+            }
+            
+            // View Feedback Modal
+            const feedbackModal = document.getElementById('viewFeedbackModal');
+            if (feedbackModal && e.target === feedbackModal) {
+                closeViewFeedbackModal();
+            }
+            
+            // Download Assignment Modal
+            const downloadAssignmentModal = document.getElementById('downloadAssignmentModal');
+            if (downloadAssignmentModal && e.target === downloadAssignmentModal) {
+                closeDownloadAssignmentModal();
+            }
+        });
+    </script>
 
 </body>
 </html>

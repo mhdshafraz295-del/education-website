@@ -49,7 +49,7 @@
             </form>
             
             <div class="login-footer">
-                <p>Don't have an account? <a href="register.php" class="register-link">Register here</a></p>
+                <p>Don't have an account? <a href="/education_site/app/views/register.php" class="register-link">Register here</a></p>
             </div>
         </div>
     </div>
